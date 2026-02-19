@@ -1,0 +1,15 @@
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+data/vector_store/*
+data/adapters/*
+uploads/*
+*.md
+tests/
+alembic/versions/*.py
