@@ -70,13 +70,15 @@ class LLMService:
         """Stream tokens from the LLM. Falls back to Gemini if Groq fails."""
         messages = self._build_messages(user_message, context, chat_history)
 
+        groq_error = ""
         if settings.groq_api_key:
             try:
                 async for token in self._stream_groq(messages):
                     yield token
                 return
             except Exception as e:
-                logger.warning(f"Groq failed, falling back to Gemini: {e}")
+                groq_error = str(e)
+                logger.warning(f"Groq failed, falling back to Gemini: {groq_error}")
 
         if settings.google_api_key:
             try:
@@ -86,7 +88,14 @@ class LLMService:
             except Exception as e:
                 logger.error(f"Gemini also failed: {e}")
 
-        yield "⚠️ No LLM provider available. Please configure GROQ_API_KEY or GOOGLE_API_KEY in your .env file."
+        # If we had a Groq key but it failed, it's likely a rate limit
+        if groq_error and settings.groq_api_key:
+            if "429" in groq_error or "rate limit" in groq_error.lower():
+                yield f"⚠️ Groq Free Tier Rate Limit Exceeded (Too many tokens per minute). Please wait 60 seconds and try again!"
+            else:
+                yield f"⚠️ Groq API Error: {groq_error}"
+        else:
+            yield "⚠️ No LLM provider available. Please configure GROQ_API_KEY or GOOGLE_API_KEY in your .env file."
 
     async def generate(
         self,
