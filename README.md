@@ -1,95 +1,112 @@
-# 🏥 Clinical GraphRAG Pro
+# 🏥 Clinical GraphRAG Pro (2026 Edition)
 
 ![Application Screenshot](./dashboard-preview.png)
 
-Clinical GraphRAG Pro is an enterprise-grade medical AI platform combining traditional Retrieval-Augmented Generation (RAG) with Knowledge Graphs to provide highly accurate, explainable, and context-aware analysis of medical documents.
-
-## ✨ Features
-
-- **Hybrid Search RAG**: Combines semantic embeddings (SentenceTransformers) with keyword search (BM25) for high-recall medical document retrieval.
-- **Multimodal Document Understanding**: Upload PDFs, DOCX, or medical images (X-rays, MRIs) for direct AI analysis.
-- **Agentic Workflows**: Dynamic execution of multi-step medical reasoning tasks (e.g., differential diagnosis, treatment guideline cross-referencing).
-- **Explainable AI (XAI)**: Every response includes exactly which document chunks were used and the step-by-step reasoning logic.
-- **Dark-Themed UI**: A modern, responsive, professional dashboard built with Next.js, Tailwind CSS, and Framer Motion.
-
-## 🚀 Live Demo
-
-**Frontend (Vercel)**: [https://clinical-graphrag-pro.vercel.app](https://clinical-graphrag-pro.vercel.app)  
-**Backend API (Hugging Face)**: [https://mohi679-clinical-graphrag-backend.hf.space](https://mohi679-clinical-graphrag-backend.hf.space)
+**Clinical GraphRAG Pro** is a production-grade, multi-agent AI platform built for healthcare. Transitioning from basic "chat over PDF" to a deterministic **Autonomous Medical Reasoning Engine**, it combines advanced Agentic orchestration, Temporal Knowledge Graphs, and an Adversarial Safety Adjudicator to achieve enterprise-level clinical analysis.
 
 ---
 
-## 🛠️ Architecture & Tech Stack
+## 🌟 Core Innovations
 
-This project is built using a modern decoupled architecture:
+### 1. Multi-Agent Orchestration 🧠
+At the core of the system is the **Supervisor Agent** (powered by LangChain ReAct loops). Instead of blindly answering questions, the Supervisor delegates tasks to specialized sub-agents:
+- **Pharmacovigilance Agent:** Analyzes drug interactions and cross-references them with the Knowledge Graph.
+- **Diagnostics Agent:** Ingests extracted symptoms to output weighted differential diagnoses.
+- **Data Extraction Agent:** Employs rigid NLP parsing to isolate lab values and dates into pristine JSON.
 
-### Frontend
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS + Custom CSS Variables
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
+### 2. Temporal Knowledge Graphs ⏳
+We augmented the standard semantic Vector Store with a highly connective **Temporal Knowledge Graph** (powered by `networkx`).
+Instead of static chunks, the AI traverses relationships across time (e.g., establishing if Drug X was administered *before* or *after* Symptom Y emerged).
 
-### Backend
-- **Framework**: FastAPI (Python 3.12)
-- **Database**: PostgreSQL with `pgvector` & `age` (Knowledge Graph)
-- **Caching**: Redis
-- **LLM Engine**: Groq (Llama 3 70B) / Google Gemini
-- **Embeddings**: HuggingFace (`all-mpnet-base-v2`)
+### 3. Adversarial Safety Adjudicator (Red Team) 🛑
+To solve the Hallucination problem, the AI actively enforces its own safety boundaries. The Agent never streams directly to the user; it generates a **hidden draft**. This draft is passed to a strict Adjudicator LLM. If the Adjudicator detects hallucinations or lethal advice, the system rejects the draft and streams a specific safety warning to the user.
+
+### 4. Multimodal Vision Diagnostics 👁️
+Physicians can upload X-Rays, MRIs, and CT Scans directly into the chat prompt. The Vision LLM processes the image in isolation, detecting the modality, identifying findings, and generating a differential diagnosis.
+
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+graph TD
+    classDef user fill:#6366f1,stroke:#4338ca,stroke-width:2px,color:#fff;
+    classDef agent fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px,color:#fff;
+    classDef tool fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff;
+    classDef db fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff;
+    classDef check fill:#ef4444,stroke:#dc2626,stroke-width:2px,color:#fff;
+
+    User([👤 User / Clinician]) ::: user
+    User --> |Query + Images/PDFs| Supervisor
+
+    subgraph "Agentic Reasoning Engine (LangChain ReAct)"
+        Supervisor{🤖 Supervisor Agent} ::: agent
+        Supervisor --> |Delegates| Pharm[💊 Pharmacovigilance Worker] ::: agent
+        Supervisor --> |Delegates| Diag[🩺 Diagnostics Worker] ::: agent
+        Supervisor --> |Delegates| Data[📊 Data Extraction Worker] ::: agent
+    end
+
+    subgraph "Retrieval Layer"
+        Pharm --> |Queries| Graph[(Temporal Knowledge Graph)] ::: db
+        Diag --> |Searches| Vector[(Semantic Vector Store)] ::: db
+        Data --> |Parses| Docs[📄 Uploaded Clinical Notes] ::: tool
+    end
+
+    subgraph "Verification Layer"
+        Supervisor --> |Proposes Answer| Adjudicator[🛑 Adversarial Adjudicator] ::: check
+        Adjudicator -.-> |Passes| Final[✅ Render Output] ::: tool
+        Adjudicator -.-> |Fails (Hallucination)| Reject[🚫 Intercept & Warn] ::: tool
+    end
+
+    Final --> User
+    Reject --> User
+```
+
+---
+
+## 🛠️ Tech Stack
+- **Frontend**: Next.js 14, TypeScript, Tailwind CSS, Framer Motion
+- **Backend**: FastAPI (Python 3.12), SQLAlchemy
+- **Databases**: PostgreSQL (`pgvector`), Redis
+- **AI Core**: Llama-3-70B / Google Gemini (via Groq API), LangChain, HuggingFace Embeddings
+- **Graph Processing**: NetworkX
 
 ---
 
 ## 💻 Local Development
 
-If you want to run this application on your own machine instead of the cloud, follow these steps:
+1. **Clone & Setup Environment**
+   ```bash
+   git clone https://github.com/mohamad679/clinical-graphrag-pro.git
+   cd clinical-graphrag-pro/backend
+   cp .env.example .env
+   # Add your GROQ_API_KEY and OPENAI_API_KEY to the .env file
+   ```
 
-### Prerequisites
-- Docker & Docker Compose
-- Node.js (v18+)
-- Python (3.12)
+2. **Start Infrastructure (Docker)**
+   ```bash
+   cd ..
+   docker compose up -d postgres redis
+   ```
 
-### 1. Setup Environment
-Clone the repository and set up the backend environment variables:
-```bash
-git clone https://github.com/mohamad679/clinical-graphrag-pro.git
-cd clinical-graphrag-pro/backend
+3. **Run the Backend (FastAPI)**
+   ```bash
+   cd backend
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   uvicorn app.main:app --reload
+   ```
 
-# Copy the example ENV and add your GROQ_API_KEY
-cp .env.example .env
-```
+4. **Run the Frontend (Next.js)**
+   ```bash
+   cd ../frontend
+   npm install
+   npm run dev
+   ```
 
-### 2. Start Services
-Use Docker Compose to spin up the Postgres Database (with pgvector/age) and Redis:
-```bash
-cd ..
-docker compose up -d postgres redis
-```
-
-### 3. Run Backend
-```bash
-cd backend
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-
-# Start FastAPI server on port 8000
-uvicorn app.main:app --reload
-```
-
-### 4. Run Frontend
-In a new terminal:
-```bash
-cd frontend
-npm install
-
-# Start Next.js development server on port 3000
-npm run dev
-```
-
-The application will now be running locally at `http://localhost:3000`.
+Navigate to `http://localhost:3000` to interact with the Clinical Agent.
 
 ---
-
 ## 🛡️ License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License
