@@ -162,11 +162,19 @@ export default function Sidebar({
             >
                 {!collapsed && (
                     <div className="flex items-center gap-2 animate-fade-in">
-                        <img
-                            src="/logo.png"
-                            alt="CGR Logo"
-                            className="w-10 h-10 object-contain rounded-lg"
-                        />
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-[var(--bg-tertiary)] to-[var(--bg-elevated)] border border-[var(--border)] shrink-0">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#sidebar-gradient)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                <defs>
+                                    <linearGradient id="sidebar-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stopColor="var(--primary)" />
+                                        <stop offset="100%" stopColor="var(--accent)" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M12 4c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8" />
+                                <circle cx="12" cy="12" r="4" fill="currentColor" fillOpacity="0.1" />
+                                <text x="12" y="14.5" fontSize="7" fontWeight="bold" fill="url(#sidebar-gradient)" textAnchor="middle" stroke="none">CGR</text>
+                            </svg>
+                        </div>
                         <div>
                             <h1 className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>
                                 Clinical GraphRAG

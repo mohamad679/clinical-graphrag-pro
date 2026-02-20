@@ -353,11 +353,23 @@ export default function ChatInterface({ sessionId, onSessionCreated }: ChatInter
             <div className="flex flex-col h-full">
                 <div className="flex-1 flex items-center justify-center">
                     <div className="text-center max-w-md px-6 animate-fade-in">
-                        <img
-                            src="/logo.png"
-                            alt="CGR Logo"
-                            className="w-20 h-20 mx-auto mb-4 object-contain rounded-2xl"
-                        />
+                        <div className="mx-auto mb-6 w-20 h-20 rounded-2xl flex items-center justify-center bg-gradient-to-br from-[var(--bg-tertiary)] to-[var(--bg-elevated)] border border-[var(--border)] shadow-[0_0_20px_rgba(var(--primary-rgb),0.1)]">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="url(#cgr-gradient)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                <defs>
+                                    <linearGradient id="cgr-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stopColor="var(--primary)" />
+                                        <stop offset="100%" stopColor="var(--accent)" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M12 4c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8" />
+                                <path d="M12 2v2" />
+                                <path d="M12 20v2" />
+                                <path d="M4 12H2" />
+                                <path d="M22 12h-2" />
+                                <circle cx="12" cy="12" r="4" fill="currentColor" fillOpacity="0.1" />
+                                <text x="12" y="14.5" fontSize="8" fontWeight="bold" fill="url(#cgr-gradient)" textAnchor="middle" stroke="none">CGR</text>
+                            </svg>
+                        </div>
                         <h2 className="text-2xl font-semibold mb-2" style={{ color: "var(--text-primary)" }}>
                             Clinical GraphRAG Pro
                         </h2>
