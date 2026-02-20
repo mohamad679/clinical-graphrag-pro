@@ -11,6 +11,7 @@ from typing import Callable, Awaitable, Any
 from app.services.vector_store import vector_store_service
 from app.services.vision import vision_service
 from app.services.graph import temporal_graph_service
+from app.services.llm import llm_service
 
 # We'll need a way to get image data by ID for the analyze_image tool
 # For now, we'll assume the agent passes the image_id and we fetch it from DB or storage.
@@ -337,12 +338,42 @@ async def tool_search_graph(entity: str, target_date: str | None = None) -> dict
     },
 )
 async def tool_clinical_eval(proposed_answer: str, source_context: str = "") -> dict:
-    # In a real scenario, this would trigger an isolated LLM call (the critic).
-    # For Phase 1, we provide a deterministic pass.
-    is_safe = "kill" not in proposed_answer.lower() and "fatal" not in proposed_answer.lower()
-    return {
-        "status": "APPROVED" if is_safe else "REJECTED_UNSAFE",
-        "confidence_score": 0.95 if is_safe else 0.1,
-        "reasoning": "The proposed answer does not contain obvious prohibited terms and aligns with standard safety heuristics."
-    }
+    prompt = f"""
+You are the **Clinical Adjudicator** (Red Team).
+Your job is to ruthlessly review the following drafted answer against the source context.
+You must find hallucinations, contradictions, or potentially lethal medical advice.
+
+Source Context:
+{source_context}
+
+Drafted Answer:
+{proposed_answer}
+
+If the answer is fully supported by the context and safe, output "APPROVED".
+If the answer hallucinates information not in the context, or suggests dangerous actions without basis, output "REJECTED".
+
+Output strictly ONLY a raw JSON object with this exact structure (do not include markdown ticks, do not include any conversational text):
+{{
+  "status": "APPROVED",
+  "confidence_score": 0.95,
+  "flags": ["list of specific hallucinations or safety issues found if rejected"]
+}}
+"""
+    try:
+        response_text = await llm_service.generate(prompt)
+        # Clean up any potential markdown or prefixes the LLM might have stubbornly added
+        clean_text = response_text.replace("```json", "").replace("```", "").strip()
+        if clean_text.startswith("JSON"):
+            clean_text = clean_text[4:].strip()
+            
+        import json
+        data = json.loads(clean_text)
+        return data
+    except Exception as e:
+        logger.error(f"Adjudicator eval failed: {e}. Raw response: {response_text if 'response_text' in locals() else 'None'}")
+        return {
+            "status": "REJECTED",
+            "confidence_score": 0.0,
+            "flags": [f"Evaluation system error (Safety Defaulted to Reject): Failed to parse Adjudicator output."]
+        }
 

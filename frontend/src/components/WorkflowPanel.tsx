@@ -35,6 +35,7 @@ export default function WorkflowPanel() {
     const [steps, setSteps] = useState<LiveStep[]>([]);
     const [toolCalls, setToolCalls] = useState<LiveToolCall[]>([]);
     const [answer, setAnswer] = useState("");
+    const [verification, setVerification] = useState<{ status: string, flags: string[], score: number } | null>(null);
     const [pastWorkflows, setPastWorkflows] = useState<WorkflowInfo[]>([]);
     const [view, setView] = useState<"run" | "history">("run");
     const answerRef = useRef<HTMLDivElement>(null);
@@ -52,6 +53,7 @@ export default function WorkflowPanel() {
         setSteps([]);
         setToolCalls([]);
         setAnswer("");
+        setVerification(null);
 
         try {
             await runAgentWorkflow(query, workflowType, (event: AgentStreamEvent) => {
@@ -105,6 +107,14 @@ export default function WorkflowPanel() {
 
                     case "token":
                         setAnswer((prev) => prev + (event.content || ""));
+                        break;
+
+                    case "verification":
+                        setVerification({
+                            status: event.status || "UNKNOWN",
+                            flags: event.flags || [],
+                            score: event.confidence_score || 0
+                        });
                         break;
 
                     case "workflow_done":
@@ -322,6 +332,38 @@ export default function WorkflowPanel() {
                                         ))}
                                 </div>
                             ))}
+                        </div>
+                    )}
+
+                    {/* Verification Banner */}
+                    {verification && (
+                        <div className="rounded-xl p-5 animate-fade-in" style={{
+                            background: verification.status === "APPROVED" ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)",
+                            border: `1px solid ${verification.status === "APPROVED" ? "rgba(34,197,94,0.3)" : "rgba(239,68,68,0.3)"}`
+                        }}>
+                            <div className="flex items-center gap-3 mb-2">
+                                <span className="text-xl">{verification.status === "APPROVED" ? "✅" : "🛑"}</span>
+                                <h3 className="text-sm font-semibold" style={{ color: verification.status === "APPROVED" ? "var(--success)" : "var(--error)" }}>
+                                    Adjudicator Verification: {verification.status}
+                                </h3>
+                                <span className="ml-auto text-xs font-mono px-2 py-1 rounded bg-black bg-opacity-20 text-[var(--text-secondary)]">
+                                    Score: {verification.score.toFixed(2)}
+                                </span>
+                            </div>
+
+                            {verification.flags.length > 0 ? (
+                                <ul className="mt-3 space-y-1">
+                                    {verification.flags.map((flag, idx) => (
+                                        <li key={idx} className="text-sm flex gap-2" style={{ color: "var(--text-primary)" }}>
+                                            <span style={{ color: "var(--error)" }}>•</span> {flag}
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
+                                    The drafted response passed all safety and faithfulness checks.
+                                </p>
+                            )}
                         </div>
                     )}
 

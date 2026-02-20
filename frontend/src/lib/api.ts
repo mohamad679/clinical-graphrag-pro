@@ -360,7 +360,7 @@ export function getThumbnailUrl(filename: string): string {
 // ── Agent / Workflow Types ──────────────────────────────
 
 export interface AgentStreamEvent {
-    type: "workflow_start" | "reasoning" | "tool_call" | "token" | "workflow_done" | "error";
+    type: "workflow_start" | "reasoning" | "tool_call" | "token" | "workflow_done" | "error" | "verification";
     workflow_id?: string;
     step?: number;
     title?: string;
@@ -371,6 +371,8 @@ export interface AgentStreamEvent {
     output?: Record<string, unknown>;
     duration?: number;
     content?: string;
+    flags?: string[];
+    confidence_score?: number;
 }
 
 export interface WorkflowInfo {

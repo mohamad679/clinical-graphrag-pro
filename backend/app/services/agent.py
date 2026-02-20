@@ -185,35 +185,80 @@ class AgentOrchestrator:
                     "status": "done",
                 }
 
-            # ── 4. REFLECT (Synthesis) ───────────────────
+            # ── 4. REFLECT (Synthesis & Verification) ───────────────────
             yield {
                 "type": "reasoning",
                 "step": len(plan) + 1,
-                "title": "Synthesizing answer",
-                "description": "Generating final response...",
+                "title": "Drafting Response",
+                "description": "Synthesizing tools and generating initial draft...",
                 "status": "running",
             }
             
             final_context = "\n\n".join(results_accumulated)
             
-            # Stream the final answer
-            full_response = []
+            # Generate the draft internally (no streaming yet)
+            draft_prompt = f"The following are results from executed clinical tools to answer the user's query: '{query}'.\n\nWorkflow Execution Results:\n{final_context}\n\nProvide the final clinical answer."
+            
             try:
-                async for token in llm_service.generate_stream(
-                    user_message=query,
-                    context=f"The following are results from executed clinical tools to answer the user's query.\n\nWorkflow Execution Results:\n{final_context}",
-                ):
-                    full_response.append(token)
-                    yield {"type": "token", "content": token}
+                draft_response = await llm_service.generate(draft_prompt)
             except Exception as e:
-                logger.error(f"Synthesis failed: {e}")
-                yield {"type": "error", "content": "Failed to generate synthesis."}
+                logger.error(f"Draft generation failed: {e}")
+                draft_response = "Failed to generate initial draft."
 
             yield {
                 "type": "reasoning",
                 "step": len(plan) + 1,
-                "title": "Synthesizing answer",
-                "description": "Done.",
+                "title": "Drafting Response",
+                "description": "Draft complete.",
+                "status": "done",
+            }
+
+            # ── 5. ADJUDICATE (Red Team Eval) ──────────────────────────
+            yield {
+                "type": "reasoning",
+                "step": len(plan) + 2,
+                "title": "Calibration & Verification",
+                "description": "Adjudicator is reviewing draft for hallucinations and safety...",
+                "status": "running",
+            }
+
+            eval_result = await tool_registry.execute(
+                "clinical_eval", 
+                {"proposed_answer": draft_response, "source_context": final_context}
+            )
+
+            status = eval_result.get("status", "REJECTED")
+            flags = eval_result.get("flags", [])
+
+            yield {
+                "type": "verification",
+                "status": status,
+                "flags": flags,
+                "confidence_score": eval_result.get("confidence_score", 0.0)
+            }
+
+            if status == "APPROVED":
+                final_answer = draft_response
+                # Simulate streaming the approved text to the frontend
+                for chunk in [final_answer[i:i+50] for i in range(0, len(final_answer), 50)]:
+                    yield {"type": "token", "content": chunk}
+                    await asyncio.sleep(0.05)
+            else:
+                final_answer = f"⚠️ **Safety Adjudicator Intercepted Response:**\n\nI apologize, but I am unable to provide the drafted clinical response. The internal Red Team safety evaluator flagged the draft for the following reasons:\n\n"
+                for flag in flags:
+                    final_answer += f"- {flag}\n"
+                final_answer += "\nPlease resubmit your query or rely on primary medical literature."
+                
+                # Stream the rejection text
+                for chunk in [final_answer[i:i+50] for i in range(0, len(final_answer), 50)]:
+                    yield {"type": "token", "content": chunk}
+                    await asyncio.sleep(0.05)
+
+            yield {
+                "type": "reasoning",
+                "step": len(plan) + 2,
+                "title": "Calibration & Verification",
+                "description": f"Verification Status: {status}",
                 "status": "done",
             }
 
@@ -224,7 +269,7 @@ class AgentOrchestrator:
                     .where(Workflow.id == workflow_id)
                     .values(
                         status="completed",
-                        output_data={"answer": "".join(full_response)},
+                        output_data={"answer": final_answer, "verification": eval_result},
                         completed_at=datetime.now(timezone.utc)
                     )
                 )
