@@ -1,0 +1,55 @@
+{
+  "directed": true,
+  "multigraph": true,
+  "graph": {},
+  "nodes": [
+    {
+      "age": 65,
+      "gender": "M",
+      "label": "Patient",
+      "id": "Patient_A"
+    },
+    {
+      "label": "Drug",
+      "id": "Lisinopril"
+    },
+    {
+      "label": "Drug",
+      "id": "Ibuprofen"
+    },
+    {
+      "label": "Disease",
+      "id": "Hypertension"
+    },
+    {
+      "label": "Disease",
+      "id": "Chronic_Kidney_Disease"
+    }
+  ],
+  "edges": [
+    {
+      "type": "HAS_CONDITION",
+      "start_date": "2020-01-01",
+      "end_date": null,
+      "source": "Patient_A",
+      "target": "Hypertension",
+      "key": 0
+    },
+    {
+      "type": "PRESCRIBED",
+      "start_date": "2021-06-01",
+      "end_date": "2023-12-01",
+      "source": "Patient_A",
+      "target": "Lisinopril",
+      "key": 0
+    },
+    {
+      "type": "PRESCRIBED",
+      "start_date": "2024-01-15",
+      "end_date": null,
+      "source": "Patient_A",
+      "target": "Ibuprofen",
+      "key": 0
+    }
+  ]
+}

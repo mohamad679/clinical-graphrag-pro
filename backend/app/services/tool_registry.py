@@ -10,6 +10,8 @@ from typing import Callable, Awaitable, Any
 
 from app.services.vector_store import vector_store_service
 from app.services.vision import vision_service
+from app.services.graph import temporal_graph_service
+
 # We'll need a way to get image data by ID for the analyze_image tool
 # For now, we'll assume the agent passes the image_id and we fetch it from DB or storage.
 # Since we don't have a direct "get_image_bytes" service method easily exposed here without circular imports
@@ -303,26 +305,23 @@ async def tool_analyze_image(image_id: str, question: str = "") -> dict:
 
 @tool_registry.register(
     name="search_graph",
-    description="Search the structured clinical Knowledge Graph for entity relationships, drug interactions, and temporal medical events.",
+    description="Search the Temporal Knowledge Graph for entity relationships, drug interactions, and medical events active on a specific date.",
     parameters={
         "type": "object",
         "properties": {
-            "entity": {"type": "string", "description": "The medical entity to search for (e.g., 'Metformin', 'Type 2 Diabetes')"},
-            "relationship_type": {"type": "string", "description": "Optional: Specific type of relationship to find (e.g., 'TREATS', 'CAUSES', 'INTERACTS_WITH')"}
+            "entity": {"type": "string", "description": "The medical entity to search for (e.g., 'Patient_A', 'Lisinopril')"},
+            "target_date": {"type": "string", "description": "Optional: ISO Date (YYYY-MM-DD) to check active relationships. Defaults to today."}
         },
         "required": ["entity"],
     },
 )
-async def tool_search_graph(entity: str, relationship_type: str = "") -> dict:
-    # Placeholder for Neo4j/NetworkX integration
-    return {
-        "entity": entity,
-        "warning": "Graph database is currently operating in mock mode.",
-        "findings": [
-            f"{entity} has highly correlated documented efficacy in recent trials.",
-            f"No severe known contraindications found in the primary graph structure for {entity}."
-        ]
-    }
+async def tool_search_graph(entity: str, target_date: str | None = None) -> dict:
+    if not target_date:
+        from datetime import datetime
+        target_date = datetime.now().strftime("%Y-%m-%d")
+        
+    result = temporal_graph_service.query_temporal_state(entity, target_date)
+    return result
 
 
 @tool_registry.register(
