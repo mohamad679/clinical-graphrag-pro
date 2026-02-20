@@ -100,22 +100,60 @@ async def chat(request: ChatRequest, db: AsyncSession = Depends(get_db)):
                 yield f"data: {json.dumps({'type': 'error', 'content': 'Attached image not found'})}\n\n"
                 return
                 
-            yield f"data: {json.dumps({'type': 'reasoning', 'step': 1, 'title': 'Image Analysis', 'description': f'Loading vision context for {image.original_filename}', 'status': 'done'})}\n\n"
+            yield f"data: {json.dumps({'type': 'reasoning', 'step': 1, 'title': 'Image Analysis', 'description': f'Loading vision context for {image.original_filename}', 'status': 'running'})}\n\n"
             
+            # --- Dynamic Vision Analysis ---
+            if not image.analysis_result:
+                yield f"data: {json.dumps({'type': 'reasoning', 'step': 1.5, 'title': 'Vision Processing', 'description': 'Triggering Vision LLM to extract biomedical features from image...', 'status': 'running'})}\n\n"
+                try:
+                    from app.services.vision import vision_service
+                    from pathlib import Path
+                    from datetime import datetime, timezone
+                    
+                    image_path = Path(image.file_path)
+                    image_data = image_path.read_bytes()
+                    
+                    analysis = await vision_service.analyze_image(
+                        image_data, image.mime_type, ""
+                    )
+                    
+                    # Update the DB record
+                    image.analysis_result = analysis
+                    image.analysis_status = "completed" if "error" not in analysis else "failed"
+                    image.analyzed_at = datetime.now(timezone.utc)
+                    image.modality = analysis.get("modality_detected")
+                    image.body_part = analysis.get("body_part_detected")
+                    
+                    await db.commit()
+                    await db.refresh(image)
+                    
+                    yield f"data: {json.dumps({'type': 'reasoning', 'step': 1.5, 'title': 'Vision Processing', 'description': 'Vision Extraction Complete.', 'status': 'done'})}\n\n"
+                except Exception as e:
+                    logger.error(f"Dynamic image analysis failed: {e}")
+            # -------------------------------
+            
+            yield f"data: {json.dumps({'type': 'reasoning', 'step': 1, 'title': 'Image Analysis', 'description': 'Context Loaded', 'status': 'done'})}\n\n"
+
             # Format image context
             analysis = image.analysis_result or {}
             img_context = f"Image Name: {image.original_filename}\n"
-            img_context += f"Detected Modality: {image.modality}\n"
-            img_context += f"Body Part: {image.body_part}\n"
-            img_context += f"Summary: {analysis.get('summary', 'No summary available')}\n"
             
-            if analysis.get('findings'):
-                img_context += "\nKey Findings:\n" + "\n".join(f"- {f}" for f in analysis['findings'])
-            if analysis.get('recommendations'):
-                img_context += "\nRecommendations:\n" + "\n".join(f"- {r}" for r in analysis['recommendations'])
-            if analysis.get('differential_diagnosis'):
-                img_context += "\nDifferential Diagnosis:\n" + "\n".join(f"- {d}" for d in analysis['differential_diagnosis'])
+            if "error" in analysis:
+                err_msg = analysis.get("error", "Unknown vision error")
+                img_context += f"WARNING TO AI: The Vision Extraction API completely failed. Here is the exact error: {err_msg}\n"
+                img_context += f"ACTION REQUIRED: Respond to the user gracefully, apologizing that you cannot see the image because the Vision API quota is exhausted or failed. Do not say 'the context says None'. Explain the actual technical limitation.\n"
+            else:
+                img_context += f"Detected Modality: {image.modality}\n"
+                img_context += f"Body Part: {image.body_part}\n"
+                img_context += f"Summary: {analysis.get('summary', 'No summary available')}\n"
                 
+                if analysis.get('findings'):
+                    img_context += "\nKey Findings:\n" + "\n".join(f"- {f.get('description', str(f)) if isinstance(f, dict) else f}" for f in analysis['findings'])
+                if analysis.get('recommendations'):
+                    img_context += "\nRecommendations:\n" + "\n".join(f"- {r}" for r in analysis['recommendations'])
+                if analysis.get('differential_diagnosis'):
+                    img_context += "\nDifferential Diagnosis:\n" + "\n".join(f"- {d.get('condition', str(d)) if isinstance(d, dict) else d}" for d in analysis['differential_diagnosis'])
+                    
             # Add annotations
             if image.annotations:
                 img_context += "\n\nSpecific User or AI Annotations identified in the image:\n"

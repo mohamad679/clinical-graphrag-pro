@@ -1,8 +1,13 @@
 # 🏥 Clinical GraphRAG Pro (2026 Edition)
 
-![Application Screenshot](./dashboard-preview.png)
+![Application Demo](./docs/assets/final_clinical_graphrag_demo_1771618230865.webp)
 
 **Clinical GraphRAG Pro** is a production-grade, multi-agent AI platform built for healthcare. Transitioning from basic "chat over PDF" to a deterministic **Autonomous Medical Reasoning Engine**, it combines advanced Agentic orchestration, Temporal Knowledge Graphs, and an Adversarial Safety Adjudicator to achieve enterprise-level clinical analysis.
+
+---
+
+## 📺 Full Project Walkthrough & Demos
+**👉 [Click here to view the full Demo Walkthrough with Videos and Screenshots!](./docs/walkthrough.md)**
 
 ---
 
@@ -36,26 +41,26 @@ graph TD
     classDef db fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff;
     classDef check fill:#ef4444,stroke:#dc2626,stroke-width:2px,color:#fff;
 
-    User([👤 User / Clinician]) ::: user
+    User(["👤 User / Clinician"]) ::: user
     User --> |Query + Images/PDFs| Supervisor
 
     subgraph "Agentic Reasoning Engine (LangChain ReAct)"
-        Supervisor{🤖 Supervisor Agent} ::: agent
-        Supervisor --> |Delegates| Pharm[💊 Pharmacovigilance Worker] ::: agent
-        Supervisor --> |Delegates| Diag[🩺 Diagnostics Worker] ::: agent
-        Supervisor --> |Delegates| Data[📊 Data Extraction Worker] ::: agent
+        Supervisor{"🤖 Supervisor Agent"} ::: agent
+        Supervisor --> |Delegates| Pharm["💊 Pharmacovigilance Worker"] ::: agent
+        Supervisor --> |Delegates| Diag["🩺 Diagnostics Worker"] ::: agent
+        Supervisor --> |Delegates| Data["📊 Data Extraction Worker"] ::: agent
     end
 
     subgraph "Retrieval Layer"
-        Pharm --> |Queries| Graph[(Temporal Knowledge Graph)] ::: db
-        Diag --> |Searches| Vector[(Semantic Vector Store)] ::: db
-        Data --> |Parses| Docs[📄 Uploaded Clinical Notes] ::: tool
+        Pharm --> |Queries| Graph[("Temporal Knowledge Graph")] ::: db
+        Diag --> |Searches| Vector[("Semantic Vector Store")] ::: db
+        Data --> |Parses| Docs["📄 Uploaded Clinical Notes"] ::: tool
     end
 
     subgraph "Verification Layer"
-        Supervisor --> |Proposes Answer| Adjudicator[🛑 Adversarial Adjudicator] ::: check
-        Adjudicator -.-> |Passes| Final[✅ Render Output] ::: tool
-        Adjudicator -.-> |Fails (Hallucination)| Reject[🚫 Intercept & Warn] ::: tool
+        Supervisor --> |Proposes Answer| Adjudicator["🛑 Adversarial Adjudicator"] ::: check
+        Adjudicator -.-> |Passes| Final["✅ Render Output"] ::: tool
+        Adjudicator -.-> |Fails (Hallucination)| Reject["🚫 Intercept & Warn"] ::: tool
     end
 
     Final --> User
