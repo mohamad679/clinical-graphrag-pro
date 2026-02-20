@@ -152,12 +152,21 @@ export async function getHealth(): Promise<HealthStatus> {
 export async function sendMessageStream(
     message: string,
     sessionId?: string,
-    onEvent: (event: StreamEvent) => void = () => { },
-): Promise<void> {
+    onEvent?: (event: StreamEvent) => void,
+    attachedImageId?: string,
+    attachedDocumentId?: string
+) {
+    const payload: Record<string, string> = {
+        message,
+    };
+    if (sessionId) payload.session_id = sessionId;
+    if (attachedImageId) payload.attached_image_id = attachedImageId;
+    if (attachedDocumentId) payload.attached_document_id = attachedDocumentId;
+
     const res = await fetch(`${API_BASE}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, session_id: sessionId }),
+        body: JSON.stringify(payload),
     });
 
     if (!res.ok) {
@@ -182,11 +191,13 @@ export async function sendMessageStream(
 
         for (const line of lines) {
             if (line.startsWith("data: ")) {
+                const data = line.slice(6);
+                if (data === "[DONE]") continue;
                 try {
-                    const event: StreamEvent = JSON.parse(line.slice(6));
-                    onEvent(event);
-                } catch {
-                    // skip malformed events
+                    const event: StreamEvent = JSON.parse(data);
+                    if (onEvent) onEvent(event);
+                } catch (e) {
+                    console.error("Failed to parse SSE event:", data, e);
                 }
             }
         }

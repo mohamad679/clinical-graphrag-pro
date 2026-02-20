@@ -3,13 +3,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Sidebar from "@/components/Sidebar";
 import ChatInterface from "@/components/ChatInterface";
-import DocumentUploader from "@/components/DocumentUploader";
-import ImageGallery from "@/components/ImageGallery";
 import WorkflowPanel from "@/components/WorkflowPanel";
 import EvalPanel from "@/components/EvalPanel";
 import FineTunePanel from "@/components/FineTunePanel";
 import SettingsPanel from "@/components/SettingsPanel";
-import { getDocuments, getGraphStats, type DocumentInfo } from "@/lib/api";
+import { getGraphStats } from "@/lib/api";
 
 // ── Graph Placeholder ───────────────────────────────────
 
@@ -92,29 +90,18 @@ function GraphView() {
 // ── Main Dashboard Page ─────────────────────────────────
 
 export default function DashboardPage() {
-  const [currentView, setCurrentView] = useState<"chat" | "documents" | "images" | "graph" | "workflows" | "evaluation" | "finetune" | "settings">("chat");
+  const [currentView, setCurrentView] = useState<"chat" | "graph" | "workflows" | "evaluation" | "finetune" | "settings">("chat");
   const [currentSessionId, setCurrentSessionId] = useState<string | undefined>();
-  const [documents, setDocuments] = useState<DocumentInfo[]>([]);
-
-  const loadDocuments = useCallback(async () => {
-    try {
-      const data = await getDocuments();
-      setDocuments(data.documents);
-    } catch (err) {
-      console.error("Failed to load documents:", err);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadDocuments();
-  }, [loadDocuments]);
+  const [chatKey, setChatKey] = useState(0);
 
   function handleNewChat() {
     setCurrentSessionId(undefined);
+    setChatKey((prev) => prev + 1);
   }
 
   function handleSessionSelect(sessionId: string) {
     setCurrentSessionId(sessionId);
+    setChatKey((prev) => prev + 1);
     setCurrentView("chat");
   }
 
@@ -137,19 +124,13 @@ export default function DashboardPage() {
       <main className="flex-1 flex flex-col overflow-hidden" style={{ background: "var(--bg-primary)" }}>
         {currentView === "chat" && (
           <ChatInterface
-            key={currentSessionId || "new"}
+            key={`chat-${chatKey}`}
             sessionId={currentSessionId}
             onSessionCreated={handleSessionCreated}
           />
         )}
 
-        {currentView === "documents" && (
-          <DocumentUploader documents={documents} onDocumentsChange={loadDocuments} />
-        )}
-
         {currentView === "graph" && <GraphView />}
-
-        {currentView === "images" && <ImageGallery />}
 
         {currentView === "workflows" && <WorkflowPanel />}
 

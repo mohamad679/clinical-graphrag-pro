@@ -18,22 +18,22 @@
   --error: #ef4444;
 
   /* Surfaces */
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-tertiary: #334155;
-  --bg-elevated: #1e293b;
-  --bg-card: rgba(30, 41, 59, 0.7);
-  --bg-input: #1e293b;
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #171717;
+  --bg-elevated: #1a1a1a;
+  --bg-card: rgba(10, 10, 10, 0.8);
+  --bg-input: #0a0a0a;
 
   /* Text */
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
   --text-tertiary: #64748b;
-  --text-inverse: #0f172a;
+  --text-inverse: #000000;
 
   /* Borders */
-  --border: #334155;
-  --border-hover: #475569;
+  --border: #262626;
+  --border-hover: #404040;
   --border-focus: #6366f1;
 
   /* Misc */

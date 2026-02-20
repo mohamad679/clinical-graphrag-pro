@@ -14,6 +14,8 @@ from sqlalchemy import select
 from app.core.database import get_db
 from app.core.redis import redis_service
 from app.models.chat import ChatSession, ChatMessage
+from app.models.medical_image import MedicalImage
+from sqlalchemy.orm import selectinload
 from app.schemas.chat import (
     ChatRequest,
     ChatSessionResponse,
@@ -85,18 +87,119 @@ async def chat(request: ChatRequest, db: AsyncSession = Depends(get_db)):
         collected_tokens = []
         collected_sources = None
 
-        async for chunk in rag_service.query_stream(
-            question=request.message,
-            top_k=5,
-            chat_history=chat_history,
-        ):
-            if chunk.get("type") == "token":
-                collected_tokens.append(chunk.get("content", ""))
-            elif chunk.get("type") == "source":
-                collected_sources = chunk.get("sources")
+        if request.attached_image_id:
+            # ── Multi-modal Vision Chat ─────────────────────
+            img_result = await db.execute(
+                select(MedicalImage)
+                .options(selectinload(MedicalImage.annotations))
+                .where(MedicalImage.id == request.attached_image_id)
+            )
+            image = img_result.scalar_one_or_none()
+            
+            if not image:
+                yield f"data: {json.dumps({'type': 'error', 'content': 'Attached image not found'})}\n\n"
+                return
+                
+            yield f"data: {json.dumps({'type': 'reasoning', 'step': 1, 'title': 'Image Analysis', 'description': f'Loading vision context for {image.original_filename}', 'status': 'done'})}\n\n"
+            
+            # Format image context
+            analysis = image.analysis_result or {}
+            img_context = f"Image Name: {image.original_filename}\n"
+            img_context += f"Detected Modality: {image.modality}\n"
+            img_context += f"Body Part: {image.body_part}\n"
+            img_context += f"Summary: {analysis.get('summary', 'No summary available')}\n"
+            
+            if analysis.get('findings'):
+                img_context += "\nKey Findings:\n" + "\n".join(f"- {f}" for f in analysis['findings'])
+            if analysis.get('recommendations'):
+                img_context += "\nRecommendations:\n" + "\n".join(f"- {r}" for r in analysis['recommendations'])
+            if analysis.get('differential_diagnosis'):
+                img_context += "\nDifferential Diagnosis:\n" + "\n".join(f"- {d}" for d in analysis['differential_diagnosis'])
+                
+            # Add annotations
+            if image.annotations:
+                img_context += "\n\nSpecific User or AI Annotations identified in the image:\n"
+                for ann in image.annotations:
+                    img_context += f"- {ann.label} ({ann.annotation_type})"
+                    if ann.notes:
+                        img_context += f": {ann.notes}"
+                    img_context += "\n"
 
-            event_data = json.dumps(chunk)
-            yield f"data: {event_data}\n\n"
+            # Route directly to LLM Service with this image context
+            from app.services.llm import llm_service
+            yield f"data: {json.dumps({'type': 'reasoning', 'step': 2, 'title': 'Generating answer', 'description': 'Streaming response based on medical image analysis...', 'status': 'running'})}\n\n"
+            
+            collected_sources = [{"document_id": str(image.id), "document_name": image.original_filename, "chunk_index": 0, "text": "Image Analysis Data", "relevance_score": 1.0}]
+            yield f"data: {json.dumps({'type': 'source', 'sources': collected_sources})}\n\n"
+            
+            try:
+                async for token in llm_service.generate_stream(
+                    user_message=request.message,
+                    context=img_context,
+                    chat_history=chat_history,
+                ):
+                    collected_tokens.append(token)
+                    yield f"data: {json.dumps({'type': 'token', 'content': token})}\n\n"
+            except Exception as e:
+                logger.error(f"Image chat generation failed: {e}")
+                yield f"data: {json.dumps({'type': 'error', 'content': f'Generation failed: {str(e)}'})}\n\n"
+                return
+
+            yield f"data: {json.dumps({'type': 'reasoning', 'step': 2, 'title': 'Generating answer', 'description': 'Response complete.', 'status': 'done'})}\n\n"
+
+        elif request.attached_document_id:
+            # ── Multi-modal Document Chat ─────────────────────
+            from app.services.vector_store import vector_store_service
+            yield f"data: {json.dumps({'type': 'reasoning', 'step': 1, 'title': 'Document Analysis', 'description': 'Loading document content for focused analysis...', 'status': 'done'})}\n\n"
+            
+            all_chunks = vector_store_service.get_all_chunks()
+            doc_chunks = [c for c in all_chunks if str(c.get("document_id")) == str(request.attached_document_id)]
+            
+            if not doc_chunks:
+                yield f"data: {json.dumps({'type': 'error', 'content': 'Attached document not found or has no content'})}\n\n"
+                return
+                
+            doc_name = doc_chunks[0].get("document_name", "Unknown Document")
+            
+            doc_context = f"Document Name: {doc_name}\n\nContent:\n"
+            for i, c in enumerate(doc_chunks[:40]):  # Limit to 40 chunks to prevent context overflow
+                doc_context += f"--- Part {i+1} ---\n{c.get('chunk_text', '')}\n"
+                
+            collected_sources = [{"document_id": str(request.attached_document_id), "document_name": doc_name, "chunk_index": i, "text": c.get("chunk_text", "")[:200], "relevance_score": 1.0} for i, c in enumerate(doc_chunks[:5])]
+            
+            yield f"data: {json.dumps({'type': 'reasoning', 'step': 2, 'title': 'Generating answer', 'description': 'Streaming response based only on the attached document...', 'status': 'running'})}\n\n"
+            yield f"data: {json.dumps({'type': 'source', 'sources': collected_sources})}\n\n"
+            
+            from app.services.llm import llm_service
+            try:
+                async for token in llm_service.generate_stream(
+                    user_message=request.message,
+                    context=doc_context,
+                    chat_history=chat_history,
+                ):
+                    collected_tokens.append(token)
+                    yield f"data: {json.dumps({'type': 'token', 'content': token})}\n\n"
+            except Exception as e:
+                logger.error(f"Document chat generation failed: {e}")
+                yield f"data: {json.dumps({'type': 'error', 'content': f'Generation failed: {str(e)}'})}\n\n"
+                return
+
+            yield f"data: {json.dumps({'type': 'reasoning', 'step': 2, 'title': 'Generating answer', 'description': 'Response complete.', 'status': 'done'})}\n\n"
+
+        else:
+            # ── Standard RAG Pipeline ───────────────────────
+            async for chunk in rag_service.query_stream(
+                question=request.message,
+                top_k=5,
+                chat_history=chat_history,
+            ):
+                if chunk.get("type") == "token":
+                    collected_tokens.append(chunk.get("content", ""))
+                elif chunk.get("type") == "source":
+                    collected_sources = chunk.get("sources")
+
+                event_data = json.dumps(chunk)
+                yield f"data: {event_data}\n\n"
 
         # Save assistant response to DB
         try:

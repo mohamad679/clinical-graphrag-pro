@@ -14,6 +14,8 @@ class ChatRequest(BaseModel):
     """Incoming chat message from the user."""
     message: str = Field(..., min_length=1, max_length=4000)
     session_id: UUID | None = None
+    attached_image_id: UUID | None = None
+    attached_document_id: str | None = None
 
 
 class ChatFeedback(BaseModel):
