@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { sendMessageStream, getSession, type StreamEvent, type ReasoningStep, type SourceReference, uploadImage, uploadDocument, type MedicalImageInfo } from "@/lib/api";
+import { sendMessageStream, getSession, type StreamEvent, type ReasoningStep, type SourceReference, uploadImage, uploadDocument, uploadAudioForTranscription, type MedicalImageInfo } from "@/lib/api";
 import ReasoningStepsComponent from "@/components/ReasoningSteps";
 
 // ── Icons ───────────────────────────────────────────────
@@ -99,6 +99,10 @@ export default function ChatInterface({ sessionId, onSessionCreated }: ChatInter
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const docInputRef = useRef<HTMLInputElement>(null);
+    const audioInputRef = useRef<HTMLInputElement>(null);
+    const [isRecording, setIsRecording] = useState(false);
+    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+    const audioChunksRef = useRef<Blob[]>([]);
 
     const isStreamingRef = useRef(false);
 
@@ -131,7 +135,7 @@ export default function ChatInterface({ sessionId, onSessionCreated }: ChatInter
         inputRef.current?.focus();
     }, []);
 
-    async function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'document') {
+    async function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'document' | 'audio') {
         const file = e.target.files?.[0];
         if (!file) return;
 
@@ -141,15 +145,68 @@ export default function ChatInterface({ sessionId, onSessionCreated }: ChatInter
             if (type === 'image') {
                 const res = await uploadImage(file);
                 setAttachedFile({ id: res.id, name: (res as any).original_filename || res.filename || file.name, type: 'image' });
-            } else {
+            } else if (type === 'document') {
                 const res = await uploadDocument(file);
                 setAttachedFile({ id: res.id, name: res.filename || file.name, type: 'document' });
+            } else if (type === 'audio') {
+                const res = await uploadAudioForTranscription(file);
+                setInput((prev) => prev ? prev + " " + res.text : res.text);
             }
         } catch (err) {
             console.error(err);
         } finally {
             setIsUploading(false);
             if (e.target) e.target.value = "";
+        }
+    }
+
+    async function startRecording() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const mediaRecorder = new MediaRecorder(stream);
+            mediaRecorderRef.current = mediaRecorder;
+            audioChunksRef.current = [];
+
+            mediaRecorder.ondataavailable = (e) => {
+                if (e.data.size > 0) {
+                    audioChunksRef.current.push(e.data);
+                }
+            };
+
+            mediaRecorder.onstop = async () => {
+                const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+                setIsUploading(true);
+                try {
+                    const res = await uploadAudioForTranscription(audioBlob);
+                    setInput((prev) => prev ? prev + " " + res.text : res.text);
+                } catch (err) {
+                    console.error("Transcription failed", err);
+                } finally {
+                    setIsUploading(false);
+                }
+                stream.getTracks().forEach(track => track.stop());
+            };
+
+            mediaRecorder.start();
+            setIsRecording(true);
+        } catch (err) {
+            console.error("Microphone access denied or error:", err);
+            alert("Could not access microphone.");
+        }
+    }
+
+    function stopRecording() {
+        if (mediaRecorderRef.current && isRecording) {
+            mediaRecorderRef.current.stop();
+            setIsRecording(false);
+        }
+    }
+
+    function toggleRecording() {
+        if (isRecording) {
+            stopRecording();
+        } else {
+            startRecording();
         }
     }
 
@@ -421,14 +478,28 @@ export default function ChatInterface({ sessionId, onSessionCreated }: ChatInter
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={handleKeyDown}
-                                placeholder="Ask a question or select attachment type..."
+                                placeholder={isRecording ? "Listening..." : "Ask a question or select attachment type..."}
                                 rows={1}
                                 className="input-field flex-1 resize-none py-3"
                                 style={{ minHeight: "44px", maxHeight: "120px" }}
+                                disabled={isLoading || isRecording}
                             />
                             <button
+                                onClick={toggleRecording}
+                                disabled={isLoading || isUploading}
+                                className={`w-[44px] h-[44px] flex-shrink-0 flex items-center justify-center rounded-lg border border-[var(--border)] transition-colors ${isRecording ? "bg-red-500/20 text-red-500 border-red-500/50 animate-pulse" : "hover:bg-[var(--bg-tertiary)] text-[var(--text-secondary)]"
+                                    } disabled:opacity-50`}
+                                title={isRecording ? "Stop Recording" : "Record Voice"}
+                            >
+                                {isRecording ? (
+                                    <span className="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+                                ) : (
+                                    <MicIcon />
+                                )}
+                            </button>
+                            <button
                                 onClick={handleSend}
-                                disabled={(!input.trim() && !attachedFile) || isLoading || isUploading}
+                                disabled={(!input.trim() && !attachedFile) || isLoading || isUploading || isRecording}
                                 className="btn-primary px-4 flex-shrink-0 flex items-center justify-center disabled:opacity-50"
                             >
                                 <SendIcon />
@@ -592,6 +663,13 @@ export default function ChatInterface({ sessionId, onSessionCreated }: ChatInter
                             onChange={(e) => handleFileSelect(e, 'document')}
                             accept=".pdf,.doc,.docx,.txt"
                         />
+                        <input
+                            type="file"
+                            className="hidden"
+                            ref={audioInputRef}
+                            onChange={(e) => handleFileSelect(e, 'audio')}
+                            accept="audio/*"
+                        />
 
                         <div className="relative">
                             <button
@@ -624,11 +702,10 @@ export default function ChatInterface({ sessionId, onSessionCreated }: ChatInter
                                             <DocIcon /> Upload Document
                                         </button>
                                         <button
-                                            disabled
-                                            className="flex items-center gap-3 px-4 py-3 text-sm text-[var(--text-secondary)] opacity-50 text-left border-t border-[var(--border)] cursor-not-allowed"
-                                            title="Voice support coming in next version"
+                                            onClick={() => { setIsMenuOpen(false); audioInputRef.current?.click(); }}
+                                            className="flex items-center gap-3 px-4 py-3 text-sm text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] text-left transition-colors border-t border-[var(--border)]"
                                         >
-                                            <MicIcon /> Record Voice
+                                            <MicIcon /> Upload Audio
                                         </button>
                                     </div>
                                 </>
@@ -639,15 +716,28 @@ export default function ChatInterface({ sessionId, onSessionCreated }: ChatInter
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={handleKeyDown}
-                            placeholder="Ask a follow-up question or attach a file..."
+                            placeholder={isRecording ? "Listening..." : "Ask a follow-up question or attach a file..."}
                             rows={1}
                             className="input-field flex-1 resize-none py-3"
                             style={{ minHeight: "44px", maxHeight: "120px" }}
-                            disabled={isLoading}
+                            disabled={isLoading || isRecording}
                         />
                         <button
+                            onClick={toggleRecording}
+                            disabled={isLoading || isUploading}
+                            className={`w-[44px] h-[44px] flex-shrink-0 flex items-center justify-center rounded-lg border border-[var(--border)] transition-colors ${isRecording ? "bg-red-500/20 text-red-500 border-red-500/50 animate-pulse" : "hover:bg-[var(--bg-tertiary)] text-[var(--text-secondary)]"
+                                } disabled:opacity-50`}
+                            title={isRecording ? "Stop Recording" : "Record Voice"}
+                        >
+                            {isRecording ? (
+                                <span className="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+                            ) : (
+                                <MicIcon />
+                            )}
+                        </button>
+                        <button
                             onClick={handleSend}
-                            disabled={(!input.trim() && !attachedFile) || isLoading || isUploading}
+                            disabled={(!input.trim() && !attachedFile) || isLoading || isUploading || isRecording}
                             className="btn-primary px-4 flex-shrink-0 flex items-center justify-center disabled:opacity-50"
                         >
                             {isLoading ? (

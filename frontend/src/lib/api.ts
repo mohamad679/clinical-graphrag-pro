@@ -610,6 +610,26 @@ export async function undeployModel(modelId: string): Promise<void> {
     await apiFetch(`/fine-tune/models/${modelId}/undeploy`, { method: "POST" });
 }
 
+// ── Audio ───────────────────────────────────────────────
+
+export async function uploadAudioForTranscription(file: File | Blob): Promise<{ text: string }> {
+    const formData = new FormData();
+    const filename = file instanceof File ? file.name : "recording.webm";
+    formData.append("file", file, filename);
+
+    const res = await fetch(`${API_BASE}/audio/transcribe`, {
+        method: "POST",
+        body: formData,
+    });
+
+    if (!res.ok) {
+        const error = await res.json().catch(() => ({ detail: res.statusText }));
+        throw new Error(error.detail || `Transcription failed: ${res.status}`);
+    }
+
+    return res.json();
+}
+
 // ── Admin Types ─────────────────────────────────────────
 
 export interface AdminHealth {
