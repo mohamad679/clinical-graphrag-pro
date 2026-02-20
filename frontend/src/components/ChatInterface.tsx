@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { sendMessageStream, getSession, type StreamEvent, type ReasoningStep, type SourceReference, uploadImage, uploadDocument, type MedicalImageInfo } from "@/lib/api";
 import ReasoningStepsComponent from "@/components/ReasoningSteps";
 
@@ -489,7 +491,11 @@ export default function ChatInterface({ sessionId, onSessionCreated }: ChatInter
                                         className="prose text-sm"
                                         style={{ color: "var(--text-primary)" }}
                                     >
-                                        {msg.content || (
+                                        {msg.content ? (
+                                            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                                {msg.content}
+                                            </ReactMarkdown>
+                                        ) : (
                                             <span className="flex gap-1">
                                                 <span className="loading-dot w-2 h-2 rounded-full" style={{ background: "var(--text-tertiary)" }} />
                                                 <span className="loading-dot w-2 h-2 rounded-full" style={{ background: "var(--text-tertiary)" }} />
