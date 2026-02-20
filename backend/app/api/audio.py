@@ -4,9 +4,8 @@ Handles audio uploads, transcription, and translation via Groq's Whisper API.
 """
 
 import logging
-import aiofiles
 import os
-from tempfile import NamedTemporaryFile
+import tempfile
 
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Depends
 import httpx
@@ -32,14 +31,22 @@ async def transcribe_audio(
         )
 
     # Save incoming upload temporarily to disk since httpx needs a file pointer to read
+    temp_path = ""
     try:
         suffix = os.path.splitext(file.filename)[1] if file.filename else ".m4a"
-        async with aiofiles.tempfile.NamedTemporaryFile("wb", suffix=suffix, delete=False) as temp_audio:
-            content = await file.read()
-            await temp_audio.write(content)
-            temp_path = temp_audio.name
+        fd, temp_path = tempfile.mkstemp(suffix=suffix)
+        
+        # Read the file content into memory
+        content = await file.read()
+        
+        # Write it to the temp file synchronously since mkstemp returns an fd
+        with os.fdopen(fd, 'wb') as temp_audio:
+            temp_audio.write(content)
+
     except Exception as e:
         logger.error(f"Failed to process incoming audio upload: {e}")
+        if temp_path and os.path.exists(temp_path):
+            os.remove(temp_path)
         raise HTTPException(status_code=500, detail="Could not buffer uploaded audio file.")
 
     try:

@@ -353,14 +353,11 @@ export default function ChatInterface({ sessionId, onSessionCreated }: ChatInter
             <div className="flex flex-col h-full">
                 <div className="flex-1 flex items-center justify-center">
                     <div className="text-center max-w-md px-6 animate-fade-in">
-                        <div
-                            className="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center"
-                            style={{
-                                background: "linear-gradient(135deg, var(--primary), var(--accent))",
-                            }}
-                        >
-                            <BotIcon />
-                        </div>
+                        <img
+                            src="/logo.png"
+                            alt="CGR Logo"
+                            className="w-20 h-20 mx-auto mb-4 object-contain rounded-2xl"
+                        />
                         <h2 className="text-2xl font-semibold mb-2" style={{ color: "var(--text-primary)" }}>
                             Clinical GraphRAG Pro
                         </h2>
@@ -429,6 +426,13 @@ export default function ChatInterface({ sessionId, onSessionCreated }: ChatInter
                                 onChange={(e) => handleFileSelect(e, 'document')}
                                 accept=".pdf,.doc,.docx,.txt"
                             />
+                            <input
+                                type="file"
+                                className="hidden"
+                                ref={audioInputRef}
+                                onChange={(e) => handleFileSelect(e, 'audio')}
+                                accept="audio/*"
+                            />
 
                             <div className="relative">
                                 <button
@@ -462,11 +466,10 @@ export default function ChatInterface({ sessionId, onSessionCreated }: ChatInter
                                                 <DocIcon /> Upload Document
                                             </button>
                                             <button
-                                                disabled
-                                                className="flex items-center gap-3 px-4 py-3 text-sm text-[var(--text-secondary)] opacity-50 text-left border-t border-[var(--border)] cursor-not-allowed"
-                                                title="Voice support coming in next version"
+                                                onClick={() => { setIsMenuOpen(false); audioInputRef.current?.click(); }}
+                                                className="flex items-center gap-3 px-4 py-3 text-sm text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] text-left transition-colors border-t border-[var(--border)]"
                                             >
-                                                <MicIcon /> Record Voice
+                                                <MicIcon /> Upload Audio
                                             </button>
                                         </div>
                                     </>

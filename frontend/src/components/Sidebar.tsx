@@ -162,12 +162,11 @@ export default function Sidebar({
             >
                 {!collapsed && (
                     <div className="flex items-center gap-2 animate-fade-in">
-                        <div
-                            className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm"
-                            style={{ background: "linear-gradient(135deg, var(--primary), var(--accent))" }}
-                        >
-                            C
-                        </div>
+                        <img
+                            src="/logo.png"
+                            alt="CGR Logo"
+                            className="w-10 h-10 object-contain rounded-lg"
+                        />
                         <div>
                             <h1 className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>
                                 Clinical GraphRAG
