@@ -14,8 +14,14 @@ from app.core.config import get_settings
 
 settings = get_settings()
 
+db_url = settings.database_url
+# Supabase transaction pooler requires prepared_statement_cache_size=0 for asyncpg
+if "pooler.supabase.com" in db_url and "prepared_statement_cache_size=0" not in db_url:
+    join_char = "&" if "?" in db_url else "?"
+    db_url = f"{db_url}{join_char}prepared_statement_cache_size=0"
+
 engine = create_async_engine(
-    settings.database_url,
+    db_url,
     echo=settings.debug,
     pool_pre_ping=True,
     pool_size=10,
