@@ -1,6 +1,6 @@
 # 🏥 Clinical GraphRAG Pro
 
-![Application Screenshot](/images/dashboard-preview.png)
+![Application Screenshot](./dashboard-preview.png)
 
 Clinical GraphRAG Pro is an enterprise-grade medical AI platform combining traditional Retrieval-Augmented Generation (RAG) with Knowledge Graphs to provide highly accurate, explainable, and context-aware analysis of medical documents.
 
