@@ -249,19 +249,23 @@ class AgentOrchestrator:
 
     async def _generate_plan(self, query: str, tools_def: list[dict]) -> list[dict]:
         """
-        Ask LLM to generate a plan.
-        Returns a list of steps, each with 'title', 'description', 'tool', 'parameters'.
+        Act as the Supervisor Agent. Determine which sub-agents to invoke.
+        Returns a list of steps, where the 'tool' might be a sub-agent invocation or a direct tool.
         """
-        prompt = f"""
-You are a planner for a clinical AI agent.
+        supervisor_prompt = f"""
+You are the **Supervisor Agent** for Clinical GraphRAG Pro.
 User Query: "{query}"
 
-Available Tools:
-{json.dumps(tools_def, indent=2)}
+You have the following Expert Sub-Agents available:
+1. **DataExtractionAgent**: Extracts structured data (vitals, meds, history) from raw text. DOES NOT use external medical tools.
+2. **PharmacovigilanceAgent**: Specializes in checking drug-drug interactions and adverse events using the Graph.
+3. **DiagnosticsAgent**: Specializes in differential diagnosis based on symptoms.
 
-Create a step-by-step plan to answer the query.
- each step MUST be a necessary action to answer the user query.
-If the query is simple (e.g. "hi"), just plan one step with NO tool.
+You also have direct access to these basic tools:
+{json.dumps([t for t in tools_def if t['name'] not in ('search_graph', 'drug_interaction')], indent=2)}
+
+Create a step-by-step plan to answer the query. You can delegate tasks to the sub-agents by using their name as the 'tool', or use the basic tools directly.
+If delegating to a sub-agent, provide specific instructions in the parameters.
 
 Output strictly a JSON object with this structure:
 {{
@@ -269,6 +273,7 @@ Output strictly a JSON object with this structure:
     {{
       "title": "Short title",
       "description": "Explanation",
+      "agent": "SubAgentName or null",
       "tool": "tool_name_or_null",
       "parameters": {{ "param_name": "value" }}
     }}
@@ -277,20 +282,55 @@ Output strictly a JSON object with this structure:
 Do not include markdown blocks. Just the raw JSON.
 """
         try:
-            response_text = await llm_service.generate(prompt)
-            # Cleanup potential markdown fences
+            response_text = await llm_service.generate(supervisor_prompt)
             clean_text = response_text.replace("```json", "").replace("```", "").strip()
             data = json.loads(clean_text)
-            return data.get("steps", [])
+            
+            # Map the new 'agent' delegation back to the 'tool' execution pipeline for seamless frontend streaming
+            steps = data.get("steps", [])
+            for step in steps:
+                if step.get("agent"):
+                    step["tool"] = f"delegate_to_{step['agent']}"
+            return steps
         except Exception as e:
-            logger.error(f"Failed to generate plan: {e}")
-            # Fallback plan
+            logger.error(f"Failed to generate supervisor plan: {e}")
             return [{
                 "title": "Search Documents",
                 "description": "Fallback: Searching medical documents.",
                 "tool": "search_documents",
                 "parameters": {"query": query}
             }]
+
+
+# ── Sub-Agent Handlers (Worker Nodes) ──────────────────────
+# These act as specialized tools the Supervisor can call
+
+async def run_data_extraction_agent(parameters: dict) -> dict:
+    prompt = f"You are the Data Extraction Agent. Extract JSON structured data from this input: {parameters}\nOutput ONLY JSON."
+    res = await llm_service.generate(prompt)
+    return {"extracted_data": res}
+
+async def run_pharmacovigilance_agent(parameters: dict) -> dict:
+    # This agent would hypothetically chain the drug tools. For Phase 2, we simulate the specific tool call.
+    drug = parameters.get("drug", parameters.get("param_name", "Unknown Medicine"))
+    res = await tool_registry.execute("drug_interaction", {"drug_name": drug})
+    return {"pharmacovigilance_report": res}
+
+async def run_diagnostics_agent(parameters: dict) -> dict:
+    prompt = f"You are the Diagnostics Agent. Given these symptoms, output a JSON list of differential diagnoses with probabilities: {parameters}"
+    res = await llm_service.generate(prompt)
+    return {"differentials": res}
+
+# Register sub-agents as internal tools so the orchestrator can execute them via the existing loop
+@tool_registry.register(name="delegate_to_DataExtractionAgent", description="Internal routing", parameters={})
+async def _extract(**kwargs): return await run_data_extraction_agent(kwargs)
+
+@tool_registry.register(name="delegate_to_PharmacovigilanceAgent", description="Internal routing", parameters={})
+async def _pharmaco(**kwargs): return await run_pharmacovigilance_agent(kwargs)
+
+@tool_registry.register(name="delegate_to_DiagnosticsAgent", description="Internal routing", parameters={})
+async def _diagnostic(**kwargs): return await run_diagnostics_agent(kwargs)
+
 
 
 agent_orchestrator = AgentOrchestrator()
