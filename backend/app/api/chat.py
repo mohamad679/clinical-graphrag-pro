@@ -162,7 +162,7 @@ async def chat(request: ChatRequest, db: AsyncSession = Depends(get_db)):
             doc_name = doc_chunks[0].get("document_name", "Unknown Document")
             
             doc_context = f"Document Name: {doc_name}\n\nContent:\n"
-            for i, c in enumerate(doc_chunks[:40]):  # Limit to 40 chunks to prevent context overflow
+            for i, c in enumerate(doc_chunks[:10]):  # Limit to 10 chunks (~5k tokens) to prevent 413 Payload Too Large
                 doc_context += f"--- Part {i+1} ---\n{c.get('chunk_text', '')}\n"
                 
             collected_sources = [{"document_id": str(request.attached_document_id), "document_name": doc_name, "chunk_index": i, "text": c.get("chunk_text", "")[:200], "relevance_score": 1.0} for i, c in enumerate(doc_chunks[:5])]
