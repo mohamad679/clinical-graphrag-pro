@@ -66,8 +66,13 @@ async def upload_document(
     existing = await db.execute(
         select(Document).where(Document.content_hash == content_hash)
     )
-    if existing.scalar_one_or_none():
-        raise HTTPException(status_code=409, detail="Document already uploaded.")
+    existing_doc = existing.scalar_one_or_none()
+    if existing_doc:
+        # In ephemeral environments like Hugging Face, the vector index wipes on restart
+        # but the permanent Postgres DB keeps the record. We must allow re-uploads 
+        # to rebuild the vector index. Delete the old metadata and proceed fresh.
+        await db.delete(existing_doc)
+        await db.flush()
 
     # Extract text based on file type
     text = ""
