@@ -30,6 +30,11 @@ async def graph_stats():
         },
     }
 
+@router.get("/visualize")
+async def graph_visualize():
+    """Export graph data (nodes and links) for 3D visualization."""
+    return temporal_graph_service.export_for_visualization()
+
 class SeedGraphRequest(BaseModel):
     patient_id: str = "Patient_A"
 

@@ -4,18 +4,8 @@
   "graph": {},
   "nodes": [
     {
-      "age": 65,
-      "gender": "M",
-      "label": "Patient",
-      "id": "Patient_A"
-    },
-    {
-      "label": "Drug",
-      "id": "Lisinopril"
-    },
-    {
-      "label": "Drug",
-      "id": "Ibuprofen"
+      "label": "Disease",
+      "id": "Type_2_Diabetes"
     },
     {
       "label": "Disease",
@@ -23,32 +13,312 @@
     },
     {
       "label": "Disease",
-      "id": "Chronic_Kidney_Disease"
+      "id": "Diabetic_Neuropathy"
+    },
+    {
+      "label": "Disease",
+      "id": "Atrial_Fibrillation"
+    },
+    {
+      "label": "Disease",
+      "id": "Congestive_Heart_Failure"
+    },
+    {
+      "label": "Disease",
+      "id": "Acute_Kidney_Injury"
+    },
+    {
+      "label": "Disease",
+      "id": "Asthma"
+    },
+    {
+      "label": "Disease",
+      "id": "Major_Depressive_Disorder"
+    },
+    {
+      "label": "Disease",
+      "id": "Migraine"
+    },
+    {
+      "label": "Drug",
+      "id": "Metformin"
+    },
+    {
+      "label": "Drug",
+      "id": "Lisinopril"
+    },
+    {
+      "label": "Drug",
+      "id": "Gabapentin"
+    },
+    {
+      "label": "Drug",
+      "id": "Apixaban"
+    },
+    {
+      "label": "Drug",
+      "id": "Furosemide"
+    },
+    {
+      "label": "Drug",
+      "id": "Metoprolol"
+    },
+    {
+      "label": "Drug",
+      "id": "Albuterol_Inhaler"
+    },
+    {
+      "label": "Drug",
+      "id": "Sertraline"
+    },
+    {
+      "label": "Drug",
+      "id": "Fluoxetine"
+    },
+    {
+      "label": "Drug",
+      "id": "Sumatriptan"
+    },
+    {
+      "label": "Lab",
+      "id": "HbA1c"
+    },
+    {
+      "label": "Lab",
+      "id": "Creatinine"
+    },
+    {
+      "label": "Lab",
+      "id": "BNP"
+    },
+    {
+      "age": 58,
+      "gender": "M",
+      "blood_type": "O+",
+      "label": "Patient",
+      "id": "Patient_1001"
+    },
+    {
+      "age": 72,
+      "gender": "F",
+      "blood_type": "A-",
+      "label": "Patient",
+      "id": "Patient_2045"
+    },
+    {
+      "age": 45,
+      "gender": "F",
+      "blood_type": "B+",
+      "label": "Patient",
+      "id": "Patient_3099"
     }
   ],
   "edges": [
     {
       "type": "HAS_CONDITION",
-      "start_date": "2020-01-01",
+      "start_date": "2015-03-10",
       "end_date": null,
-      "source": "Patient_A",
+      "source": "Patient_1001",
+      "target": "Type_2_Diabetes",
+      "key": 0
+    },
+    {
+      "type": "HAS_CONDITION",
+      "start_date": "2018-07-22",
+      "end_date": null,
+      "source": "Patient_1001",
       "target": "Hypertension",
       "key": 0
     },
     {
+      "type": "HAS_CONDITION",
+      "start_date": "2022-11-05",
+      "end_date": null,
+      "source": "Patient_1001",
+      "target": "Diabetic_Neuropathy",
+      "key": 0
+    },
+    {
+      "dosage": "500mg BID",
       "type": "PRESCRIBED",
-      "start_date": "2021-06-01",
-      "end_date": "2023-12-01",
-      "source": "Patient_A",
+      "start_date": "2015-03-15",
+      "end_date": null,
+      "source": "Patient_1001",
+      "target": "Metformin",
+      "key": 0
+    },
+    {
+      "dosage": "10mg QD",
+      "type": "PRESCRIBED",
+      "start_date": "2018-07-25",
+      "end_date": null,
+      "source": "Patient_1001",
       "target": "Lisinopril",
       "key": 0
     },
     {
+      "dosage": "300mg TID",
       "type": "PRESCRIBED",
-      "start_date": "2024-01-15",
+      "start_date": "2022-11-10",
       "end_date": null,
-      "source": "Patient_A",
-      "target": "Ibuprofen",
+      "source": "Patient_1001",
+      "target": "Gabapentin",
+      "key": 0
+    },
+    {
+      "value": "8.2%",
+      "type": "LAB_RESULT",
+      "start_date": "2023-12-01",
+      "end_date": "2023-12-01",
+      "source": "Patient_1001",
+      "target": "HbA1c",
+      "key": 0
+    },
+    {
+      "value": "1.1 mg/dL",
+      "type": "LAB_RESULT",
+      "start_date": "2023-12-01",
+      "end_date": "2023-12-01",
+      "source": "Patient_1001",
+      "target": "Creatinine",
+      "key": 0
+    },
+    {
+      "type": "HAS_CONDITION",
+      "start_date": "2020-05-14",
+      "end_date": null,
+      "source": "Patient_2045",
+      "target": "Atrial_Fibrillation",
+      "key": 0
+    },
+    {
+      "type": "HAS_CONDITION",
+      "start_date": "2021-09-30",
+      "end_date": null,
+      "source": "Patient_2045",
+      "target": "Congestive_Heart_Failure",
+      "key": 0
+    },
+    {
+      "type": "HAS_CONDITION",
+      "start_date": "2024-02-10",
+      "end_date": "2024-02-18",
+      "source": "Patient_2045",
+      "target": "Acute_Kidney_Injury",
+      "key": 0
+    },
+    {
+      "dosage": "5mg BID",
+      "type": "PRESCRIBED",
+      "start_date": "2020-05-15",
+      "end_date": null,
+      "source": "Patient_2045",
+      "target": "Apixaban",
+      "key": 0
+    },
+    {
+      "dosage": "40mg QD",
+      "type": "PRESCRIBED",
+      "start_date": "2021-10-01",
+      "end_date": "2024-02-10",
+      "source": "Patient_2045",
+      "target": "Furosemide",
+      "key": 0
+    },
+    {
+      "dosage": "25mg QD",
+      "type": "PRESCRIBED",
+      "start_date": "2020-05-15",
+      "end_date": null,
+      "source": "Patient_2045",
+      "target": "Metoprolol",
+      "key": 0
+    },
+    {
+      "value": "850 pg/mL",
+      "type": "LAB_RESULT",
+      "start_date": "2024-02-10",
+      "end_date": "2024-02-10",
+      "source": "Patient_2045",
+      "target": "BNP",
+      "key": 0
+    },
+    {
+      "value": "2.8 mg/dL",
+      "type": "LAB_RESULT",
+      "start_date": "2024-02-10",
+      "end_date": "2024-02-10",
+      "source": "Patient_2045",
+      "target": "Creatinine",
+      "key": 0
+    },
+    {
+      "value": "1.3 mg/dL",
+      "type": "LAB_RESULT",
+      "start_date": "2024-02-18",
+      "end_date": "2024-02-18",
+      "source": "Patient_2045",
+      "target": "Creatinine",
+      "key": 1
+    },
+    {
+      "type": "HAS_CONDITION",
+      "start_date": "1995-01-01",
+      "end_date": null,
+      "source": "Patient_3099",
+      "target": "Asthma",
+      "key": 0
+    },
+    {
+      "type": "HAS_CONDITION",
+      "start_date": "2019-04-12",
+      "end_date": null,
+      "source": "Patient_3099",
+      "target": "Major_Depressive_Disorder",
+      "key": 0
+    },
+    {
+      "type": "HAS_CONDITION",
+      "start_date": "2010-08-05",
+      "end_date": null,
+      "source": "Patient_3099",
+      "target": "Migraine",
+      "key": 0
+    },
+    {
+      "dosage": "PRN",
+      "type": "PRESCRIBED",
+      "start_date": "1995-01-01",
+      "end_date": null,
+      "source": "Patient_3099",
+      "target": "Albuterol_Inhaler",
+      "key": 0
+    },
+    {
+      "dosage": "50mg QD",
+      "type": "PRESCRIBED",
+      "start_date": "2019-04-15",
+      "end_date": "2023-11-01",
+      "source": "Patient_3099",
+      "target": "Sertraline",
+      "key": 0
+    },
+    {
+      "dosage": "20mg QD",
+      "type": "PRESCRIBED",
+      "start_date": "2023-11-01",
+      "end_date": null,
+      "source": "Patient_3099",
+      "target": "Fluoxetine",
+      "key": 0
+    },
+    {
+      "dosage": "50mg PRN",
+      "type": "PRESCRIBED",
+      "start_date": "2010-08-05",
+      "end_date": null,
+      "source": "Patient_3099",
+      "target": "Sumatriptan",
       "key": 0
     }
   ]

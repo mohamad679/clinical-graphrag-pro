@@ -284,6 +284,13 @@ export async function searchGraph(
     return apiFetch(`/graph/search?q=${encodeURIComponent(query)}&top_k=${topK}`);
 }
 
+export async function getGraphVisualization(): Promise<{
+    nodes: any[];
+    links: any[];
+}> {
+    return apiFetch("/graph/visualize");
+}
+
 // ── Images / Vision ─────────────────────────────────────
 
 export async function uploadImage(file: File): Promise<{

@@ -151,5 +151,28 @@ class TemporalGraphService:
         except ValueError:
             return True # Malformed date, default to active
 
+    def export_for_visualization(self) -> dict:
+        """Export the graph in a format suitable for react-force-graph-3d."""
+        nodes = []
+        for node_id, data in self.graph.nodes(data=True):
+            nodes.append({
+                "id": node_id,
+                "name": node_id,
+                "label": data.get("label", "Unknown"),
+                **{k: v for k, v in data.items() if k != "label"}
+            })
+
+        links = []
+        for u, v, data in self.graph.edges(data=True):
+            links.append({
+                "source": u,
+                "target": v,
+                "type": data.get("type", "UNKNOWN"),
+                "start_date": data.get("start_date"),
+                "end_date": data.get("end_date")
+            })
+
+        return {"nodes": nodes, "links": links}
+
 
 temporal_graph_service = TemporalGraphService()
