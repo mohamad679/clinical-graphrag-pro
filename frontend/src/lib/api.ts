@@ -228,6 +228,19 @@ export async function deleteSession(sessionId: string): Promise<void> {
     await apiFetch(`/chat/sessions/${sessionId}`, { method: "DELETE" });
 }
 
+export async function submitFeedback(messageId: string, rating: number, comment?: string): Promise<{ success: boolean; message: string }> {
+    return apiFetch(`/chat/messages/${messageId}/feedback`, {
+        method: "POST",
+        body: JSON.stringify({ message_id: messageId, rating, comment }),
+    });
+}
+
+export async function generateClinicalNote(sessionId: string): Promise<{ note: string }> {
+    return apiFetch(`/chat/sessions/${sessionId}/generate-note`, {
+        method: "POST"
+    });
+}
+
 // ── Documents ───────────────────────────────────────────
 
 export async function uploadDocument(file: File): Promise<{
@@ -505,6 +518,31 @@ export async function runEvaluation(query: string, topK = 5): Promise<EvalRunRes
 
 export async function getEvalHistory(limit = 20, offset = 0): Promise<EvalHistoryResponse> {
     return apiFetch(`/eval/history?limit=${limit}&offset=${offset}`);
+}
+
+// ── New Analytics Dashboard API ─────────────────────────
+
+export interface EvaluationMetricRun {
+    id: string;
+    timestamp: string;
+    evaluation_type: "ragas" | "adjudicator";
+    dataset_size: number;
+    metrics: Record<string, number>;
+    metadata: Record<string, any>;
+}
+
+export interface LatestEvaluations {
+    ragas: { timestamp: string; metrics: Record<string, number> } | null;
+    adjudicator: { timestamp: string; metrics: Record<string, number> } | null;
+    csat?: { score: number | null; total_ratings: number } | null;
+}
+
+export async function getEvaluationMetrics(limit = 50): Promise<{ source: string; data: EvaluationMetricRun[] }> {
+    return apiFetch(`/evaluations/metrics?limit=${limit}`);
+}
+
+export async function getLatestEvaluations(): Promise<LatestEvaluations> {
+    return apiFetch(`/evaluations/latest`);
 }
 
 // ── Fine-Tuning Types ───────────────────────────────────

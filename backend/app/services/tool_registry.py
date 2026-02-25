@@ -12,6 +12,7 @@ from app.services.vector_store import vector_store_service
 from app.services.vision import vision_service
 from app.services.graph import temporal_graph_service
 from app.services.llm import llm_service
+from app.services.neo4j_graph import query_neo4j_graph_async
 
 # We'll need a way to get image data by ID for the analyze_image tool
 # For now, we'll assume the agent passes the image_id and we fetch it from DB or storage.
@@ -106,6 +107,24 @@ async def tool_search_documents(query: str, top_k: int = 5) -> dict:
             for r in results
         ]
     }
+
+
+@tool_registry.register(
+    name="query_clinical_graph",
+    description="Query the production Neo4j Knowledge Graph using natural language to answer complex temporal and relational questions (e.g. 'Was Drug X prescribed before Symptom Y?', 'What conditions cause Symptom Z?').",
+    parameters={
+        "type": "object",
+        "properties": {
+            "query": {
+                "type": "string",
+                "description": "The exact question to ask the graph database.",
+            }
+        },
+        "required": ["query"],
+    },
+)
+async def tool_query_clinical_graph(query: str) -> dict:
+    return await query_neo4j_graph_async(query)
 
 
 @tool_registry.register(
@@ -376,4 +395,38 @@ Output strictly ONLY a raw JSON object with this exact structure (do not include
             "confidence_score": 0.0,
             "flags": [f"Evaluation system error (Safety Defaulted to Reject): Failed to parse Adjudicator output."]
         }
+
+
+@tool_registry.register(
+    name="normalize_entities",
+    description="Normalize extracted medical entities to canonical concepts in UMLS, SNOMED CT, RxNorm, or ICD-10. Maps synonyms and abbreviations to a single canonical ID.",
+    parameters={
+        "type": "object",
+        "properties": {
+            "entities": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "surface_form": {"type": "string", "description": "The entity as it appeared in the text"},
+                        "context": {"type": "string", "description": "Optional surrounding text for disambiguation"},
+                    },
+                    "required": ["surface_form"],
+                },
+                "description": "List of entities to normalize",
+            },
+        },
+        "required": ["entities"],
+    },
+)
+async def tool_normalize_entities(entities: list[dict]) -> dict:
+    from app.services.entity_normalization import entity_normalization_service
+    from app.schemas.entity_normalization import EntityInput
+
+    entity_inputs = [EntityInput(**e) for e in entities]
+    result = await entity_normalization_service.normalize(entity_inputs)
+    return {
+        "normalized_entities": [e.model_dump() for e in result.normalized_entities],
+        "total": result.total,
+    }
 

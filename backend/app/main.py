@@ -12,7 +12,7 @@ from app.core.config import get_settings
 from app.core.redis import redis_service
 from app.core.logging_config import setup_logging, RequestLoggingMiddleware
 from app.core.rate_limiter import RateLimitMiddleware
-from app.api import chat, documents, graph, health, images, agents, eval, fine_tune, admin, audio
+from app.api import chat, documents, graph, health, images, agents, eval, fine_tune, admin, audio, entity_normalization, evaluations
 
 settings = get_settings()
 
@@ -91,6 +91,8 @@ app.include_router(eval.router, prefix=settings.api_prefix)
 app.include_router(fine_tune.router, prefix=settings.api_prefix)
 app.include_router(admin.router, prefix=settings.api_prefix)
 app.include_router(audio.router, prefix=settings.api_prefix)
+app.include_router(entity_normalization.router, prefix=settings.api_prefix)
+app.include_router(evaluations.router, prefix=settings.api_prefix)
 
 
 # ── Root ─────────────────────────────────────────────────

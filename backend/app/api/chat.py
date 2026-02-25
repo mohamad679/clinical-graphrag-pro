@@ -20,6 +20,7 @@ from app.schemas.chat import (
     ChatRequest,
     ChatSessionResponse,
     ChatMessageResponse,
+    ChatFeedback,
 )
 from app.services.rag import rag_service
 
@@ -358,6 +359,105 @@ async def delete_session(session_id: uuid.UUID, db: AsyncSession = Depends(get_d
 
     await db.delete(session)
     return {"message": "Session deleted"}
+
+
+@router.post("/messages/{message_id}/feedback")
+async def submit_feedback(
+    message_id: uuid.UUID, 
+    feedback: ChatFeedback, 
+    db: AsyncSession = Depends(get_db)
+):
+    """Submit a rating (+1 / -1) and optional comment for an AI message."""
+    # Verify message exists
+    result = await db.execute(
+        select(ChatMessage).where(ChatMessage.id == message_id)
+    )
+    msg = result.scalar_one_or_none()
+    if not msg:
+        raise HTTPException(status_code=404, detail="Message not found")
+        
+    # Import locally to avoid circular dependencies if any
+    from app.models.user_feedback import UserFeedback
+    
+    # Check if feedback already exists
+    existing = await db.execute(
+        select(UserFeedback).where(UserFeedback.message_id == str(message_id))
+    )
+    existing_fb = existing.scalar_one_or_none()
+    
+    if existing_fb:
+        existing_fb.rating = feedback.rating
+        existing_fb.comment = feedback.comment
+    else:
+        new_fb = UserFeedback(
+            message_id=str(message_id),
+            session_id=str(msg.session_id),
+            rating=feedback.rating,
+            comment=feedback.comment
+        )
+        db.add(new_fb)
+        
+    await db.commit()
+    return {"success": True, "message": "Feedback recorded."}
+
+
+@router.post("/sessions/{session_id}/generate-note")
+async def generate_clinical_note(session_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
+    """Generate a SOAP note from the chat history of a session."""
+    # Verify session
+    result = await db.execute(
+        select(ChatSession).where(ChatSession.id == session_id)
+    )
+    session = result.scalar_one_or_none()
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    # Fetch history
+    history_result = await db.execute(
+        select(ChatMessage)
+        .where(ChatMessage.session_id == session_id)
+        .order_by(ChatMessage.created_at)
+    )
+    messages = history_result.scalars().all()
+    
+    if not messages:
+        raise HTTPException(status_code=400, detail="No messages in this session.")
+
+    history_text = ""
+    for msg in messages:
+        if msg.role in ("user", "assistant"):
+            role_name = "Clinician/User" if msg.role == "user" else "AI Assistant"
+            history_text += f"**{role_name}:** {msg.content}\n\n"
+
+    from app.services.llm import llm_service
+    
+    prompt = f"""
+You are an expert clinical scribe. Review the following conversation history between a clinician and a clinical AI assistant. 
+Based explicitly on the facts and data discussed in this history, generate a comprehensive and professional clinical note. 
+Format the output as a standard SOAP note (Subjective, Objective, Assessment, Plan) using Markdown. 
+Do not hallucinate information that was not discussed in the chat.
+
+Conversation History:
+{history_text}
+
+Output ONLY the formatted Markdown note.
+"""
+    
+    try:
+        note_markdown = await llm_service.generate(prompt)
+        # Clean up any markdown blocks if generated
+        clean_note = note_markdown.strip()
+        if clean_note.startswith("```md"):
+            clean_note = clean_note[5:]
+        elif clean_note.startswith("```markdown"):
+            clean_note = clean_note[11:]
+        if clean_note.endswith("```"):
+            clean_note = clean_note[:-3]
+            
+        return {"note": clean_note.strip()}
+    except Exception as e:
+        logger.error(f"Failed to generate clinical note: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to generate note from LLM.")
 
 
 # ── WebSocket for real-time chat ─────────────────────────

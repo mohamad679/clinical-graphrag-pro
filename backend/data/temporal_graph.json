@@ -113,7 +113,7 @@
       "id": "Patient_3099"
     }
   ],
-  "edges": [
+  "links": [
     {
       "type": "HAS_CONDITION",
       "start_date": "2015-03-10",

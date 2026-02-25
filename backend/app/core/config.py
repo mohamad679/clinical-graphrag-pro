@@ -72,6 +72,11 @@ class Settings(BaseSettings):
     upload_dir: Path = Path("./uploads")
     max_upload_size_mb: int = 50
 
+    # ── Neo4j ─────────────────────────────────────────────
+    neo4j_uri: str = "bolt://localhost:7687"
+    neo4j_user: str = "neo4j"
+    neo4j_password: str = "neo4jpassword"
+
     # ── WebSocket ────────────────────────────────────────
     ws_heartbeat_interval: int = 30  # seconds
 
@@ -79,6 +84,7 @@ class Settings(BaseSettings):
         "env_file": ".env",
         "env_file_encoding": "utf-8",
         "case_sensitive": False,
+        "extra": "ignore",
     }
 
 
