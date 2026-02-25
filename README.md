@@ -115,3 +115,22 @@ Navigate to `http://localhost:3000` to interact with the Clinical Agent.
 ---
 ## 🛡️ License
 MIT License
+
+## 📊 Benchmark Results (v2.0)
+
+| Metric | Score | Target | Status |
+|--------|-------|--------|--------|
+| RAGAS Faithfulness | TBD | >0.95 | 🔄 |
+| Answer Relevancy | TBD | >0.85 | 🔄 |
+| Adjudicator Precision | TBD | >0.95 | 🔄 |
+| Adjudicator Recall | TBD | >0.95 | 🔄 |
+
+## 🆕 What's New in v2.0
+- 🧪 Full Evaluation Layer (RAGAS + Adjudicator Benchmark)
+- 🕸️ Neo4j Production Graph Database
+- 📊 3D Knowledge Graph Visualization  
+- 🏥 MIMIC-IV Clinical Data Integration
+- 👁️ Observability: LangSmith + Prometheus + structlog
+- 🏥 SOAP Note Auto-Generation
+- 👍 Human-in-the-Loop CSAT Feedback
+- 🔬 Entity Normalization Service
