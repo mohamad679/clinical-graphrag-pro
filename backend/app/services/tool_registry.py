@@ -6,6 +6,7 @@ Each tool is an async function that returns a JSON-serializable dict.
 import logging
 import httpx
 import math
+from pathlib import Path
 from typing import Callable, Awaitable, Any
 
 from app.services.vector_store import vector_store_service
@@ -315,12 +316,42 @@ async def tool_drug_interaction(drug_name: str) -> dict:
     },
 )
 async def tool_analyze_image(image_id: str, question: str = "") -> dict:
-    # In a real app, we'd fetch the image bytes from DB/storage using image_id.
-    # For now, we'll return a placeholder or need to inject a way to look up images.
-    # This is a limitation without refactoring 'images.py' to share storage logic.
-    return {
-        "error": "Image analysis via agent is pending storage refactor. Please use the direct image chat feature for now."
-    }
+    from app.core.database import async_session_factory
+    from app.models.medical_image import MedicalImage
+    from sqlalchemy import select
+
+    try:
+        async with async_session_factory() as session:
+            result = await session.execute(
+                select(MedicalImage).where(MedicalImage.id == image_id)
+            )
+            image = result.scalar_one_or_none()
+
+            if not image:
+                return {"error": f"Image with ID '{image_id}' not found in database."}
+
+            image_path = Path(image.file_path)
+            if not image_path.exists():
+                return {"error": f"Image file not found on disk for ID '{image_id}'."}
+
+            image_data = image_path.read_bytes()
+
+            if question:
+                # Free-text Q&A about the image
+                response_text = await vision_service.analyze_with_question(
+                    image_data, image.mime_type, question
+                )
+                return {"analysis": response_text, "image_id": image_id}
+            else:
+                # Full structured analysis
+                analysis = await vision_service.analyze_image(
+                    image_data, image.mime_type
+                )
+                return {"analysis": analysis, "image_id": image_id}
+
+    except Exception as e:
+        logger.error(f"Image analysis failed for {image_id}: {e}", exc_info=True)
+        return {"error": f"Image analysis failed: {str(e)}"}
 
 
 @tool_registry.register(

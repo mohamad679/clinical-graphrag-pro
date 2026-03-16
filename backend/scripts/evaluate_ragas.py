@@ -46,16 +46,24 @@ def get_llm_and_embeddings():
         return llm, embeddings
 
 
-# Simulated RAG system
+# Real RAG pipeline integration
 async def get_rag_response(query: str) -> dict:
     """
-    Mock RAG pipeline for the sake of setting up the evaluation harness.
-    In real usage, this imports your GraphRAG query function.
+    Query the real RAG pipeline to get an answer and contexts.
+    Uses the production rag_service for end-to-end evaluation.
     """
-    # Simply mocking response
+    from app.services.rag import rag_service
+
+    result = await rag_service.query(question=query)
+    answer = result.get("answer", "")
+    sources = result.get("sources", [])
+    # Extract source text as contexts list for RAGAS
+    contexts = [s.get("text", "") for s in sources if s.get("text")]
+    if not contexts:
+        contexts = ["No context retrieved."]
     return {
-        "answer": "The patient was prescribed Ceftriaxone and Azithromycin.",
-        "contexts": ["The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin."]
+        "answer": answer,
+        "contexts": contexts
     }
 
 
@@ -68,7 +76,7 @@ async def run_evaluation():
     dataset_path = Path("backend/data/golden_evaluation_dataset.jsonl")
     if not dataset_path.exists():
         print(f"Golden dataset not found at {dataset_path}. Please run generate_golden_dataset.py first.")
-        # We'll use mocked data for execution demonstration
+    # We'll use fallback mocked data for execution demonstration if no golden dataset
         data_records = [
             {
                 "question": "What medications was the patient started on for pneumonia?",
@@ -90,13 +98,10 @@ async def run_evaluation():
         with open(dataset_path, "r", encoding="utf-8") as f:
             for line in f:
                 record = json.loads(line)
-                # Ensure the 'answer' field is generated so Ragas can evaluate it
-                # In a real batch pipeline, you'd generate these on the fly or beforehand
-                rag_output = await get_rag_response(record["question"]) 
+                rag_output = await get_rag_response(record["question"])
                 record["answer"] = rag_output["answer"]
-                # In reality Ragas uses the actual retrieved contexts, not the true contexts
-                # We will just pass the ground truth context here for simplicity in dummy run
-                record["contexts"] = record.get("contexts", list(rag_output["contexts"]))
+                # Use real retrieved contexts for evaluation
+                record["contexts"] = rag_output["contexts"]
                 data_records.append(record)
         dataset_size = len(data_records)
 
@@ -138,11 +143,11 @@ async def run_evaluation():
         metrics_dict = {k: float(v) for k, v in scores.items()}
         
         try:
-            from app.core.database import async_session_maker
+            from app.core.database import async_session_factory
             from app.services.evaluation_storage import EvaluationStorageService
             
             storage_service = EvaluationStorageService()
-            async with async_session_maker() as session:
+            async with async_session_factory() as session:
                 await storage_service.save_evaluation(
                     db=session,
                     evaluation_type="ragas",

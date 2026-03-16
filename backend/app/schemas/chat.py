@@ -52,6 +52,7 @@ class ChatMessageResponse(BaseModel):
     content: str
     sources: dict | list | None = None
     reasoning_steps: list | None = None
+    confidence_score: float | None = None
     created_at: datetime
 
     model_config = {"from_attributes": True}

@@ -4,7 +4,9 @@ Now backed by PostgreSQL instead of in-memory dict.
 """
 
 import hashlib
+import json
 import logging
+import time
 from pathlib import Path
 from uuid import uuid4
 from datetime import datetime, timezone
@@ -24,6 +26,28 @@ router = APIRouter(prefix="/documents", tags=["Documents"])
 
 settings = get_settings()
 
+# region agent log
+_DEBUG_LOG_PATH = "/Users/mohsenshamsijazeb/.gemini/antigravity/scratch/clinical-graphrag-pro/.cursor/debug-4009cb.log"
+
+
+def _agent_log(hypothesis_id: str, location: str, message: str, data: dict):
+    try:
+        payload = {
+            "sessionId": "4009cb",
+            "runId": "pre-fix",
+            "hypothesisId": hypothesis_id,
+            "location": location,
+            "message": message,
+            "data": data,
+            "timestamp": int(time.time() * 1000),
+        }
+        with open(_DEBUG_LOG_PATH, "a", encoding="utf-8") as f:
+            f.write(json.dumps(payload, ensure_ascii=False) + "\n")
+    except Exception:
+        pass
+
+# endregion
+
 # Ensure upload directory exists
 UPLOAD_DIR = Path(settings.upload_dir)
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -39,6 +63,17 @@ async def upload_document(
     Chunks the document, embeds it, and adds it to the vector store.
     Metadata is persisted in PostgreSQL.
     """
+    _agent_log(
+        "BE-A",
+        "backend/app/api/documents.py:upload_document:entry",
+        "upload_document entry",
+        {
+            "filename": file.filename,
+            "content_type": getattr(file, "content_type", None),
+            "upload_dir": str(UPLOAD_DIR),
+            "max_upload_size_mb": settings.max_upload_size_mb,
+        },
+    )
     # Validate file type
     allowed_types = {".pdf", ".txt", ".md", ".csv"}
     suffix = Path(file.filename or "unknown").suffix.lower()
@@ -50,6 +85,12 @@ async def upload_document(
 
     # Read file content
     content_bytes = await file.read()
+    _agent_log(
+        "BE-B",
+        "backend/app/api/documents.py:upload_document:file_read",
+        "file bytes read",
+        {"suffix": suffix, "bytes_len": len(content_bytes)},
+    )
 
     # Check size
     max_size = settings.max_upload_size_mb * 1024 * 1024
@@ -81,21 +122,52 @@ async def upload_document(
     else:
         text = content_bytes.decode("utf-8", errors="replace")
 
+    _agent_log(
+        "BE-C",
+        "backend/app/api/documents.py:upload_document:text_extracted",
+        "text extracted",
+        {"suffix": suffix, "text_len": len(text or ""), "text_nonempty": bool((text or "").strip())},
+    )
     if not text.strip():
         raise HTTPException(status_code=400, detail="Could not extract text from document.")
 
     # Save file to disk
     doc_id = str(uuid4())
     file_path = UPLOAD_DIR / f"{doc_id}{suffix}"
-    file_path.write_bytes(content_bytes)
+    try:
+        file_path.write_bytes(content_bytes)
+    except Exception as e:
+        _agent_log(
+            "BE-D",
+            "backend/app/api/documents.py:upload_document:write_bytes_exception",
+            "failed writing upload file",
+            {"suffix": suffix, "error_type": type(e).__name__, "error": str(e)},
+        )
+        raise
 
     # Index in vector store
-    chunk_count = vector_store_service.add_document(
-        document_id=doc_id,
-        document_name=file.filename or "unknown",
-        text=text,
-        chunk_size=settings.chunk_size,
-        overlap=settings.chunk_overlap,
+    try:
+        chunk_count = vector_store_service.add_document(
+            document_id=doc_id,
+            document_name=file.filename or "unknown",
+            text=text,
+            chunk_size=settings.chunk_size,
+            overlap=settings.chunk_overlap,
+        )
+    except Exception as e:
+        _agent_log(
+            "BE-E",
+            "backend/app/api/documents.py:upload_document:index_exception",
+            "vector_store_service.add_document failed",
+            {"error_type": type(e).__name__, "error": str(e)},
+        )
+        raise
+
+    _agent_log(
+        "BE-F",
+        "backend/app/api/documents.py:upload_document:index_ok",
+        "document indexed",
+        {"chunk_count": chunk_count},
     )
 
     # Persist to PostgreSQL
@@ -207,7 +279,19 @@ def _extract_pdf_text(content: bytes) -> str:
         return "\n\n".join(pages)
     except ImportError:
         logger.warning("PyPDF2 not installed. Install with: pip install PyPDF2")
+        _agent_log(
+            "BE-G",
+            "backend/app/api/documents.py:_extract_pdf_text:import_error",
+            "PyPDF2 import failed",
+            {},
+        )
         return ""
     except Exception as e:
         logger.error(f"PDF extraction failed: {e}")
+        _agent_log(
+            "BE-H",
+            "backend/app/api/documents.py:_extract_pdf_text:exception",
+            "PDF extraction failed",
+            {"error_type": type(e).__name__, "error": str(e)},
+        )
         return ""

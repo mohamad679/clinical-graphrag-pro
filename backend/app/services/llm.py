@@ -26,6 +26,8 @@ RULES:
 5. Structure your answers with clear sections.
 6. Provide reasoning steps for complex medical questions.
 7. Never fabricate medical information.
+8. ALWAYS end your response with a confidence score on a scale of 0.0 to 1.0, formatted exactly as:
+[CONFIDENCE: 0.85]
 
 FORMAT:
 - Use markdown formatting for readability.

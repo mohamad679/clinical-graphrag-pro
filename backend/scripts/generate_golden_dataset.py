@@ -34,8 +34,8 @@ RAW_CLINICAL_TEXTS = [
     "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed."
 ]
 
-# Multiply to simulate 50 contexts (just duplicating the 5 robust ones 10 times for now to meet the 50 requirement)
-RAW_CLINICAL_TEXTS = RAW_CLINICAL_TEXTS * 10
+# Multiply to simulate 15 contexts
+RAW_CLINICAL_TEXTS = RAW_CLINICAL_TEXTS * 3
 
 
 def get_llm():
@@ -71,7 +71,7 @@ def main():
     
     chain = prompt | llm | parser
     
-    output_dir = Path("backend/data")
+    output_dir = Path("data")
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / "golden_evaluation_dataset.jsonl"
     

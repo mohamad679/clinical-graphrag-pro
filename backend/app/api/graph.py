@@ -1,6 +1,6 @@
 """
-Knowledge graph API endpoints.
-Stats from vector store + placeholder for graph features.
+Knowledge Graph API endpoints.
+Temporal graph stats, Neo4j 3D visualization, seed data, and semantic search.
 """
 
 from fastapi import APIRouter, HTTPException

@@ -52,13 +52,11 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    environment:
-      - NEXT_PUBLIC_API_URL=/api
     healthcheck:
-      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3000/" ]
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:80/" ]
       interval: 30s
       timeout: 5s
-      start_period: 30s
+      start_period: 10s
       retries: 3
     restart: unless-stopped
 
@@ -99,9 +97,8 @@ services:
     image: neo4j:5-community
     environment:
       NEO4J_AUTH: none
-      NEO4J_PLUGINS: '[]'
-      NEO4J_dbms_memory_pagecache_size: 512M
-      NEO4J_dbms_memory_heap_max__size: 512M
+      NEO4J_dbms_memory_pagecache_size: 256M
+      NEO4J_dbms_memory_heap_max__size: 256M
     volumes:
       - neo4jdata:/data
     ports:

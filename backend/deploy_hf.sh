@@ -8,6 +8,9 @@ read token
 echo "Ensure you have created a Space named 'clinical-graphrag-backend' with Docker."
 echo "We will now push the backend directory to that space."
 
+# Clean up any previous runs
+rm -rf /tmp/hf_space
+
 # Embed the credentials into the URL so it bypasses prompts entirely
 git clone https://$username:$token@huggingface.co/spaces/$username/clinical-graphrag-backend /tmp/hf_space
 
@@ -20,6 +23,21 @@ fi
 cp backend/requirements.txt /tmp/hf_space/
 cp backend/Dockerfile.hf /tmp/hf_space/Dockerfile
 cp -r backend/app /tmp/hf_space/
+cp -r backend/data /tmp/hf_space/
+
+# Create the required Hugging Face README.md configuration
+cat <<EOF > /tmp/hf_space/README.md
+---
+title: Clinical GraphRAG Backend
+emoji: 🏥
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_file: app.py
+pinned: false
+---
+EOF
+
 cd /tmp/hf_space
 
 git add .

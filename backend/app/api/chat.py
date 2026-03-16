@@ -244,12 +244,24 @@ async def chat(request: ChatRequest, db: AsyncSession = Depends(get_db)):
         try:
             async with (await _get_session()) as save_db:
                 assistant_content = "".join(collected_tokens)
+                
+                import re
+                confidence_score = None
+                match = re.search(r'\[CONFIDENCE:\s*([\d\.]+)\]', assistant_content, re.IGNORECASE)
+                if match:
+                    try:
+                        confidence_score = float(match.group(1))
+                        assistant_content = re.sub(r'\[CONFIDENCE:\s*[\d\.]+\]', '', assistant_content, flags=re.IGNORECASE).strip()
+                    except ValueError:
+                        pass
+
                 assistant_msg = ChatMessage(
                     session_id=session_id,
                     role="assistant",
                     content=assistant_content,
                     sources=collected_sources,
                     token_count=len(collected_tokens),
+                    confidence_score=confidence_score,
                 )
                 save_db.add(assistant_msg)
                 await save_db.commit()
@@ -340,6 +352,7 @@ async def get_session(session_id: uuid.UUID, db: AsyncSession = Depends(get_db))
                 content=m.content,
                 sources=m.sources,
                 reasoning_steps=m.reasoning_steps,
+                confidence_score=m.confidence_score,
                 created_at=m.created_at,
             )
             for m in session.messages

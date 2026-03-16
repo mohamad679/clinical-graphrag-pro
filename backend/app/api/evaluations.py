@@ -93,7 +93,7 @@ async def get_latest_evaluations(db: AsyncSession = Depends(get_db)):
     Get the single most recent execution for each evaluation type 
     to populate KPI cards.
     """
-    latest = {"ragas": None, "adjudicator": None}
+    latest = {"ragas": None, "adjudicator": None, "calibration": None}
     
     try:
         # Get latest RAGAS
@@ -105,6 +105,11 @@ async def get_latest_evaluations(db: AsyncSession = Depends(get_db)):
         query_adj = select(EvaluationRun).where(EvaluationRun.evaluation_type == "adjudicator").order_by(desc(EvaluationRun.timestamp)).limit(1)
         res_adj = await db.execute(query_adj)
         latest_adj = res_adj.scalar_one_or_none()
+        
+        # Get latest Calibration
+        query_cal = select(EvaluationRun).where(EvaluationRun.evaluation_type == "calibration").order_by(desc(EvaluationRun.timestamp)).limit(1)
+        res_cal = await db.execute(query_cal)
+        latest_cal = res_cal.scalar_one_or_none()
         
         if latest_ragas:
             latest["ragas"] = {
@@ -118,8 +123,14 @@ async def get_latest_evaluations(db: AsyncSession = Depends(get_db)):
                 "metrics": latest_adj.metrics,
             }
             
+        if latest_cal:
+            latest["calibration"] = {
+                "timestamp": latest_cal.timestamp.isoformat(),
+                "metrics": latest_cal.metrics,
+            }
+            
         # If DB returned *no* data for either, try fallback to fill gaps
-        if not latest_ragas or not latest_adj:
+        if not latest_ragas or not latest_adj or not latest_cal:
             fallback_data = await _read_fallback()
             
             if not latest_ragas:
@@ -135,6 +146,13 @@ async def get_latest_evaluations(db: AsyncSession = Depends(get_db)):
                 if adj_list:
                     latest_a = sorted(adj_list, key=lambda x: x.get("timestamp", ""), reverse=True)[0]
                     latest["adjudicator"] = {"timestamp": latest_a.get("timestamp"), "metrics": latest_a.get("metrics")}
+                    
+            if not latest_cal:
+                # Find most recent calibration in list
+                cal_list = [r for r in fallback_data if r.get("evaluation_type") == "calibration"]
+                if cal_list:
+                    latest_c = sorted(cal_list, key=lambda x: x.get("timestamp", ""), reverse=True)[0]
+                    latest["calibration"] = {"timestamp": latest_c.get("timestamp"), "metrics": latest_c.get("metrics")}
 
         # ── CSAT Calculation ──
         # Let's count total positive ratings / total ratings in the DB

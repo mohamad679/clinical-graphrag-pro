@@ -5,7 +5,7 @@ ORM models for chat sessions and messages.
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import String, DateTime, Text, ForeignKey, Integer
+from sqlalchemy import String, DateTime, Text, ForeignKey, Integer, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 
@@ -58,6 +58,7 @@ class ChatMessage(Base):
     reasoning_steps: Mapped[list | None] = mapped_column(JSONB, nullable=True)
     token_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
     model_used: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    confidence_score: Mapped[float | None] = mapped_column(Float, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=_utcnow
     )

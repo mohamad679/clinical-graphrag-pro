@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClinicalAI Pro</title>
+    <meta name="description" content="Enterprise Clinical AI Platform">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS (CRITICAL — provides all utility classes) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        base: '#212121',
+                        surface: '#171717',
+                        'surface-elevated': '#2f2f2f',
+                        'surface-hover': '#3d3d3d',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Icons (Lucide via CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Core CSS (base styles, markdown, animations) -->
+    <link rel="stylesheet" href="/css/main.css?v=10">
+
+    <!-- Vis Network (For Knowledge Graph) -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+    <!-- Chart.js (For Evaluations) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- App Scripts -->
+    <script type="module" src="/js/api.js?v=10"></script>
+    <script type="module" src="/js/components/app-layout.js?v=10"></script>
+    <script type="module" src="/js/components/chat-interface.js?v=10"></script>
+    <script type="module" src="/js/components/evaluations-dashboard.js?v=10"></script>
+    <script type="module" src="/js/components/knowledge-graph.js?v=10"></script>
+    <script type="module" src="/js/router.js?v=10"></script>
+</head>
+
+<body class="bg-base text-white font-sans overflow-hidden h-screen">
+    <app-layout>
+        <div id="page-content" class="h-full">
+            <!-- Router injects views here -->
+        </div>
+    </app-layout>
+</body>
+
+</html>

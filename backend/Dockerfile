@@ -51,10 +51,11 @@ COPY --from=builder /install /usr/local
 COPY . .
 
 # Runtime directories + non-root user
-RUN mkdir -p uploads data/vector_store data/adapters \
+RUN mkdir -p uploads data/vector_store data/adapters data/hf_cache \
     && adduser --disabled-password --no-create-home appuser \
     && chown -R appuser:appuser /app
 
+ENV HF_HOME=/app/data/hf_cache
 USER appuser
 
 EXPOSE 8000
