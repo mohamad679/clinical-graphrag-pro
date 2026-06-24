@@ -7,6 +7,7 @@
 FROM python:3.12-slim AS builder
 
 WORKDIR /app
+ARG SCISPACY_MODEL_URL=https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_sci_sm-0.5.4.tar.gz
 
 # Build tools needed to compile some Python packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -39,6 +40,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     --extra-index-url https://download.pytorch.org/whl/cpu \
     -r requirements.txt
 
+# Install the biomedical spaCy pipeline into the same staged prefix so it ships in the final image.
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+    --default-timeout=600 \
+    --retries=5 \
+    --prefix=/install \
+    "${SCISPACY_MODEL_URL}"
+
 # ── Stage 2: lean production image ────────────────────────────
 FROM python:3.12-slim AS production
 
@@ -52,6 +61,7 @@ COPY . .
 
 # Runtime directories + non-root user
 RUN mkdir -p uploads data/vector_store data/adapters data/hf_cache \
+    && chmod +x /app/docker-entrypoint.sh \
     && adduser --disabled-password --no-create-home appuser \
     && chown -R appuser:appuser /app
 
@@ -63,4 +73,4 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')" || exit 1
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
+CMD ["./docker-entrypoint.sh"]

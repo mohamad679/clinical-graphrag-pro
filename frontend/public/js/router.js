@@ -1,101 +1,102 @@
-// router.js
-
 const routes = {
-    '/': '<chat-interface></chat-interface>',
-    '/evaluations': '<evaluations-dashboard></evaluations-dashboard>',
-    '/graph': '<knowledge-graph></knowledge-graph>'
+    '/': { component: 'case-dashboard' },
+    '/workspace': { component: 'case-workspace' },
+    '/sources': { component: 'source-library' },
+    '/images': { component: 'imaging-review' },
+    '/reports': { component: 'reports-workspace' },
+    '/workflows': { component: 'ai-workflows' },
+    '/graph': { component: 'knowledge-graph' },
+    '/admin': { component: 'quality-admin' },
 };
 
-/**
- * Perform the routing logic: update the DOM inside the main container.
- */
-function renderRoute(path) {
-    const contentDiv = document.getElementById('page-content');
-    if (!contentDiv) return;
+function waitForPageContent() {
+    return new Promise((resolve) => {
+        const existing = document.getElementById('page-content');
+        if (existing) {
+            resolve(existing);
+            return;
+        }
 
-    // Default to chat if route not found
-    const componentHTML = routes[path] || routes['/'];
+        const observer = new MutationObserver(() => {
+            const content = document.getElementById('page-content');
+            if (content) {
+                observer.disconnect();
+                resolve(content);
+            }
+        });
 
-    // Update active state in sidebar (if app-layout has rendered)
+        observer.observe(document.body, { childList: true, subtree: true });
+    });
+}
+
+function normalizeRoute(pathname) {
+    return routes[pathname] ? pathname : '/';
+}
+
+async function resolveGuardedPath(pathname, search = window.location.search) {
+    const normalized = normalizeRoute(pathname);
+    return `${normalized}${search}`;
+}
+
+export async function renderRoute(targetPath = `${window.location.pathname}${window.location.search}`) {
+    const url = new URL(targetPath, window.location.origin);
+    const guarded = await resolveGuardedPath(url.pathname, url.search);
+
+    if (guarded !== `${url.pathname}${url.search}`) {
+        window.history.replaceState({}, '', guarded);
+        return renderRoute(guarded);
+    }
+
+    const pathname = normalizeRoute(url.pathname);
+    const route = routes[pathname] || routes['/'];
     const layout = document.querySelector('app-layout');
-    if (layout && typeof layout.updateActiveRoute === 'function') {
-        layout.updateActiveRoute(path);
+    layout?.setRoute(pathname);
+
+    const loadRouteComponent = window.__CLINICAL_LOAD_ROUTE_COMPONENT__;
+    if (typeof loadRouteComponent === 'function') {
+        await loadRouteComponent(pathname);
     }
 
-    // Check if View Transitions API is supported
-    if (!document.startViewTransition) {
-        contentDiv.innerHTML = componentHTML;
-        return;
-    }
+    const contentDiv = await waitForPageContent();
+    const componentHTML = `<${route.component}></${route.component}>`;
 
-    // Use View Transitions for hyper-smooth crossfade
-    document.startViewTransition(() => {
+    const performRender = () => {
         contentDiv.innerHTML = componentHTML;
-    });
+        window.dispatchEvent(new CustomEvent('clinical:route-rendered', {
+            detail: { path: pathname, search: url.search },
+        }));
+    };
+
+    performRender();
+
+    layout?.updateActiveRoute(pathname);
 }
 
-/**
- * Handle browser back/forward buttons
- */
+export function navigate(path, { replace = false } = {}) {
+    const target = new URL(path, window.location.origin);
+    if (`${window.location.pathname}${window.location.search}` === `${target.pathname}${target.search}`) {
+        return renderRoute(`${target.pathname}${target.search}`);
+    }
+
+    const historyMethod = replace ? window.history.replaceState : window.history.pushState;
+    historyMethod.call(window.history, {}, '', `${target.pathname}${target.search}`);
+    return renderRoute(`${target.pathname}${target.search}`);
+}
+
 window.addEventListener('popstate', () => {
-    renderRoute(window.location.pathname);
+    renderRoute(`${window.location.pathname}${window.location.search}`);
 });
 
-/**
- * Centralized navigation function called by components
- */
-export function navigate(path) {
-    if (window.location.pathname === path) return;
-    window.history.pushState({}, '', path);
-    renderRoute(path);
-}
-
-/**
- * Intercept all <a> clicks for client-side routing
- */
-document.addEventListener('click', e => {
-    const link = e.target.closest('a');
-    if (link && link.href.startsWith(window.location.origin)) {
-        e.preventDefault();
-        const path = new URL(link.href).pathname;
-        navigate(path);
-    }
+document.addEventListener('click', (event) => {
+    const link = event.target.closest('a[href]');
+    if (!link) return;
+    const url = new URL(link.href, window.location.origin);
+    if (url.origin !== window.location.origin) return;
+    if (link.hasAttribute('data-native')) return;
+    event.preventDefault();
+    navigate(`${url.pathname}${url.search}`);
 });
 
-/**
- * Wait for the #page-content element to appear in the DOM
- * (injected by the app-layout Web Component) before routing.
- * This fixes the race condition between DOMContentLoaded and
- * the Custom Element lifecycle (connectedCallback).
- */
-function waitForPageContent(callback) {
-    // If already available, run immediately
-    if (document.getElementById('page-content')) {
-        callback();
-        return;
-    }
-
-    // Use MutationObserver to wait for it to appear
-    const observer = new MutationObserver(() => {
-        if (document.getElementById('page-content')) {
-            observer.disconnect();
-            callback();
-        }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    // Fallback timeout (200ms) in case the observer misses it
-    setTimeout(() => {
-        observer.disconnect();
-        if (document.getElementById('page-content')) {
-            callback();
-        }
-    }, 200);
-}
-
-// Initial render — wait for the layout to be ready first
 document.addEventListener('DOMContentLoaded', () => {
-    waitForPageContent(() => {
-        renderRoute(window.location.pathname);
-    });
+    renderRoute(`${window.location.pathname}${window.location.search}`);
 });

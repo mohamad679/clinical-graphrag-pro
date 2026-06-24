@@ -1,0 +1,33 @@
+flowchart TD
+    A[Client Query] --> B{Access Context Provided?}
+    B -- No --> C[Fail-Closed: Raise ValueError]
+    B -- Yes --> D[Query Expansion via LLM]
+    D --> E[Alternative Queries]
+    E --> F[Multi-query Retrieval Routing]
+    
+    subgraph Retrieval["Pre-filtered Parallel Search"]
+        F --> G[Dense Search: FAISS / Qdrant]
+        F --> H[Sparse Search: PostgreSQL FTS]
+        G --> I[Apply Tenant/Patient Filters]
+        H --> J[Apply Tenant/Patient Filters]
+    end
+
+    I --> K[Dense Candidates]
+    J --> L[Sparse Candidates]
+    
+    K --> M[Reciprocal Rank Fusion RRF]
+    L --> M
+    
+    M --> N[Combined Candidates]
+    N --> O{Reranker Enabled?}
+    O -- Yes --> P[Cross-Encoder Reranking]
+    O -- No --> Q[Default RRF Ranking]
+    
+    P --> R[Top-K Candidates]
+    Q --> R
+    
+    R --> S[Graph Context Enrichment]
+    S --> T[Prompt Assembly]
+    T --> U[LLM Response Generation]
+    U --> V[Citation Verification / Adjudicator Check]
+    V --> W[Final Secure Response]

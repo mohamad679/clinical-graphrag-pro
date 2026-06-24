@@ -1,0 +1,60 @@
+# Clinical GraphRAG Pro — production override
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml --profile production up -d
+
+services:
+  api:
+    environment:
+      - APP_ENV=production
+      - DEBUG=false
+      - LOG_LEVEL=WARNING
+      - OBSERVABILITY_MODE=PRODUCTION_METADATA_ONLY
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:?Set POSTGRES_USER}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:?Set POSTGRES_DB}
+      - JWT_SECRET=${JWT_SECRET:?Set JWT_SECRET}
+      - REDIS_URL=${REDIS_URL:?Set REDIS_URL with authentication/TLS where applicable}
+      - CORS_ORIGINS=${CORS_ORIGINS:?Set production CORS_ORIGINS}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD:?Set NEO4J_PASSWORD}
+    mem_limit: 2g
+    ports: []
+
+  worker:
+    environment:
+      - APP_ENV=production
+      - DEBUG=false
+      - LOG_LEVEL=WARNING
+      - OBSERVABILITY_MODE=PRODUCTION_METADATA_ONLY
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:?Set POSTGRES_USER}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:?Set POSTGRES_DB}
+      - JWT_SECRET=${JWT_SECRET:?Set JWT_SECRET}
+      - REDIS_URL=${REDIS_URL:?Set REDIS_URL with authentication/TLS where applicable}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD:?Set NEO4J_PASSWORD}
+    mem_limit: 2g
+    ports: []
+
+  celery-beat:
+    environment:
+      - APP_ENV=production
+      - DEBUG=false
+      - LOG_LEVEL=WARNING
+      - OBSERVABILITY_MODE=PRODUCTION_METADATA_ONLY
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:?Set POSTGRES_USER}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:?Set POSTGRES_DB}
+      - JWT_SECRET=${JWT_SECRET:?Set JWT_SECRET}
+      - REDIS_URL=${REDIS_URL:?Set REDIS_URL with authentication/TLS where applicable}
+    mem_limit: 512m
+    ports: []
+
+  postgres:
+    mem_limit: 1g
+    ports: []
+
+  redis:
+    mem_limit: 512m
+    ports: []
+
+  neo4j:
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:?Set NEO4J_PASSWORD}
+    mem_limit: 1g
+    ports: []
+
+  qdrant:
+    mem_limit: 1g
+    ports: []

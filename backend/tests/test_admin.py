@@ -4,24 +4,36 @@ Login, health, metrics, sessions, config.
 """
 
 import pytest
-from httpx import ASGITransport, AsyncClient
+from sqlalchemy import delete
 
-from app.main import app
 from app.core.logging_config import RequestMetrics
-
-
-# ── Fixtures ────────────────────────────────────────────
-
-@pytest.fixture
-async def client():
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as ac:
-        yield ac
+from app.core.database import async_session_factory
+from app.models.user import User as DBUser
 
 
 # ── Login Endpoint ──────────────────────────────────────
 
 class TestLoginAPI:
+
+    @pytest.mark.anyio
+    async def test_bootstrap_status_closed_when_users_exist(self, client):
+        response = await client.get("/api/auth/bootstrap/status")
+        assert response.status_code == 200
+        data = response.json()
+        assert data["bootstrap_open"] is False
+        assert data["user_count"] >= 1
+
+    @pytest.mark.anyio
+    async def test_bootstrap_status_open_when_database_is_empty(self, client):
+        async with async_session_factory() as session:
+            await session.execute(delete(DBUser))
+            await session.commit()
+
+        response = await client.get("/api/auth/bootstrap/status")
+        assert response.status_code == 200
+        data = response.json()
+        assert data["bootstrap_open"] is True
+        assert data["user_count"] == 0
 
     @pytest.mark.anyio
     async def test_login_success(self, client):
@@ -31,7 +43,8 @@ class TestLoginAPI:
         })
         assert response.status_code == 200
         data = response.json()
-        assert "token" in data
+        assert "access_token" in data
+        assert "refresh_token" in data
         assert data["user"]["role"] == "admin"
 
     @pytest.mark.anyio
@@ -69,7 +82,7 @@ class TestAuthMe:
             "email": "admin@clinicalgraph.ai",
             "password": "admin123",
         })
-        token = login_resp.json()["token"]
+        token = login_resp.json()["access_token"]
 
         # Then check /me
         response = await client.get(
@@ -87,8 +100,13 @@ class TestAuthMe:
 class TestAdminHealth:
 
     @pytest.mark.anyio
-    async def test_health_returns_data(self, client):
+    async def test_health_requires_admin(self, client):
         response = await client.get("/api/admin/health")
+        assert response.status_code == 401
+
+    @pytest.mark.anyio
+    async def test_health_returns_data(self, auth_client):
+        response = await auth_client.get("/api/admin/health")
         assert response.status_code == 200
         data = response.json()
         assert data["status"] == "healthy"
@@ -105,8 +123,8 @@ class TestAdminHealth:
 class TestAdminMetrics:
 
     @pytest.mark.anyio
-    async def test_metrics_returns_data(self, client):
-        response = await client.get("/api/admin/metrics")
+    async def test_metrics_returns_data(self, auth_client):
+        response = await auth_client.get("/api/admin/metrics")
         assert response.status_code == 200
         data = response.json()
         assert "total_requests" in data
@@ -114,6 +132,8 @@ class TestAdminMetrics:
         assert "error_rate_pct" in data
         assert "avg_latency_ms" in data
         assert "p95_latency_ms" in data
+        assert "dashboard_metrics" in data
+        assert "worker_queue_depth" in data["dashboard_metrics"]
 
 
 # ── Admin Sessions ──────────────────────────────────────
@@ -121,8 +141,8 @@ class TestAdminMetrics:
 class TestAdminSessions:
 
     @pytest.mark.anyio
-    async def test_sessions_returns_list(self, client):
-        response = await client.get("/api/admin/sessions")
+    async def test_sessions_returns_list(self, auth_client):
+        response = await auth_client.get("/api/admin/sessions")
         assert response.status_code == 200
         data = response.json()
         assert "sessions" in data
@@ -134,8 +154,8 @@ class TestAdminSessions:
 class TestAdminConfig:
 
     @pytest.mark.anyio
-    async def test_config_returns_sections(self, client):
-        response = await client.get("/api/admin/config")
+    async def test_config_returns_sections(self, auth_client):
+        response = await auth_client.get("/api/admin/config")
         assert response.status_code == 200
         data = response.json()
         assert "llm" in data

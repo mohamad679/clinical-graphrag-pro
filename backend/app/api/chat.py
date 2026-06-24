@@ -1,287 +1,94 @@
 """
-Chat API endpoints — SSE streaming, session persistence, and WebSocket support.
+Chat API endpoints — unified sync/stream orchestration, session persistence, and WebSocket support.
 """
 
+from __future__ import annotations
+
 import json
-import uuid
 import logging
+import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Depends, HTTPException, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import StreamingResponse
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-
-from app.core.database import get_db
-from app.core.redis import redis_service
-from app.models.chat import ChatSession, ChatMessage
-from app.models.medical_image import MedicalImage
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
+
+from app.core.config import get_settings
+from app.core.auth import User, auth_service, require_authenticated_user
+from app.core.database import async_session_factory, get_db
+from app.core.error_envelope import log_internal_error, safe_error_envelope
+from app.core.metrics import mark_chat_request
+from app.core.rate_limiter import rate_limiter
+from app.core.trace_sanitizer import build_public_message_metadata, sanitize_source_references
+from app.models.chat import ChatMessage, ChatSession
+from app.models.user import User as DBUser
 from app.schemas.chat import (
+    ChatFeedback,
+    ChatMessageResponse,
     ChatRequest,
     ChatSessionResponse,
-    ChatMessageResponse,
-    ChatFeedback,
 )
-from app.services.rag import rag_service
+from app.services.chat_orchestrator import chat_orchestrator
+from app.services.websocket_ticket import websocket_ticket_service
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/chat", tags=["Chat"])
 
 
-# ── SSE Streaming Endpoint ───────────────────────────────
+def _websocket_ticket(websocket: WebSocket) -> str | None:
+    query_ticket = websocket.query_params.get("ticket")
+    return query_ticket.strip() if query_ticket else None
+
+
+def _debug_trace_authorized(user: User, *, trace_level: str) -> bool:
+    if trace_level != "debug_redacted":
+        return False
+    settings = get_settings()
+    return user.role == "admin" and settings.app_env != "production" and settings.debug
+
+
+def _message_response(
+    message: ChatMessage,
+    *,
+    trace_level: str = "public",
+    debug_trace_authorized: bool = False,
+) -> ChatMessageResponse:
+    metadata = build_public_message_metadata(
+        message.metadata_,
+        trace_level=trace_level,
+        debug_trace_authorized=debug_trace_authorized,
+    )
+    return ChatMessageResponse(
+        id=message.id,
+        role=message.role,
+        content=message.content,
+        sources=sanitize_source_references(message.sources),
+        reasoning_steps=message.reasoning_steps,
+        confidence_score=message.confidence_score,
+        heuristic_evidence_support_score=metadata.get("heuristic_evidence_support_score"),
+        metadata=metadata,
+        created_at=message.created_at,
+    )
+
 
 @router.post("")
-async def chat(request: ChatRequest, db: AsyncSession = Depends(get_db)):
-    """
-    Stream a RAG-powered response via Server-Sent Events.
-    Persists the conversation to PostgreSQL.
-
-    Events:
-      - type: "reasoning"  → chain-of-thought step
-      - type: "source"     → retrieved source references
-      - type: "token"      → generated text token
-      - type: "done"       → stream complete
-      - type: "error"      → error occurred
-    """
-
-    # Resolve or create session
-    if request.session_id:
-        result = await db.execute(
-            select(ChatSession).where(ChatSession.id == request.session_id)
-        )
-        session = result.scalar_one_or_none()
-        if not session:
-            raise HTTPException(status_code=404, detail="Session not found")
-    else:
-        session = ChatSession(title=request.message[:80])
-        db.add(session)
-        await db.flush()  # get the ID
-
-    session_id = session.id
-
-    # Save user message
-    user_msg = ChatMessage(
-        session_id=session_id,
-        role="user",
-        content=request.message,
-    )
-    db.add(user_msg)
-    await db.flush()
-
-    # Load chat history for context
-    history_result = await db.execute(
-        select(ChatMessage)
-        .where(ChatMessage.session_id == session_id)
-        .order_by(ChatMessage.created_at)
-    )
-    history_rows = history_result.scalars().all()
-    chat_history = [
-        {"role": m.role, "content": m.content}
-        for m in history_rows[-10:]  # last 10 messages
-        if m.role in ("user", "assistant")
-    ]
-
-    # We need to commit the user message before streaming
-    await db.commit()
+async def chat(
+    request: ChatRequest,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_authenticated_user),
+):
+    """Stream a grounded response via Server-Sent Events."""
+    mark_chat_request()
 
     async def event_generator():
-        collected_tokens = []
-        collected_sources = None
-
-        if request.attached_image_id:
-            # ── Multi-modal Vision Chat ─────────────────────
-            img_result = await db.execute(
-                select(MedicalImage)
-                .options(selectinload(MedicalImage.annotations))
-                .where(MedicalImage.id == request.attached_image_id)
-            )
-            image = img_result.scalar_one_or_none()
-            
-            if not image:
-                yield f"data: {json.dumps({'type': 'error', 'content': 'Attached image not found'})}\n\n"
-                return
-                
-            yield f"data: {json.dumps({'type': 'reasoning', 'step': 1, 'title': 'Image Analysis', 'description': f'Loading vision context for {image.original_filename}', 'status': 'running'})}\n\n"
-            
-            # --- Dynamic Vision Analysis ---
-            if not image.analysis_result:
-                yield f"data: {json.dumps({'type': 'reasoning', 'step': 1.5, 'title': 'Vision Processing', 'description': 'Triggering Vision LLM to extract biomedical features from image...', 'status': 'running'})}\n\n"
-                try:
-                    from app.services.vision import vision_service
-                    from pathlib import Path
-                    from datetime import datetime, timezone
-                    
-                    image_path = Path(image.file_path)
-                    image_data = image_path.read_bytes()
-                    
-                    analysis = await vision_service.analyze_image(
-                        image_data, image.mime_type, ""
-                    )
-                    
-                    # Update the DB record
-                    image.analysis_result = analysis
-                    image.analysis_status = "completed" if "error" not in analysis else "failed"
-                    image.analyzed_at = datetime.now(timezone.utc)
-                    image.modality = analysis.get("modality_detected")
-                    image.body_part = analysis.get("body_part_detected")
-                    
-                    await db.commit()
-                    await db.refresh(image)
-                    
-                    yield f"data: {json.dumps({'type': 'reasoning', 'step': 1.5, 'title': 'Vision Processing', 'description': 'Vision Extraction Complete.', 'status': 'done'})}\n\n"
-                except Exception as e:
-                    logger.error(f"Dynamic image analysis failed: {e}")
-            # -------------------------------
-            
-            yield f"data: {json.dumps({'type': 'reasoning', 'step': 1, 'title': 'Image Analysis', 'description': 'Context Loaded', 'status': 'done'})}\n\n"
-
-            # Format image context
-            analysis = image.analysis_result or {}
-            img_context = f"Image Name: {image.original_filename}\n"
-            
-            if "error" in analysis:
-                err_msg = analysis.get("error", "Unknown vision error")
-                img_context += f"WARNING TO AI: The Vision Extraction API completely failed. Here is the exact error: {err_msg}\n"
-                img_context += f"ACTION REQUIRED: Respond to the user gracefully, apologizing that you cannot see the image because the Vision API quota is exhausted or failed. Do not say 'the context says None'. Explain the actual technical limitation.\n"
-            else:
-                img_context += f"Detected Modality: {image.modality}\n"
-                img_context += f"Body Part: {image.body_part}\n"
-                img_context += f"Summary: {analysis.get('summary', 'No summary available')}\n"
-                
-                if analysis.get('findings'):
-                    img_context += "\nKey Findings:\n" + "\n".join(f"- {f.get('description', str(f)) if isinstance(f, dict) else f}" for f in analysis['findings'])
-                if analysis.get('recommendations'):
-                    img_context += "\nRecommendations:\n" + "\n".join(f"- {r}" for r in analysis['recommendations'])
-                if analysis.get('differential_diagnosis'):
-                    img_context += "\nDifferential Diagnosis:\n" + "\n".join(f"- {d.get('condition', str(d)) if isinstance(d, dict) else d}" for d in analysis['differential_diagnosis'])
-                    
-            # Add annotations
-            if image.annotations:
-                img_context += "\n\nSpecific User or AI Annotations identified in the image:\n"
-                for ann in image.annotations:
-                    img_context += f"- {ann.label} ({ann.annotation_type})"
-                    if ann.notes:
-                        img_context += f": {ann.notes}"
-                    img_context += "\n"
-
-            # Route directly to LLM Service with this image context
-            from app.services.llm import llm_service
-            yield f"data: {json.dumps({'type': 'reasoning', 'step': 2, 'title': 'Generating answer', 'description': 'Streaming response based on medical image analysis...', 'status': 'running'})}\n\n"
-            
-            collected_sources = [{"document_id": str(image.id), "document_name": image.original_filename, "chunk_index": 0, "text": "Image Analysis Data", "relevance_score": 1.0}]
-            yield f"data: {json.dumps({'type': 'source', 'sources': collected_sources})}\n\n"
-            
-            try:
-                async for token in llm_service.generate_stream(
-                    user_message=request.message,
-                    context=img_context,
-                    chat_history=chat_history,
-                ):
-                    collected_tokens.append(token)
-                    yield f"data: {json.dumps({'type': 'token', 'content': token})}\n\n"
-            except Exception as e:
-                logger.error(f"Image chat generation failed: {e}")
-                yield f"data: {json.dumps({'type': 'error', 'content': f'Generation failed: {str(e)}'})}\n\n"
-                return
-
-            yield f"data: {json.dumps({'type': 'reasoning', 'step': 2, 'title': 'Generating answer', 'description': 'Response complete.', 'status': 'done'})}\n\n"
-
-        elif request.attached_document_id:
-            # ── Multi-modal Document Chat ─────────────────────
-            from app.services.vector_store import vector_store_service
-            yield f"data: {json.dumps({'type': 'reasoning', 'step': 1, 'title': 'Document Analysis', 'description': 'Loading document content for focused analysis...', 'status': 'done'})}\n\n"
-            
-            all_chunks = vector_store_service.get_all_chunks()
-            doc_chunks = [c for c in all_chunks if str(c.get("document_id")) == str(request.attached_document_id)]
-            
-            if not doc_chunks:
-                yield f"data: {json.dumps({'type': 'error', 'content': 'Attached document not found or has no content'})}\n\n"
-                return
-                
-            doc_name = doc_chunks[0].get("document_name", "Unknown Document")
-            
-            doc_context = f"Document Name: {doc_name}\n\nContent:\n"
-            for i, c in enumerate(doc_chunks[:10]):  # Limit to 10 chunks (~5k tokens) to prevent 413 Payload Too Large
-                doc_context += f"--- Part {i+1} ---\n{c.get('chunk_text', '')}\n"
-                
-            collected_sources = [{"document_id": str(request.attached_document_id), "document_name": doc_name, "chunk_index": i, "text": c.get("chunk_text", "")[:200], "relevance_score": 1.0} for i, c in enumerate(doc_chunks[:5])]
-            
-            yield f"data: {json.dumps({'type': 'reasoning', 'step': 2, 'title': 'Generating answer', 'description': 'Streaming response based only on the attached document...', 'status': 'running'})}\n\n"
-            yield f"data: {json.dumps({'type': 'source', 'sources': collected_sources})}\n\n"
-            
-            from app.services.llm import llm_service
-            try:
-                async for token in llm_service.generate_stream(
-                    user_message=request.message,
-                    context=doc_context,
-                    chat_history=chat_history,
-                ):
-                    collected_tokens.append(token)
-                    yield f"data: {json.dumps({'type': 'token', 'content': token})}\n\n"
-            except Exception as e:
-                logger.error(f"Document chat generation failed: {e}")
-                yield f"data: {json.dumps({'type': 'error', 'content': f'Generation failed: {str(e)}'})}\n\n"
-                return
-
-            yield f"data: {json.dumps({'type': 'reasoning', 'step': 2, 'title': 'Generating answer', 'description': 'Response complete.', 'status': 'done'})}\n\n"
-
-        else:
-            # ── Standard RAG Pipeline ───────────────────────
-            async for chunk in rag_service.query_stream(
-                question=request.message,
-                top_k=5,
-                chat_history=chat_history,
-            ):
-                if chunk.get("type") == "token":
-                    collected_tokens.append(chunk.get("content", ""))
-                elif chunk.get("type") == "source":
-                    collected_sources = chunk.get("sources")
-
-                event_data = json.dumps(chunk)
-                yield f"data: {event_data}\n\n"
-
-        # Save assistant response to DB
         try:
-            async with (await _get_session()) as save_db:
-                assistant_content = "".join(collected_tokens)
-                
-                import re
-                confidence_score = None
-                match = re.search(r'\[CONFIDENCE:\s*([\d\.]+)\]', assistant_content, re.IGNORECASE)
-                if match:
-                    try:
-                        confidence_score = float(match.group(1))
-                        assistant_content = re.sub(r'\[CONFIDENCE:\s*[\d\.]+\]', '', assistant_content, flags=re.IGNORECASE).strip()
-                    except ValueError:
-                        pass
-
-                assistant_msg = ChatMessage(
-                    session_id=session_id,
-                    role="assistant",
-                    content=assistant_content,
-                    sources=collected_sources,
-                    token_count=len(collected_tokens),
-                    confidence_score=confidence_score,
-                )
-                save_db.add(assistant_msg)
-                await save_db.commit()
-
-                # Cache in Redis
-                cache_key = f"chat:last_response:{session_id}"
-                await redis_service.set(cache_key, {
-                    "answer": assistant_content,
-                    "sources": collected_sources,
-                }, ttl=1800)
-
-        except Exception as e:
-            logger.error(f"Failed to save assistant message: {e}")
-
-        # Final event
-        final = json.dumps({
-            "type": "done",
-            "session_id": str(session_id),
-        })
-        yield f"data: {final}\n\n"
+            async for event in chat_orchestrator.stream(db, request, user):
+                yield f"data: {json.dumps(event)}\n\n"
+        except Exception as exc:
+            request_id = getattr(request, "request_id", None)
+            log_internal_error(logger, "chat.stream_failed", exc, error_code="streaming_failed", request_id=request_id)
+            yield f"data: {json.dumps({'type': 'error', **safe_error_envelope('streaming_failed', request_id=request_id)})}\n\n"
 
     return StreamingResponse(
         event_generator(),
@@ -294,47 +101,90 @@ async def chat(request: ChatRequest, db: AsyncSession = Depends(get_db)):
     )
 
 
-# ── Non-streaming sync endpoint ──────────────────────────
-
 @router.post("/sync")
-async def chat_sync(request: ChatRequest, db: AsyncSession = Depends(get_db)):
-    """Non-streaming chat endpoint for testing."""
-    result = await rag_service.query(
-        question=request.message,
-        top_k=5,
-    )
-    return result
+async def chat_sync(
+    request: ChatRequest,
+    http_request: Request,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_authenticated_user),
+    trace_level: str = "public",
+):
+    """Non-streaming chat endpoint with the same orchestration path as SSE chat."""
+    mark_chat_request()
+    if trace_level not in {"public", "debug_redacted"}:
+        raise HTTPException(status_code=400, detail="Unsupported trace level")
+    debug_allowed = _debug_trace_authorized(user, trace_level=trace_level)
+    if trace_level == "debug_redacted" and not debug_allowed:
+        raise HTTPException(status_code=403, detail="Debug trace is not available")
+    try:
+        payload = await chat_orchestrator.execute_sync(
+            db,
+            request,
+            user,
+            trace_level=trace_level,
+            debug_trace_authorized=debug_allowed,
+        )
+    except HTTPException:
+        raise
+    except Exception as exc:
+        request_id = getattr(http_request.state, "request_id", None)
+        log_internal_error(logger, "chat.sync_failed", exc, error_code="retrieval_failed", request_id=request_id)
+        return safe_error_envelope("retrieval_failed", request_id=request_id)
+    http_request.state.session_id = payload.get("session_id")
+    return payload
 
-
-# ── Session Management ───────────────────────────────────
 
 @router.get("/sessions")
-async def list_sessions(db: AsyncSession = Depends(get_db)):
+async def list_sessions(
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_authenticated_user),
+):
     """List all chat sessions."""
-    result = await db.execute(
-        select(ChatSession).order_by(ChatSession.updated_at.desc())
-    )
-    sessions = result.scalars().all()
-    return [
-        ChatSessionResponse(
-            id=s.id,
-            title=s.title,
-            created_at=s.created_at,
-            updated_at=s.updated_at,
-            message_count=len(s.messages),
-        )
-        for s in sessions
-    ]
+    try:
+        query = select(ChatSession).options(selectinload(ChatSession.messages)).order_by(ChatSession.updated_at.desc())
+        if user.role != "admin":
+            query = query.where(ChatSession.user_id == user.id)
+        result = await db.execute(query)
+        sessions = result.scalars().all()
+        return [
+            ChatSessionResponse(
+                id=session.id,
+                title=session.title,
+                created_at=session.created_at,
+                updated_at=session.updated_at,
+                message_count=len(session.messages or []),
+            )
+            for session in sessions
+        ]
+    except Exception as exc:
+        settings = get_settings()
+        log_internal_error(logger, "chat.sessions_list_failed", exc, error_code="chat_sessions_failed")
+        if settings.enable_demo_auth and settings.app_env != "production":
+            return []
+        raise
 
 
 @router.get("/sessions/{session_id}")
-async def get_session(session_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
+async def get_session(
+    session_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_authenticated_user),
+    trace_level: str = "public",
+):
     """Get a session with all messages."""
+    if trace_level not in {"public", "debug_redacted"}:
+        raise HTTPException(status_code=400, detail="Unsupported trace level")
+    debug_allowed = _debug_trace_authorized(user, trace_level=trace_level)
+    if trace_level == "debug_redacted" and not debug_allowed:
+        raise HTTPException(status_code=403, detail="Debug trace is not available")
+
     result = await db.execute(
-        select(ChatSession).where(ChatSession.id == session_id)
+        select(ChatSession).options(selectinload(ChatSession.messages)).where(ChatSession.id == session_id)
     )
     session = result.scalar_one_or_none()
     if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+    if user.role != "admin" and session.user_id != user.id:
         raise HTTPException(status_code=404, detail="Session not found")
 
     return {
@@ -346,28 +196,24 @@ async def get_session(session_id: uuid.UUID, db: AsyncSession = Depends(get_db))
             message_count=len(session.messages),
         ),
         "messages": [
-            ChatMessageResponse(
-                id=m.id,
-                role=m.role,
-                content=m.content,
-                sources=m.sources,
-                reasoning_steps=m.reasoning_steps,
-                confidence_score=m.confidence_score,
-                created_at=m.created_at,
-            )
-            for m in session.messages
+            _message_response(message, trace_level=trace_level, debug_trace_authorized=debug_allowed)
+            for message in session.messages
         ],
     }
 
 
 @router.delete("/sessions/{session_id}")
-async def delete_session(session_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
+async def delete_session(
+    session_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_authenticated_user),
+):
     """Delete a chat session and all its messages."""
-    result = await db.execute(
-        select(ChatSession).where(ChatSession.id == session_id)
-    )
+    result = await db.execute(select(ChatSession).where(ChatSession.id == session_id))
     session = result.scalar_one_or_none()
     if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+    if user.role != "admin" and session.user_id != user.id:
         raise HTTPException(status_code=404, detail="Session not found")
 
     await db.delete(session)
@@ -376,149 +222,131 @@ async def delete_session(session_id: uuid.UUID, db: AsyncSession = Depends(get_d
 
 @router.post("/messages/{message_id}/feedback")
 async def submit_feedback(
-    message_id: uuid.UUID, 
-    feedback: ChatFeedback, 
-    db: AsyncSession = Depends(get_db)
+    message_id: uuid.UUID,
+    feedback: ChatFeedback,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_authenticated_user),
 ):
-    """Submit a rating (+1 / -1) and optional comment for an AI message."""
-    # Verify message exists
-    result = await db.execute(
-        select(ChatMessage).where(ChatMessage.id == message_id)
-    )
-    msg = result.scalar_one_or_none()
-    if not msg:
+    """Submit a 1-5 star rating and optional comment for an AI message."""
+    result = await db.execute(select(ChatMessage).where(ChatMessage.id == message_id))
+    message = result.scalar_one_or_none()
+    if not message:
         raise HTTPException(status_code=404, detail="Message not found")
-        
-    # Import locally to avoid circular dependencies if any
+
     from app.models.user_feedback import UserFeedback
-    
-    # Check if feedback already exists
-    existing = await db.execute(
-        select(UserFeedback).where(UserFeedback.message_id == str(message_id))
-    )
-    existing_fb = existing.scalar_one_or_none()
-    
-    if existing_fb:
-        existing_fb.rating = feedback.rating
-        existing_fb.comment = feedback.comment
+
+    existing = await db.execute(select(UserFeedback).where(UserFeedback.message_id == str(message_id)))
+    existing_feedback = existing.scalar_one_or_none()
+
+    if existing_feedback:
+        existing_feedback.rating = feedback.rating
+        existing_feedback.comment = feedback.comment
+        existing_feedback.user_id = user.id
     else:
-        new_fb = UserFeedback(
-            message_id=str(message_id),
-            session_id=str(msg.session_id),
-            rating=feedback.rating,
-            comment=feedback.comment
+        db.add(
+            UserFeedback(
+                user_id=user.id,
+                message_id=str(message_id),
+                session_id=str(message.session_id),
+                rating=feedback.rating,
+                comment=feedback.comment,
+            )
         )
-        db.add(new_fb)
-        
+
     await db.commit()
     return {"success": True, "message": "Feedback recorded."}
 
 
 @router.post("/sessions/{session_id}/generate-note")
-async def generate_clinical_note(session_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
-    """Generate a SOAP note from the chat history of a session."""
-    # Verify session
-    result = await db.execute(
-        select(ChatSession).where(ChatSession.id == session_id)
-    )
-    session = result.scalar_one_or_none()
-    if not session:
-        raise HTTPException(status_code=404, detail="Session not found")
+async def generate_clinical_note(
+    session_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_authenticated_user),
+):
+    """Generate a traceable SOAP note from persisted chat history."""
+    return await chat_orchestrator.generate_note(db, session_id, user)
 
-    # Fetch history
-    history_result = await db.execute(
-        select(ChatMessage)
-        .where(ChatMessage.session_id == session_id)
-        .order_by(ChatMessage.created_at)
-    )
-    messages = history_result.scalars().all()
-    
-    if not messages:
-        raise HTTPException(status_code=400, detail="No messages in this session.")
-
-    history_text = ""
-    for msg in messages:
-        if msg.role in ("user", "assistant"):
-            role_name = "Clinician/User" if msg.role == "user" else "AI Assistant"
-            history_text += f"**{role_name}:** {msg.content}\n\n"
-
-    from app.services.llm import llm_service
-    
-    prompt = f"""
-You are an expert clinical scribe. Review the following conversation history between a clinician and a clinical AI assistant. 
-Based explicitly on the facts and data discussed in this history, generate a comprehensive and professional clinical note. 
-Format the output as a standard SOAP note (Subjective, Objective, Assessment, Plan) using Markdown. 
-Do not hallucinate information that was not discussed in the chat.
-
-Conversation History:
-{history_text}
-
-Output ONLY the formatted Markdown note.
-"""
-    
-    try:
-        note_markdown = await llm_service.generate(prompt)
-        # Clean up any markdown blocks if generated
-        clean_note = note_markdown.strip()
-        if clean_note.startswith("```md"):
-            clean_note = clean_note[5:]
-        elif clean_note.startswith("```markdown"):
-            clean_note = clean_note[11:]
-        if clean_note.endswith("```"):
-            clean_note = clean_note[:-3]
-            
-        return {"note": clean_note.strip()}
-    except Exception as e:
-        logger.error(f"Failed to generate clinical note: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail="Failed to generate note from LLM.")
-
-
-# ── WebSocket for real-time chat ─────────────────────────
 
 @router.websocket("/ws/{session_id}")
 async def websocket_chat(websocket: WebSocket, session_id: str):
     """
-    WebSocket endpoint for real-time bidirectional chat.
-    Clients send JSON: {"message": "..."}
-    Server sends JSON events matching the SSE format.
+    WebSocket endpoint for authenticated safe chat streaming.
     """
-    await websocket.accept()
-    logger.info(f"WebSocket connected: session={session_id}")
+    ticket = _websocket_ticket(websocket)
+    if not ticket:
+        await websocket.close(code=1008, reason="Authentication required")
+        return
 
     try:
-        while True:
-            data = await websocket.receive_json()
-            message = data.get("message", "")
+        session_uuid = uuid.UUID(session_id)
+    except ValueError:
+        await websocket.close(code=1008, reason="Invalid session")
+        return
 
-            if not message:
-                await websocket.send_json({"type": "error", "content": "Empty message"})
-                continue
-
-            # Stream RAG response over WebSocket
-            async for chunk in rag_service.query_stream(
-                question=message,
-                top_k=5,
-            ):
-                await websocket.send_json(chunk)
-
-            await websocket.send_json({
-                "type": "done",
-                "session_id": session_id,
-            })
-
-    except WebSocketDisconnect:
-        logger.info(f"WebSocket disconnected: session={session_id}")
-    except Exception as e:
-        logger.error(f"WebSocket error: {e}")
+    async with async_session_factory() as db:
         try:
-            await websocket.send_json({"type": "error", "content": str(e)})
+            ticket_record = await websocket_ticket_service.consume_ticket(
+                ticket,
+                expected_session_id=str(session_uuid),
+            )
+            if ticket_record is None:
+                await websocket.close(code=1008, reason="Invalid WebSocket ticket")
+                return
+            result = await db.execute(select(DBUser).where(DBUser.id == ticket_record.user_id))
+            db_user = result.scalar_one_or_none()
+            if db_user is None or not db_user.is_active:
+                await websocket.close(code=1008, reason="Authentication failed")
+                return
+            user = auth_service._to_user_context(db_user, session_id=ticket_record.session_id)
+            if (user.tenant_id or user.id) != ticket_record.tenant_id:
+                await websocket.close(code=1008, reason="Authentication failed")
+                return
+            await db.commit()
+            await chat_orchestrator._get_session_or_404(db, session_uuid, user)
+        except HTTPException as exc:
+            await websocket.close(code=1008, reason=str(exc.detail))
+            return
         except Exception:
-            pass
+            logger.exception("WebSocket authentication failed")
+            await websocket.close(code=1008, reason="Authentication failed")
+            return
 
+        await websocket.accept()
+        websocket.state.user_id = user.id
+        websocket.state.user = user
+        logger.info("WebSocket connected: session=%s", session_id)
 
-# ── Helper ───────────────────────────────────────────────
+        try:
+            while True:
+                data = await websocket.receive_json()
+                message = str(data.get("message", "")).strip()
+                if not message:
+                    await websocket.send_json({"type": "error", "code": "EMPTY_MESSAGE", "content": "Empty message"})
+                    continue
 
-async def _get_session():
-    """Get a new async DB session (for use outside FastAPI dependency injection)."""
-    from app.core.database import async_session_factory
-    return async_session_factory()
+                try:
+                    await rate_limiter.check(websocket)
+                except HTTPException as exc:
+                    await websocket.send_json(
+                        {
+                            "type": "error",
+                            "code": "RATE_LIMITED",
+                            "content": str(exc.detail),
+                        }
+                    )
+                    continue
+
+                mark_chat_request()
+                request = ChatRequest(message=message, session_id=session_uuid)
+                async for event in chat_orchestrator.stream(db, request, user):
+                    await websocket.send_json(event)
+        except WebSocketDisconnect:
+            logger.info("WebSocket disconnected: session=%s", session_id)
+        except Exception as exc:
+            log_internal_error(logger, "chat.websocket_failed", exc, error_code="websocket_failed")
+            try:
+                await websocket.send_json(
+                    {"type": "error", "code": "WEBSOCKET_ERROR", **safe_error_envelope("websocket_failed")}
+                )
+            except Exception:
+                pass

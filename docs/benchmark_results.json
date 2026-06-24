@@ -1,0 +1,1550 @@
+{
+  "generated_at": "2026-04-01T19:00:56.479008+00:00",
+  "dataset": {
+    "path": "backend/data/golden_evaluation_dataset.jsonl",
+    "cases": 5,
+    "corpus_documents": 5,
+    "corpus_chunks": 5
+  },
+  "configuration": {
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "configured_embedding_dim": 768,
+    "effective_embedding_dim": 384,
+    "reranker_model": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+    "chunk_size": 512,
+    "chunk_overlap": 64,
+    "top_k": 5
+  },
+  "model_loading_ms": {
+    "embedding_model": 18366.941,
+    "reranker_model": 3553.695
+  },
+  "reranker_available": true,
+  "operation_latency_ms": {
+    "embedding_generation": {
+      "min_ms": 12.893,
+      "max_ms": 17.391,
+      "avg_ms": 14.566
+    },
+    "faiss_vector_search": {
+      "min_ms": 0.044,
+      "max_ms": 0.06,
+      "avg_ms": 0.051
+    },
+    "bm25_search": {
+      "min_ms": 0.253,
+      "max_ms": 0.439,
+      "avg_ms": 0.32
+    },
+    "rrf_fusion": {
+      "min_ms": 0.013,
+      "max_ms": 0.015,
+      "avg_ms": 0.013
+    },
+    "cross_encoder_rerank_top_5": {
+      "min_ms": 114.412,
+      "max_ms": 137.885,
+      "avg_ms": 127.844
+    }
+  },
+  "modes": {
+    "mode_a": {
+      "label": "FAISS only",
+      "avg_latency_ms": 18.898,
+      "precision_at_5": 0.36,
+      "mrr": 1.0,
+      "per_query": [
+        {
+          "question": "What medications was the patient started on for pneumonia?",
+          "keywords": [
+            "ceftriaxone",
+            "azithromycin"
+          ],
+          "latency_ms": 28.905,
+          "precision_at_5": 0.2,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "results": [
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 0.5909086465835571,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 0.4000367522239685,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 0.26954078674316406,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": 0.2523435950279236,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 0.1969929337501526,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What did the urine dipstick show for the 29-year-old pregnant female?",
+          "keywords": [
+            "protein"
+          ],
+          "latency_ms": 18.184,
+          "precision_at_5": 0.4,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "results": [
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 0.5920679569244385,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": 0.27693870663642883,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 0.2228831648826599,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 0.1636980175971985,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 0.11515561491250992,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What were the Troponin levels for the 65-year-old male with STEMI?",
+          "keywords": [
+            "2"
+          ],
+          "latency_ms": 15.159,
+          "precision_at_5": 0.8,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "results": [
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 0.6534401178359985,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 0.2664133906364441,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 0.24333365261554718,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 0.2345314621925354,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": 0.21890941262245178,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What pattern was seen on the ANA test for the SLE patient?",
+          "keywords": [
+            "homogenous",
+            "pattern",
+            "640"
+          ],
+          "latency_ms": 14.785,
+          "precision_at_5": 0.2,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "results": [
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": 0.5110216736793518,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 0.2896158993244171,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 0.2625596523284912,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 0.2584317922592163,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 0.2154240906238556,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What treatment was initiated for the actively bleeding esophageal varices?",
+          "keywords": [
+            "octreotide",
+            "infusion",
+            "endoscopic"
+          ],
+          "latency_ms": 17.457,
+          "precision_at_5": 0.2,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "results": [
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 0.6618161201477051,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 0.24741053581237793,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 0.23645959794521332,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 0.17422771453857422,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": 0.12938064336776733,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        }
+      ]
+    },
+    "mode_b": {
+      "label": "BM25 only",
+      "avg_latency_ms": 0.294,
+      "precision_at_5": 0.36,
+      "mrr": 0.9,
+      "per_query": [
+        {
+          "question": "What medications was the patient started on for pneumonia?",
+          "keywords": [
+            "ceftriaxone",
+            "azithromycin"
+          ],
+          "latency_ms": 0.423,
+          "precision_at_5": 0.2,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "results": [
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 4.92082855976539,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 1.5033744584977948,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 1.210895022531873,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 0.45006724648222834,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What did the urine dipstick show for the 29-year-old pregnant female?",
+          "keywords": [
+            "protein"
+          ],
+          "latency_ms": 0.33,
+          "precision_at_5": 0.4,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "results": [
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 4.96217473946034,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 0.9632599637527123,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 0.45006724648222834,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 0.41163645693441,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": 0.3220556110982294,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What were the Troponin levels for the 65-year-old male with STEMI?",
+          "keywords": [
+            "2"
+          ],
+          "latency_ms": 0.331,
+          "precision_at_5": 0.8,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "results": [
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 4.904010594970341,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 1.1600169170246573,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 0.9632599637527123,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 0.6491503933156102,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": 0.3694038532216843,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What pattern was seen on the ANA test for the SLE patient?",
+          "keywords": [
+            "homogenous",
+            "pattern",
+            "640"
+          ],
+          "latency_ms": 0.218,
+          "precision_at_5": 0.2,
+          "mrr": 0.5,
+          "first_relevant_rank": 2,
+          "results": [
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 3.4494340331749953,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": 3.1546221067743767,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 0.8814092640358377,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 0.7137707366063237,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 0.6751008697233425,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What treatment was initiated for the actively bleeding esophageal varices?",
+          "keywords": [
+            "octreotide",
+            "infusion",
+            "endoscopic"
+          ],
+          "latency_ms": 0.169,
+          "precision_at_5": 0.2,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "results": [
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 5.66681129791977,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 2.486174069422283,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 0.32948575849603523,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 0.205818228467205,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        }
+      ]
+    },
+    "mode_c": {
+      "label": "Hybrid FAISS+BM25 + RRF",
+      "avg_latency_ms": 16.45,
+      "precision_at_5": 0.36,
+      "mrr": 1.0,
+      "per_query": [
+        {
+          "question": "What medications was the patient started on for pneumonia?",
+          "keywords": [
+            "ceftriaxone",
+            "azithromycin"
+          ],
+          "latency_ms": 15.018,
+          "precision_at_5": 0.2,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "retrieval_method": "hybrid",
+          "reranked": false,
+          "total_candidates": 5,
+          "results": [
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 0.03333333333333333,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 0.03278688524590164,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 0.03200204813108039,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 0.031754032258064516,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": 0.015873015873015872,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What did the urine dipstick show for the 29-year-old pregnant female?",
+          "keywords": [
+            "protein"
+          ],
+          "latency_ms": 16.879,
+          "precision_at_5": 0.4,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "retrieval_method": "hybrid",
+          "reranked": false,
+          "total_candidates": 5,
+          "results": [
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 0.03333333333333333,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": 0.032018442622950824,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 0.032018442622950824,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 0.03200204813108039,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 0.03200204813108039,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What were the Troponin levels for the 65-year-old male with STEMI?",
+          "keywords": [
+            "2"
+          ],
+          "latency_ms": 19.392,
+          "precision_at_5": 0.8,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "retrieval_method": "hybrid",
+          "reranked": false,
+          "total_candidates": 5,
+          "results": [
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 0.03333333333333333,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 0.03252247488101534,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 0.032266458495966696,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 0.03200204813108039,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": 0.03125,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What pattern was seen on the ANA test for the SLE patient?",
+          "keywords": [
+            "homogenous",
+            "pattern",
+            "640"
+          ],
+          "latency_ms": 16.283,
+          "precision_at_5": 0.2,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "retrieval_method": "hybrid",
+          "reranked": false,
+          "total_candidates": 5,
+          "results": [
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": 0.03306010928961749,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 0.03229166666666666,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 0.032266458495966696,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 0.03225806451612903,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 0.03149801587301587,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What treatment was initiated for the actively bleeding esophageal varices?",
+          "keywords": [
+            "octreotide",
+            "infusion",
+            "endoscopic"
+          ],
+          "latency_ms": 14.68,
+          "precision_at_5": 0.2,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "retrieval_method": "hybrid",
+          "reranked": false,
+          "total_candidates": 5,
+          "results": [
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 0.03333333333333333,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 0.03252247488101534,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 0.032266458495966696,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 0.03200204813108039,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": 0.015625,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        }
+      ]
+    },
+    "mode_d": {
+      "label": "Hybrid + cross-encoder reranker",
+      "avg_latency_ms": 242.471,
+      "precision_at_5": 0.36,
+      "mrr": 1.0,
+      "per_query": [
+        {
+          "question": "What medications was the patient started on for pneumonia?",
+          "keywords": [
+            "ceftriaxone",
+            "azithromycin"
+          ],
+          "latency_ms": 489.05,
+          "precision_at_5": 0.2,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "retrieval_method": "hybrid",
+          "reranked": true,
+          "total_candidates": 5,
+          "results": [
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": 6.414708614349365,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": -6.4299421310424805,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": -7.677601337432861,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": -10.15857982635498,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": -10.76240348815918,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What did the urine dipstick show for the 29-year-old pregnant female?",
+          "keywords": [
+            "protein"
+          ],
+          "latency_ms": 157.722,
+          "precision_at_5": 0.4,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "retrieval_method": "hybrid",
+          "reranked": true,
+          "total_candidates": 5,
+          "results": [
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": 8.791135787963867,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": -5.549161911010742,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": -9.455759048461914,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": -9.789615631103516,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": -10.595030784606934,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What were the Troponin levels for the 65-year-old male with STEMI?",
+          "keywords": [
+            "2"
+          ],
+          "latency_ms": 278.758,
+          "precision_at_5": 0.8,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "retrieval_method": "hybrid",
+          "reranked": true,
+          "total_candidates": 5,
+          "results": [
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": 6.479249477386475,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": -4.3622612953186035,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": -7.661223411560059,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": -9.174406051635742,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": -9.669486045837402,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What pattern was seen on the ANA test for the SLE patient?",
+          "keywords": [
+            "homogenous",
+            "pattern",
+            "640"
+          ],
+          "latency_ms": 146.22,
+          "precision_at_5": 0.2,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "retrieval_method": "hybrid",
+          "reranked": true,
+          "total_candidates": 5,
+          "results": [
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": 5.549014091491699,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": -8.234293937683105,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": -8.66237735748291,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": -9.922470092773438,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": -10.088760375976562,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        },
+        {
+          "question": "What treatment was initiated for the actively bleeding esophageal varices?",
+          "keywords": [
+            "octreotide",
+            "infusion",
+            "endoscopic"
+          ],
+          "latency_ms": 140.606,
+          "precision_at_5": 0.2,
+          "mrr": 1.0,
+          "first_relevant_rank": 1,
+          "retrieval_method": "hybrid",
+          "reranked": true,
+          "total_candidates": 5,
+          "results": [
+            {
+              "chunk_text": "A 55-year-old male with a history of chronic alcohol abuse presents with hematemesis. Endoscopy reveals actively bleeding esophageal varices. The patient is resuscitated with IV fluids and 2 units of PRBCs. Octreotide infusion is initiated, and endoscopic band ligation is successfully performed.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-05-ctx-01",
+              "document_name": "golden_case_05_context_01.txt",
+              "score": 6.920597076416016,
+              "chunk_id": "bf8e65ec-0ad5-4363-a243-158b70c3f485",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "The 78-year-old patient was admitted for community-acquired pneumonia. Chest X-ray revealed a right lower lobe consolidation. He was started on IV Ceftriaxone and Azithromycin.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-01-ctx-01",
+              "document_name": "golden_case_01_context_01.txt",
+              "score": -10.911832809448242,
+              "chunk_id": "2cac717c-05aa-4140-8fe8-fd9ae000beda",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "A 42-year-old female with a known history of systemic lupus erythematosus (SLE) presents with a malar rash, joint pain, and fatigue. Lab work reveals a positive ANA at 1:640 with a homogenous pattern and elevated anti-dsDNA antibodies. Her renal function indicates mild proteinuria; creatinine is 1.1 mg/dL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-04-ctx-01",
+              "document_name": "golden_case_04_context_01.txt",
+              "score": -11.15184211730957,
+              "chunk_id": "d627c51a-d351-4fc1-b01b-372f53b8f8c6",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 29-year-old pregnant female at 32 weeks gestation presenting with elevated blood pressure (160/110 mmHg), headache, and visual disturbances. Urine dipstick shows 3+ protein. She is diagnosed with severe preeclampsia and started on a Magnesium Sulfate drip for seizure prophylaxis.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-02-ctx-01",
+              "document_name": "golden_case_02_context_01.txt",
+              "score": -11.153188705444336,
+              "chunk_id": "9046ecb3-67ad-4ec3-9043-ade736ef0447",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            },
+            {
+              "chunk_text": "Patient is a 65-year-old male presenting with acute onset shortness of breath and chest pressure. EKG shows STEMI in the inferior leads. Patient has a history of hypertension and Type 2 Diabetes. Current medications include Metformin 1000mg BID and Lisinopril 20mg daily. Troponin levels are markedly elevated at 2.4 ng/mL.",
+              "chunk_index": 0,
+              "document_id": "benchmark-case-03-ctx-01",
+              "document_name": "golden_case_03_context_01.txt",
+              "score": -11.165721893310547,
+              "chunk_id": "4a5c929c-bcec-46bf-ad31-68f6b7aa4c01",
+              "page_start": null,
+              "page_end": null,
+              "source_offset_start": null,
+              "source_offset_end": null
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

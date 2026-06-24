@@ -3,7 +3,9 @@ Alembic environment configuration for async SQLAlchemy.
 """
 
 import asyncio
+import sys
 from logging.config import fileConfig
+from pathlib import Path
 
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
@@ -17,14 +19,17 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+BACKEND_DIR = Path(__file__).resolve().parents[1]
+if str(BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(BACKEND_DIR))
+
 # Import all models so Base.metadata sees them
+from app.core.config import get_settings
 from app.core.database import Base
-from app.models import (  # noqa: F401
-    Document, ChatSession, ChatMessage,
-    Workflow, WorkflowStep, ToolCall,
-)
+import app.models  # noqa: F401
 
 target_metadata = Base.metadata
+config.set_main_option("sqlalchemy.url", get_settings().database_url)
 
 
 def run_migrations_offline() -> None:

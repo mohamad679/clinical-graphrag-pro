@@ -4,9 +4,10 @@ JWT tokens, password hashing, rate limiting.
 """
 
 import pytest
-import time
+from sqlalchemy import select
 from app.core.auth import AuthService, auth_service
-from app.core.rate_limiter import RateLimiterService, TokenBucket
+from app.core.database import async_session_factory
+from app.models.user import User as DBUser
 
 
 # ── Password Hashing ────────────────────────────────────
@@ -14,10 +15,12 @@ from app.core.rate_limiter import RateLimiterService, TokenBucket
 class TestPasswordHashing:
     """Test password hashing utilities."""
 
-    def test_hash_deterministic(self):
+    def test_hash_is_salted(self):
         h1 = AuthService._hash_password("test123")
         h2 = AuthService._hash_password("test123")
-        assert h1 == h2
+        assert h1 != h2
+        assert h1.startswith("$argon2id$")
+        assert h2.startswith("$argon2id$")
 
     def test_hash_different_passwords(self):
         h1 = AuthService._hash_password("password1")
@@ -33,6 +36,32 @@ class TestPasswordHashing:
         svc = AuthService()
         hashed = svc._hash_password("mypassword")
         assert svc._verify_password("wrongpassword", hashed) is False
+
+    def test_verify_legacy_sha256_hash(self):
+        svc = AuthService()
+        legacy = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
+        assert svc._verify_password("password", legacy) is True
+
+    def test_pbkdf2_legacy_hash_requires_upgrade(self):
+        svc = AuthService()
+        legacy = svc._hash_password_pbkdf2_for_migration_tests("password")
+        result = svc._verify_password_with_metadata("password", legacy)
+        assert result.valid is True
+        assert result.scheme == "pbkdf2_sha256"
+        assert result.needs_rehash is True
+
+    def test_sha256_legacy_hash_requires_upgrade(self):
+        svc = AuthService()
+        legacy = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
+        result = svc._verify_password_with_metadata("password", legacy)
+        assert result.valid is True
+        assert result.scheme == "sha256_legacy"
+        assert result.needs_rehash is True
+
+    def test_malformed_hash_fails_safely(self):
+        svc = AuthService()
+        assert svc._verify_password("password", "pbkdf2_sha256$bad") is False
+        assert svc._verify_password("password", "$argon2id$bad") is False
 
 
 # ── JWT Tokens ──────────────────────────────────────────
@@ -67,10 +96,11 @@ class TestJWT:
         _, token = result
         payload = auth_service.verify_token(token)
         assert "sub" in payload
+        assert "sid" in payload
         assert "exp" in payload
         assert "iat" in payload
         assert "jti" in payload
-        assert payload["role"] == "user"
+        assert payload["role"] == "viewer"
 
 
 # ── Authentication ──────────────────────────────────────
@@ -88,7 +118,7 @@ class TestAuthentication:
         result = auth_service.authenticate("user@clinicalgraph.ai", "user123")
         assert result is not None
         user, _ = result
-        assert user.role == "user"
+        assert user.role == "viewer"
 
     def test_login_wrong_password(self):
         result = auth_service.authenticate("admin@clinicalgraph.ai", "wrongpass")
@@ -107,6 +137,25 @@ class TestAuthentication:
         user = auth_service.get_user_by_id("nonexistent-id")
         assert user is None
 
+    @pytest.mark.asyncio
+    async def test_legacy_pbkdf2_login_upgrades_persisted_hash(self):
+        svc = AuthService()
+        async with async_session_factory() as session:
+            result = await session.execute(select(DBUser).where(DBUser.email == "user@clinicalgraph.ai"))
+            db_user = result.scalar_one()
+            db_user.password_hash = svc._hash_password_pbkdf2_for_migration_tests("user123")
+            await session.commit()
+
+        async with async_session_factory() as session:
+            tokens = await svc.authenticate_async(session, "user@clinicalgraph.ai", "user123")
+            await session.commit()
+            assert tokens is not None
+
+        async with async_session_factory() as session:
+            result = await session.execute(select(DBUser).where(DBUser.email == "user@clinicalgraph.ai"))
+            upgraded = result.scalar_one()
+            assert upgraded.password_hash.startswith("$argon2id$")
+
 
 # ── Sessions ────────────────────────────────────────────
 
@@ -114,50 +163,7 @@ class TestSessions:
     """Test session tracking."""
 
     def test_record_and_list(self):
-        from app.core.auth import User
-        user = User(id="test", email="test@test.com", name="Test", role="user")
         initial_count = len(auth_service.get_sessions())
-        auth_service.record_session(user, "test-jti-123")
+        result = auth_service.authenticate("user@clinicalgraph.ai", "user123")
+        assert result is not None
         assert len(auth_service.get_sessions()) == initial_count + 1
-
-
-# ── Rate Limiter ────────────────────────────────────────
-
-class TestTokenBucket:
-    """Test token bucket algorithm."""
-
-    def test_consume_within_limit(self):
-        bucket = TokenBucket(tokens=5.0, max_tokens=5.0, refill_rate=1.0)
-        assert bucket.consume() is True
-        assert bucket.consume() is True
-
-    def test_consume_exhausted(self):
-        bucket = TokenBucket(tokens=1.0, max_tokens=5.0, refill_rate=0.001)
-        assert bucket.consume() is True
-        assert bucket.consume() is False  # No tokens left
-
-    def test_refill(self):
-        bucket = TokenBucket(tokens=0.0, max_tokens=5.0, refill_rate=1000.0)
-        # With high refill rate, tokens should replenish very quickly
-        time.sleep(0.01)
-        assert bucket.consume() is True
-
-    def test_retry_after(self):
-        bucket = TokenBucket(tokens=0.5, max_tokens=5.0, refill_rate=1.0)
-        assert bucket.retry_after >= 0.0
-
-
-class TestRateLimiter:
-    """Test rate limiter service."""
-
-    def test_check_allowed(self):
-        limiter = RateLimiterService()
-        allowed, _ = limiter.check("192.168.1.1")
-        assert allowed is True
-
-    def test_get_stats(self):
-        limiter = RateLimiterService()
-        stats = limiter.get_stats()
-        assert "enabled" in stats
-        assert "max_requests_per_minute" in stats
-        assert "active_buckets" in stats

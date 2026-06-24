@@ -1,0 +1,17 @@
+Adult Laboratory Reference Ranges
+
+CBC: WBC 4.0-11.0 x10^3/uL; RBC 4.5-5.9 x10^6/uL; Hgb 13.5-17.5 g/dL; Hct 41-53%; Plt 150-400 x10^3/uL.
+
+BMP: Na 135-145 mmol/L; K 3.5-5.1 mmol/L; Cl 98-107 mmol/L; CO2 22-29 mmol/L; BUN 7-20 mg/dL; Cr 0.7-1.3 mg/dL; Glucose 70-99 mg/dL fasting.
+
+LFTs: AST 10-40 U/L; ALT 7-56 U/L; ALP 44-147 U/L; Total bilirubin 0.1-1.2 mg/dL.
+
+Cardiac markers: Troponin I less than 0.04 ng/mL; BNP less than 100 pg/mL; CK-MB 0-5 ng/mL.
+
+Thyroid: TSH 0.4-4.0 mIU/L; Free T4 0.8-1.8 ng/dL.
+
+Lipids: Total cholesterol less than 200 mg/dL; LDL less than 100 mg/dL; HDL greater than 40 mg/dL in men and greater than 50 mg/dL in women; triglycerides less than 150 mg/dL.
+
+Clinical interpretation tips: Mild isolated abnormalities should be trended over time rather than treated in isolation. Troponin, BNP, creatinine, potassium, and glucose often require correlation with symptoms, EKG findings, fluid status, and medication exposure. TSH and Free T4 should be interpreted together because one abnormal value alone may not define thyroid disease. Lipid goals may be lower for patients with diabetes, ASCVD, or very high cardiovascular risk.
+
+Reference intervals vary by laboratory, assay platform, patient age, sex, pregnancy status, and clinical context. Always interpret borderline values with the local lab report and the overall clinical picture.

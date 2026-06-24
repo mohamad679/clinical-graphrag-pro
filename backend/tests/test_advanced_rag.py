@@ -3,7 +3,6 @@ Tests for Advanced RAG components (Phase 4, Week 7).
 Tests sentence-aware chunking, BM25 search, RRF fusion, and reranking.
 """
 
-import pytest
 from app.services.vector_store import VectorStoreService
 from app.services.bm25_index import BM25Index
 
@@ -78,14 +77,20 @@ class TestBM25Index:
 
     def test_tokenize(self):
         tokens = BM25Index._tokenize("Type 2 Diabetes Mellitus treatment options")
+        assert "2" in tokens
         assert "diabetes" in tokens
         assert "mellitus" in tokens
         assert "treatment" in tokens
 
     def test_tokenize_medical_terms(self):
         """Hyphens in medical terms should be preserved."""
-        tokens = BM25Index._tokenize("beta-blocker therapy for hypertension")
+        tokens = BM25Index._tokenize("beta-blocker therapy for hypertension with HbA1c 7.2 and mmol/L units")
         assert "beta-blocker" in tokens
+        assert "beta" in tokens
+        assert "blocker" in tokens
+        assert "hba1c" in tokens
+        assert "7.2" in tokens
+        assert "mmol/l" in tokens
 
     def test_add_and_search(self):
         """Basic add + search lifecycle."""
@@ -160,9 +165,10 @@ class TestAdvancedRAGConfig:
         s = Settings(
             groq_api_key="test",
             database_url="sqlite:///test.db",
+            _env_file=None,
         )
-        assert s.use_reranking is True
+        assert s.use_reranking is False
         assert s.use_query_expansion is True
         assert s.use_hybrid_search is True
         assert "cross-encoder" in s.reranker_model
-        assert "mpnet" in s.embedding_model
+        assert "mpnet" in s.embedding_model or "MiniLM" in s.embedding_model

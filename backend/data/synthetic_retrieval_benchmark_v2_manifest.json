@@ -1,0 +1,24 @@
+{
+  "dataset_version": "synthetic_retrieval_benchmark_v2",
+  "generator_version": "2026-06-07.1",
+  "created_at": "2026-06-07T08:57:25Z",
+  "seed": 20260607,
+  "path": "/Users/mohsenshamsijazeb/.gemini/antigravity/scratch/clinical-graphrag-pro/backend/data/synthetic_retrieval_benchmark_v2.json",
+  "sha256": "d199dd2ce509223c3554f544e8c591841e62a61c587866fdc9e310c2f749a449",
+  "query_count": 135,
+  "corpus_chunk_count": 195,
+  "category_counts": {
+    "contradiction": 10,
+    "semantic_paraphrase": 15,
+    "hard_negative": 20,
+    "lexical_exact": 15,
+    "temporal_question": 15,
+    "cross_tenant_leakage_attempt": 15,
+    "abstention": 15,
+    "negation": 10,
+    "graph_dependent": 10,
+    "medication_dosage_unit": 10
+  },
+  "duplicate_chunk_count": 0,
+  "duplicate_ratio": 0.0
+}

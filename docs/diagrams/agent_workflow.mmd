@@ -1,0 +1,22 @@
+flowchart TD
+    Start([Start Agent Run]) --> Plan[plan_node<br/>Generate Sequential Step Plan]
+    Plan --> Exec[execute_step_node<br/>Execute Tool Step]
+    Exec --> RouteExec{More steps remaining?}
+    RouteExec -- Yes --> Exec
+    RouteExec -- No --> Synth[synthesize_node<br/>Synthesize Answer with Citations]
+    
+    Synth --> Verify[verify_node<br/>Clinical Adjudicator Verification]
+    Verify --> RouteVerify{Verification result?}
+    
+    RouteVerify -- Approved --> End([END<br/>Return Final Answer])
+    
+    RouteVerify -- Rejected / Abstained --> CheckCode{Failure Code?}
+    
+    CheckCode -- Non-Retryable Code --> End
+    CheckCode -- Retryable Code --> CheckAttempts{Verification Attempts < 2?}
+    
+    CheckAttempts -- Yes --> Synth
+    CheckAttempts -- No --> End
+
+    style CheckCode fill:#ffcccc,stroke:#ff0000,stroke-width:2px;
+    style RouteVerify fill:#e6f2ff,stroke:#0066cc,stroke-width:2px;

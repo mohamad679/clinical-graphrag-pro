@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 GRAPH_DATA_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "temporal_graph.json")
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_USER = os.getenv("NEO4J_USER", "neo4j")
-NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "neo4jpassword")
+NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "change-this-password")
 
 class GraphMigrator:
     def __init__(self, uri, user, password):

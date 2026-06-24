@@ -6,6 +6,8 @@ from datetime import datetime
 from uuid import UUID
 from pydantic import BaseModel
 
+from app.schemas.entity_normalization import NormalizedEntity
+
 
 # ── Analysis Results ─────────────────────────────────────
 
@@ -30,8 +32,16 @@ class ImageAnalysisResult(BaseModel):
     findings: list[Finding] = []
     recommendations: list[str] = []
     differential_diagnosis: list[DifferentialDiagnosis] = []
+    normalized_entities: list[NormalizedEntity] = []
     model_used: str = ""
     error: str | None = None
+
+
+class ImageAnalysisDispatchResponse(BaseModel):
+    id: UUID
+    analysis_job_id: UUID | None = None
+    analysis_status: str
+    message: str
 
 
 # ── Annotations ──────────────────────────────────────────
@@ -54,7 +64,13 @@ class AnnotationCreate(AnnotationBase):
 class AnnotationResponse(AnnotationBase):
     id: UUID
     image_id: UUID
+    version_number: int = 1
+    is_current: bool = True
+    corrected_by: str | None = None
+    corrected_at: datetime | None = None
+    review_status: str = "ai_generated"
     created_at: datetime
+    updated_at: datetime | None = None
 
     model_config = {"from_attributes": True}
 
@@ -64,13 +80,19 @@ class AnnotationResponse(AnnotationBase):
 
 class ImageUploadResponse(BaseModel):
     id: UUID
+    analysis_job_id: UUID | None = None
     filename: str
     file_size: int
     width: int | None = None
     height: int | None = None
     modality: str | None = None
     analysis_status: str
+    manual_review_required: bool = False
+    analysis_available: bool = True
+    analysis_unavailable_reason: str | None = None
+    auto_analysis_enabled: bool = False
     thumbnail_url: str | None = None
+    image_url: str | None = None
     message: str
 
 
@@ -85,6 +107,14 @@ class ImageResponse(BaseModel):
     modality: str | None = None
     body_part: str | None = None
     analysis_status: str
+    manual_review_required: bool = False
+    manual_review_status: str = "pending"
+    phi_scrubbed: bool = False
+    last_error: str | None = None
+    analysis_available: bool = True
+    analysis_unavailable_reason: str | None = None
+    auto_analysis_enabled: bool = False
+    validation_metadata: dict | None = None
     analysis_result: dict | None = None
     annotations: list[AnnotationResponse] = []
     uploaded_at: datetime

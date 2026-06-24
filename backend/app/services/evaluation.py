@@ -1,42 +1,112 @@
 """
-RAG Evaluation Framework.
-Computes quality metrics for retrieval-augmented generation.
-
-Metrics:
-- Faithfulness: Is the answer grounded in retrieved context?
-- Relevance: Is the answer relevant to the query?
-- Citation Accuracy: Are claims mapped to valid sources?
-- Context Precision: How much retrieved context is actually used?
+Internal response-quality evaluation utilities.
 """
+
+from __future__ import annotations
 
 import logging
 import re
 from dataclasses import dataclass
 
-import numpy as np
-
-from app.services.llm import llm_service
-
 logger = logging.getLogger(__name__)
+
+STOPWORDS = {
+    "a",
+    "an",
+    "and",
+    "are",
+    "as",
+    "at",
+    "be",
+    "by",
+    "for",
+    "from",
+    "how",
+    "if",
+    "in",
+    "is",
+    "it",
+    "of",
+    "on",
+    "or",
+    "the",
+    "to",
+    "what",
+    "with",
+}
+
+
+def _tokenize(text: str) -> set[str]:
+    return {
+        token
+        for token in re.findall(r"[a-zA-Z0-9\-]+", (text or "").lower())
+        if token and token not in STOPWORDS
+    }
+
+
+def _extract_citation_tokens(answer: str) -> list[str]:
+    return re.findall(r"\[([A-Za-z0-9:_\-]+)\]", answer or "")
 
 
 @dataclass
 class EvalResult:
     """Result of evaluating a single query-answer pair."""
+
     query: str
     answer: str
-    faithfulness: float        # 0-1
-    relevance: float           # 0-1
-    citation_accuracy: float   # 0-1
-    context_precision: float   # 0-1
-    overall_score: float       # weighted average
-    details: dict              # per-metric explanations
+    answer_groundedness: float
+    citation_correctness: float
+    retrieval_precision: float
+    retrieval_recall_proxy: float
+    clinician_acceptance_rate: float
+    hallucination_rate: float
+    overall_score: float
+    details: dict
+
+    @property
+    def faithfulness(self) -> float:
+        return self.answer_groundedness
+
+    @property
+    def relevance(self) -> float:
+        return self.details.get("answer_relevancy", {}).get("score", 0.0)
+
+    @property
+    def answer_relevancy(self) -> float:
+        return self.relevance
+
+    @property
+    def citation_accuracy(self) -> float:
+        return self.citation_correctness
+
+    @property
+    def context_precision(self) -> float:
+        return self.retrieval_precision
+
+    @property
+    def context_recall(self) -> float:
+        return self.retrieval_recall_proxy
+
+    def metric_payload(self) -> dict[str, float]:
+        return {
+            "answer_groundedness": self.answer_groundedness,
+            "citation_correctness": self.citation_correctness,
+            "retrieval_precision": self.retrieval_precision,
+            "retrieval_recall_proxy": self.retrieval_recall_proxy,
+            "clinician_acceptance_rate": self.clinician_acceptance_rate,
+            "hallucination_rate": self.hallucination_rate,
+            "overall_score": self.overall_score,
+            "faithfulness": self.faithfulness,
+            "answer_relevancy": self.answer_relevancy,
+            "citation_accuracy": self.citation_accuracy,
+            "context_precision": self.context_precision,
+            "context_recall": self.context_recall,
+            "relevance": self.relevance,
+        }
 
 
 class EvaluationService:
-    """
-    Evaluate RAG quality using LLM-as-judge and heuristic methods.
-    """
+    """Evaluate grounded response quality with deterministic internal metrics."""
 
     async def evaluate(
         self,
@@ -44,215 +114,193 @@ class EvaluationService:
         answer: str,
         context_chunks: list[dict],
         sources: list[dict] | None = None,
+        *,
+        expected_answer: str | None = None,
+        expected_chunk_ids: list[str] | None = None,
     ) -> EvalResult:
-        """
-        Evaluate a query-answer pair against retrieved context.
+        details: dict[str, dict] = {}
+        groundedness = self._eval_answer_groundedness(answer, context_chunks)
+        details["answer_groundedness"] = groundedness
+        details["faithfulness"] = groundedness
 
-        Args:
-            query: The original user question
-            answer: The generated answer
-            context_chunks: Retrieved passages (list of dicts with 'chunk_text', 'document_name')
-            sources: Optional list of cited sources
-        """
-        details = {}
+        answer_relevancy = self._eval_answer_relevancy(query, answer, expected_answer=expected_answer)
+        details["answer_relevancy"] = answer_relevancy
+        details["relevance"] = answer_relevancy
 
-        # ── 1. Faithfulness (LLM-as-judge) ───────────────
-        faithfulness = await self._eval_faithfulness(answer, context_chunks)
-        details["faithfulness"] = faithfulness
+        citation_correctness = self._eval_citation_correctness(
+            answer,
+            context_chunks,
+            sources=sources,
+            expected_chunk_ids=expected_chunk_ids,
+        )
+        details["citation_correctness"] = citation_correctness
+        details["citation_accuracy"] = citation_correctness
 
-        # ── 2. Relevance (embedding similarity) ──────────
-        relevance = await self._eval_relevance(query, answer)
-        details["relevance"] = relevance
+        retrieval_precision = self._eval_retrieval_precision(answer, context_chunks)
+        details["retrieval_precision"] = retrieval_precision
+        details["context_precision"] = retrieval_precision
 
-        # ── 3. Citation Accuracy (heuristic) ─────────────
-        citation_accuracy = self._eval_citation_accuracy(answer, context_chunks, sources)
-        details["citation_accuracy"] = citation_accuracy
+        retrieval_recall_proxy = self._eval_retrieval_recall_proxy(
+            answer,
+            context_chunks,
+            expected_answer=expected_answer,
+            expected_chunk_ids=expected_chunk_ids,
+        )
+        details["retrieval_recall_proxy"] = retrieval_recall_proxy
+        details["context_recall"] = retrieval_recall_proxy
 
-        # ── 4. Context Precision (heuristic) ─────────────
-        context_precision = self._eval_context_precision(answer, context_chunks)
-        details["context_precision"] = context_precision
+        hallucination_rate = {
+            "score": round(max(0.0, 1.0 - groundedness["score"]), 3),
+            "explanation": "Complement of groundedness over the generated answer.",
+        }
+        details["hallucination_rate"] = hallucination_rate
 
-        # ── Weighted overall ─────────────────────────────
+        clinician_acceptance_rate = {
+            "score": 1.0 if (
+                groundedness["score"] >= 0.75
+                and citation_correctness["score"] >= 0.6
+                and hallucination_rate["score"] <= 0.25
+            ) else 0.0,
+            "explanation": "Automatic surrogate for clinician acceptance until a physician review is recorded.",
+        }
+        details["clinician_acceptance_rate"] = clinician_acceptance_rate
+
         overall = (
-            faithfulness["score"] * 0.35
-            + relevance["score"] * 0.25
-            + citation_accuracy["score"] * 0.20
-            + context_precision["score"] * 0.20
+            groundedness["score"] * 0.24
+            + citation_correctness["score"] * 0.16
+            + retrieval_precision["score"] * 0.14
+            + retrieval_recall_proxy["score"] * 0.14
+            + answer_relevancy["score"] * 0.16
+            + clinician_acceptance_rate["score"] * 0.08
+            + (1.0 - hallucination_rate["score"]) * 0.08
         )
 
         return EvalResult(
             query=query,
             answer=answer,
-            faithfulness=faithfulness["score"],
-            relevance=relevance["score"],
-            citation_accuracy=citation_accuracy["score"],
-            context_precision=context_precision["score"],
+            answer_groundedness=groundedness["score"],
+            citation_correctness=citation_correctness["score"],
+            retrieval_precision=retrieval_precision["score"],
+            retrieval_recall_proxy=retrieval_recall_proxy["score"],
+            clinician_acceptance_rate=clinician_acceptance_rate["score"],
+            hallucination_rate=hallucination_rate["score"],
             overall_score=round(overall, 3),
             details=details,
         )
 
-    async def _eval_faithfulness(self, answer: str, context_chunks: list[dict]) -> dict:
-        """
-        LLM judges whether the answer is fully supported by context.
-        Returns score 0-1 and explanation.
-        """
+    def _eval_answer_groundedness(self, answer: str, context_chunks: list[dict]) -> dict:
         if not context_chunks:
             return {"score": 0.0, "explanation": "No context provided."}
+        answer_tokens = _tokenize(answer)
+        context_tokens = set()
+        for chunk in context_chunks:
+            context_tokens |= _tokenize(chunk.get("chunk_text", chunk.get("text", "")))
+        if not answer_tokens:
+            return {"score": 0.0, "explanation": "Empty answer."}
+        supported = len(answer_tokens & context_tokens) / max(len(answer_tokens), 1)
+        return {
+            "score": round(supported, 3),
+            "explanation": f"{len(answer_tokens & context_tokens)}/{len(answer_tokens)} answer tokens are grounded in retrieved context.",
+        }
 
-        context_text = "\n\n".join(
-            c.get("chunk_text", c.get("text", ""))[:500]
-            for c in context_chunks[:5]
-        )
+    def _eval_answer_relevancy(self, query: str, answer: str, *, expected_answer: str | None = None) -> dict:
+        query_tokens = _tokenize(query)
+        answer_tokens = _tokenize(answer)
+        target_tokens = query_tokens | (_tokenize(expected_answer or ""))
+        if not answer_tokens or not target_tokens:
+            return {"score": 0.0, "explanation": "Missing query or answer tokens."}
+        overlap = len(answer_tokens & target_tokens) / max(len(answer_tokens), 1)
+        return {
+            "score": round(overlap, 3),
+            "explanation": "Measures how much of the answer aligns with the question and gold-answer vocabulary.",
+        }
 
-        prompt = (
-            "You are an expert evaluator for RAG systems.\n\n"
-            "Given the following CONTEXT and ANSWER, score how well the answer "
-            "is supported by (faithful to) the context.\n\n"
-            f"CONTEXT:\n{context_text}\n\n"
-            f"ANSWER:\n{answer[:1000]}\n\n"
-            "Respond with ONLY a JSON object like:\n"
-            '{"score": 0.85, "explanation": "brief reason"}\n\n'
-            "Score 1.0 = fully supported, 0.0 = completely made up."
-        )
-
-        try:
-            response = await llm_service.generate(user_message=prompt, context="")
-            return self._parse_json_score(response, "faithfulness")
-        except Exception as e:
-            logger.warning(f"Faithfulness eval failed: {e}")
-            return {"score": 0.5, "explanation": f"Evaluation failed: {e}"}
-
-    async def _eval_relevance(self, query: str, answer: str) -> dict:
-        """
-        LLM judges whether the answer is relevant to the query.
-        """
-        prompt = (
-            "You are an expert evaluator.\n\n"
-            "Score how relevant and helpful this answer is to the query.\n\n"
-            f"QUERY: {query}\n\n"
-            f"ANSWER:\n{answer[:1000]}\n\n"
-            "Respond with ONLY a JSON object like:\n"
-            '{"score": 0.9, "explanation": "brief reason"}\n\n'
-            "Score 1.0 = perfectly relevant, 0.0 = completely irrelevant."
-        )
-
-        try:
-            response = await llm_service.generate(user_message=prompt, context="")
-            return self._parse_json_score(response, "relevance")
-        except Exception as e:
-            logger.warning(f"Relevance eval failed: {e}")
-            return {"score": 0.5, "explanation": f"Evaluation failed: {e}"}
-
-    def _eval_citation_accuracy(
-        self, answer: str, context_chunks: list[dict], sources: list[dict] | None
+    def _eval_citation_correctness(
+        self,
+        answer: str,
+        context_chunks: list[dict],
+        *,
+        sources: list[dict] | None,
+        expected_chunk_ids: list[str] | None = None,
     ) -> dict:
-        """
-        Heuristic: checks what fraction of source references in the answer
-        can be matched to actual retrieved chunks.
-        """
-        if not sources and not context_chunks:
-            return {"score": 0.0, "explanation": "No sources available."}
-
-        # Extract source references from the answer (patterns like [Source: ...])
-        cited = re.findall(r'\[(?:Source|Ref|Citation)[:\s]*([^\]]+)\]', answer, re.IGNORECASE)
-
-        if not cited:
-            # Check if answer contains any document names
-            doc_names = set(
-                c.get("document_name", "")
-                for c in context_chunks
-                if c.get("document_name")
-            )
-            mentions = sum(1 for name in doc_names if name.lower() in answer.lower())
-
-            if doc_names and mentions > 0:
-                score = min(mentions / len(doc_names), 1.0)
-                return {
-                    "score": round(score, 3),
-                    "explanation": f"Found {mentions}/{len(doc_names)} source mentions in answer."
-                }
-
-            # No explicit citations — give partial credit if context was used
-            if context_chunks and len(answer) > 50:
-                return {"score": 0.3, "explanation": "No explicit citations, but answer appears substantive."}
+        citations = _extract_citation_tokens(answer)
+        if not citations:
             return {"score": 0.0, "explanation": "No citations found in answer."}
 
-        # Match cited sources to actual chunks
-        doc_names = set(
-            c.get("document_name", "").lower()
-            for c in context_chunks
-            if c.get("document_name")
-        )
+        valid_chunk_ids = {
+            str(chunk.get("chunk_id") or chunk.get("citation_id") or "")
+            for chunk in context_chunks
+            if chunk.get("chunk_id") or chunk.get("citation_id")
+        }
+        if sources:
+            for source in sources:
+                if source.get("chunk_id"):
+                    valid_chunk_ids.add(str(source["chunk_id"]))
+                if source.get("citation_id"):
+                    valid_chunk_ids.add(str(source["citation_id"]))
 
-        matched = sum(
-            1 for c in cited
-            if any(name in c.lower() for name in doc_names)
-        )
-
-        score = matched / len(cited) if cited else 0.0
+        expected = {str(item) for item in (expected_chunk_ids or [])}
+        matched = 0
+        for citation in citations:
+            if citation in valid_chunk_ids or citation in expected:
+                matched += 1
+        score = matched / max(len(citations), 1)
         return {
             "score": round(score, 3),
-            "explanation": f"Matched {matched}/{len(cited)} citations to sources."
+            "explanation": f"Matched {matched}/{len(citations)} citations to retrieved or expected chunk ids.",
         }
 
-    def _eval_context_precision(self, answer: str, context_chunks: list[dict]) -> dict:
-        """
-        Heuristic: measures what fraction of retrieved chunks are actually
-        reflected in the answer (checking term overlap).
-        """
-        if not context_chunks or not answer:
-            return {"score": 0.0, "explanation": "No data to evaluate."}
-
-        answer_words = set(answer.lower().split())
+    def _eval_retrieval_precision(self, answer: str, context_chunks: list[dict]) -> dict:
+        if not context_chunks:
+            return {"score": 0.0, "explanation": "No retrieved context available."}
+        answer_tokens = _tokenize(answer)
         used_chunks = 0
-
         for chunk in context_chunks:
-            chunk_text = chunk.get("chunk_text", chunk.get("text", ""))
-            chunk_words = set(chunk_text.lower().split())
-
-            # Significant word overlap indicates the chunk was used
-            overlap = len(answer_words & chunk_words)
-            chunk_unique = len(chunk_words - {"the", "a", "an", "is", "are", "was", "were", "in", "on", "at", "to", "for", "of", "and", "or"})
-
-            if chunk_unique > 0 and overlap / chunk_unique > 0.15:
+            chunk_tokens = _tokenize(chunk.get("chunk_text", chunk.get("text", "")))
+            if chunk_tokens and len(answer_tokens & chunk_tokens) / max(len(chunk_tokens), 1) >= 0.15:
                 used_chunks += 1
-
-        score = used_chunks / len(context_chunks)
+        score = used_chunks / max(len(context_chunks), 1)
         return {
             "score": round(score, 3),
-            "explanation": f"{used_chunks}/{len(context_chunks)} chunks reflected in answer."
+            "explanation": f"{used_chunks}/{len(context_chunks)} retrieved chunks contributed meaningful vocabulary to the answer.",
         }
 
-    @staticmethod
-    def _parse_json_score(response: str, metric_name: str) -> dict:
-        """Parse a JSON score from LLM response."""
-        import json
+    def _eval_retrieval_recall_proxy(
+        self,
+        answer: str,
+        context_chunks: list[dict],
+        *,
+        expected_answer: str | None = None,
+        expected_chunk_ids: list[str] | None = None,
+    ) -> dict:
+        if not context_chunks:
+            return {"score": 0.0, "explanation": "No retrieved context available."}
 
-        # Try to extract JSON from response
-        json_match = re.search(r'\{[^}]+\}', response)
-        if json_match:
-            try:
-                data = json.loads(json_match.group())
-                score = float(data.get("score", 0.5))
-                score = max(0.0, min(1.0, score))
-                return {
-                    "score": round(score, 3),
-                    "explanation": data.get("explanation", f"Score: {score}")
-                }
-            except (json.JSONDecodeError, ValueError):
-                pass
+        if expected_chunk_ids:
+            retrieved_ids = {
+                str(chunk.get("chunk_id") or chunk.get("citation_id") or "")
+                for chunk in context_chunks
+            }
+            expected = {str(item) for item in expected_chunk_ids}
+            matched = len(retrieved_ids & expected)
+            score = matched / max(len(expected), 1)
+            return {
+                "score": round(score, 3),
+                "explanation": f"Retrieved {matched}/{len(expected)} expected evidence chunks.",
+            }
 
-        # Fallback: try to extract a number
-        nums = re.findall(r'(\d+\.?\d*)', response)
-        if nums:
-            score = float(nums[0])
-            if score > 1:
-                score = score / 100  # handle percentage
-            score = max(0.0, min(1.0, score))
-            return {"score": round(score, 3), "explanation": f"Parsed {metric_name} score."}
+        expected_tokens = _tokenize(expected_answer or "")
+        context_tokens = set()
+        for chunk in context_chunks:
+            context_tokens |= _tokenize(chunk.get("chunk_text", chunk.get("text", "")))
+        if not expected_tokens:
+            expected_tokens = _tokenize(answer)
+        matched = len(expected_tokens & context_tokens)
+        score = matched / max(len(expected_tokens), 1)
+        return {
+            "score": round(score, 3),
+            "explanation": "Proxy for evidence recall based on overlap between gold-answer vocabulary and retrieved context.",
+        }
 
-        return {"score": 0.5, "explanation": f"Could not parse {metric_name} score."}
 
-
-# Module-level singleton
 evaluation_service = EvaluationService()

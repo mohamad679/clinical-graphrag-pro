@@ -1,127 +1,173 @@
 """
-Token-Bucket Rate Limiter.
-Per-IP request limiting with configurable thresholds.
+Redis-backed sliding window rate limiter.
 """
 
 import logging
+import secrets
 import time
-from dataclasses import dataclass, field
-
-from fastapi import Request, Response
+from ipaddress import ip_address, ip_network
+from fastapi import HTTPException, Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 
 from app.core.config import get_settings
+from app.core.redis import get_redis_client
 
 logger = logging.getLogger(__name__)
 
-
-@dataclass
-class TokenBucket:
-    """Token bucket for a single client."""
-    tokens: float
-    max_tokens: float
-    refill_rate: float  # tokens per second
-    last_refill: float = field(default_factory=time.monotonic)
-
-    def consume(self) -> bool:
-        """Try to consume a token. Returns True if allowed."""
-        now = time.monotonic()
-        elapsed = now - self.last_refill
-        self.tokens = min(self.max_tokens, self.tokens + elapsed * self.refill_rate)
-        self.last_refill = now
-
-        if self.tokens >= 1.0:
-            self.tokens -= 1.0
-            return True
-        return False
-
-    @property
-    def retry_after(self) -> float:
-        """Seconds until a token is available."""
-        if self.tokens >= 1.0:
-            return 0.0
-        return (1.0 - self.tokens) / self.refill_rate
+SLIDING_WINDOW_LUA = """
+redis.call('ZREMRANGEBYSCORE', KEYS[1], 0, ARGV[1])
+local current = redis.call('ZCARD', KEYS[1])
+if current >= tonumber(ARGV[3]) then
+  return {0, 0}
+end
+redis.call('ZADD', KEYS[1], ARGV[2], ARGV[4])
+redis.call('EXPIRE', KEYS[1], ARGV[5])
+return {1, tonumber(ARGV[3]) - current - 1}
+"""
 
 
-class RateLimiterService:
-    """
-    In-memory token-bucket rate limiter.
-    In production, replace with Redis-backed limiter for multi-instance.
-    """
+class RateLimiter:
+    """Redis-backed sliding window rate limiter."""
 
-    def __init__(self):
+    def __init__(
+        self,
+        max_requests: int = 60,
+        window_seconds: int = 60,
+        prefix: str = "rl",
+    ):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.prefix = prefix
+
+    async def is_allowed(self, identifier: str) -> tuple[bool, int]:
+        """
+        Returns (allowed, remaining_requests).
+        Uses Redis ZSET sliding window.
+        """
+        try:
+            redis = await get_redis_client()
+            now = time.time()
+            window_start = now - self.window_seconds
+            key = f"{self.prefix}:{identifier}"
+            member = f"{now}:{secrets.token_hex(8)}"
+
+            result = await redis.eval(
+                SLIDING_WINDOW_LUA,
+                1,
+                key,
+                window_start,
+                now,
+                self.max_requests,
+                member,
+                self.window_seconds * 2,
+            )
+            return bool(int(result[0])), int(result[1])
+
+        except Exception as exc:
+            settings = get_settings()
+            fail_closed = settings.rate_limit_redis_failure_policy == "fail_closed"
+            logger.warning(
+                "Rate limiter Redis error (%s): %s",
+                "fail-closed" if fail_closed else "fail-open",
+                exc,
+            )
+            return (False, 0) if fail_closed else (True, self.max_requests)
+
+    async def check(self, request) -> None:
+        """FastAPI dependency. Raises 429 if rate limit exceeded."""
+        identifier = self._get_identifier(request)
         settings = get_settings()
-        self._buckets: dict[str, TokenBucket] = {}
-        self._max_requests = settings.rate_limit_per_minute
-        self._enabled = settings.rate_limit_enabled
-        self._cleanup_interval = 300  # cleanup stale buckets every 5 min
-        self._last_cleanup = time.monotonic()
-
-    def check(self, client_ip: str) -> tuple[bool, float]:
-        """
-        Check if request is allowed for this IP.
-        Returns (allowed, retry_after_seconds).
-        """
-        if not self._enabled:
-            return True, 0.0
-
-        self._maybe_cleanup()
-
-        if client_ip not in self._buckets:
-            self._buckets[client_ip] = TokenBucket(
-                tokens=float(self._max_requests),
-                max_tokens=float(self._max_requests),
-                refill_rate=self._max_requests / 60.0,
+        original_policy = settings.rate_limit_redis_failure_policy
+        fail_closed_paths = list(settings.rate_limit_fail_closed_paths or [])
+        path_fail_closed = any(str(request.url.path).startswith(prefix) for prefix in fail_closed_paths)
+        if path_fail_closed:
+            settings.rate_limit_redis_failure_policy = "fail_closed"
+        try:
+            allowed, remaining = await self.is_allowed(identifier)
+        finally:
+            settings.rate_limit_redis_failure_policy = original_policy
+        if not allowed:
+            raise HTTPException(
+                status_code=429,
+                detail="Rate limit exceeded. Try again later.",
+                headers={"Retry-After": str(self.window_seconds)},
             )
 
-        bucket = self._buckets[client_ip]
-        allowed = bucket.consume()
-        return allowed, bucket.retry_after
+    def _get_identifier(self, request) -> str:
+        """Use JWT user_id if authenticated, else IP."""
+        user_id = getattr(request.state, "user_id", None)
+        if user_id:
+            return f"user:{user_id}"
+        user = getattr(request.state, "user", None)
+        if getattr(user, "id", None):
+            return f"user:{user.id}"
+        return f"ip:{self._get_client_ip(request)}"
+
+    def _get_client_ip(self, request) -> str:
+        settings = get_settings()
+        direct_ip = request.client.host if request.client else "unknown"
+        forwarded = request.headers.get("X-Forwarded-For")
+        if forwarded and settings.rate_limit_trust_forwarded_for and self._is_trusted_proxy(direct_ip):
+            return forwarded.split(",")[0].strip() or direct_ip
+        return direct_ip
+
+    def _is_trusted_proxy(self, direct_ip: str) -> bool:
+        settings = get_settings()
+        try:
+            parsed_ip = ip_address(direct_ip)
+        except ValueError:
+            return False
+        for entry in settings.rate_limit_trusted_proxies or []:
+            try:
+                if parsed_ip in ip_network(str(entry), strict=False):
+                    return True
+            except ValueError:
+                continue
+        return False
 
     def get_stats(self) -> dict:
+        """Retrieve rate limiter status."""
+        settings = get_settings()
         return {
-            "enabled": self._enabled,
-            "max_requests_per_minute": self._max_requests,
-            "active_buckets": len(self._buckets),
+            "enabled": settings.rate_limit_enabled,
+            "max_requests_per_minute": self.max_requests,
+            "window_seconds": self.window_seconds,
+            "prefix": self.prefix,
+            "trust_forwarded_for": settings.rate_limit_trust_forwarded_for,
+            "trusted_proxies": list(settings.rate_limit_trusted_proxies or []),
+            "redis_failure_policy": settings.rate_limit_redis_failure_policy,
         }
-
-    def _maybe_cleanup(self):
-        """Remove stale buckets periodically."""
-        now = time.monotonic()
-        if now - self._last_cleanup < self._cleanup_interval:
-            return
-        self._last_cleanup = now
-        stale = [
-            ip for ip, b in self._buckets.items()
-            if now - b.last_refill > 600  # 10 min idle
-        ]
-        for ip in stale:
-            del self._buckets[ip]
 
 
 # Module-level singleton
-rate_limiter = RateLimiterService()
+settings = get_settings()
+rate_limiter = RateLimiter(
+    max_requests=settings.rate_limit_per_minute,
+    window_seconds=60,
+)
 
 
 class RateLimitMiddleware(BaseHTTPMiddleware):
     """FastAPI middleware for rate limiting."""
 
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
-        client_ip = request.client.host if request.client else "unknown"
-
         # Skip health checks
         if request.url.path.endswith("/health"):
             return await call_next(request)
 
-        allowed, retry_after = rate_limiter.check(client_ip)
+        settings = get_settings()
+        if not settings.rate_limit_enabled:
+            return await call_next(request)
 
-        if not allowed:
-            logger.warning(f"Rate limit exceeded for {client_ip}")
+        try:
+            await rate_limiter.check(request)
+        except HTTPException as exc:
+            logger.warning(f"Rate limit exceeded: {exc.detail}")
             return Response(
-                content='{"detail":"Rate limit exceeded"}',
-                status_code=429,
+                content=f'{{"detail":"{exc.detail}"}}',
+                status_code=exc.status_code,
                 media_type="application/json",
-                headers={"Retry-After": str(int(retry_after) + 1)},
+                headers=exc.headers,
             )
 
         response = await call_next(request)

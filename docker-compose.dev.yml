@@ -5,7 +5,7 @@ services:
   api:
     build:
       context: ./backend
-      target: builder
+      target: production
     command: [ "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload" ]
     ports:
       - "8000:8000"
@@ -14,20 +14,19 @@ services:
       - /app/.venv
     environment:
       - DEBUG=true
+      - APP_ENV=development
+      - ENABLE_DEMO_AUTH=true
+      - NEO4J_PASSWORD=change-this-password
 
   web:
     build:
       context: ./frontend
-      target: deps
-    command: [ "npm", "run", "dev" ]
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app
-      - /app/node_modules
-      - /app/.next
-    environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
+      - ./frontend/public:/usr/share/nginx/html
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
 
   postgres:
     ports:
@@ -36,3 +35,8 @@ services:
   redis:
     ports:
       - "6379:6379"
+
+  neo4j:
+    ports:
+      - "7474:7474"
+      - "7687:7687"

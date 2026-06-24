@@ -1,0 +1,54 @@
+# Clinical GraphRAG Pro — staging override
+# Usage: docker compose -f docker-compose.yml -f docker-compose.staging.yml --profile staging up -d
+
+services:
+  nginx:
+    ports:
+      - "8080:80"
+
+  api:
+    environment:
+      - APP_ENV=staging
+      - DEBUG=false
+      - LOG_LEVEL=INFO
+      - ENABLE_DEMO_AUTH=false
+      - BACKGROUND_JOBS_REQUIRE_BROKER=true
+      - VECTOR_BACKEND=qdrant
+      - USE_NEO4J=true
+      - GRAPH_SEED_ENABLED=false
+
+  worker:
+    environment:
+      - APP_ENV=staging
+      - DEBUG=false
+      - LOG_LEVEL=INFO
+      - BACKGROUND_JOBS_REQUIRE_BROKER=true
+      - VECTOR_BACKEND=qdrant
+      - USE_NEO4J=true
+      - GRAPH_SEED_ENABLED=false
+
+  celery-beat:
+    profiles: ["staging"]
+    environment:
+      - APP_ENV=staging
+      - DEBUG=false
+      - LOG_LEVEL=INFO
+
+  postgres:
+    ports:
+      - "5432:5432"
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  neo4j:
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+
+  qdrant:
+    profiles: ["staging"]
+    ports:
+      - "6333:6333"
+

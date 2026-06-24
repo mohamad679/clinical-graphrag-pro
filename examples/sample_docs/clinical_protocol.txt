@@ -1,0 +1,17 @@
+Drug Interaction Advisory
+
+1. Warfarin plus antibiotics: Broad-spectrum antibiotics such as TMP-SMX, metronidazole, macrolides, and fluoroquinolones can inhibit warfarin metabolism or reduce vitamin K-producing gut flora, increasing INR and bleeding risk. Check for interacting agents before prescribing, repeat INR within several days, and counsel on bruising, melena, and hematuria.
+
+2. Metformin plus iodinated contrast: Contrast exposure can worsen renal function, which decreases metformin clearance and may increase lactic acidosis risk. Hold metformin at or before contrast in patients with renal impairment or high-risk arterial studies, reassess renal function after 48 hours, and restart only if kidney function is stable.
+
+3. ACE inhibitor plus potassium-sparing diuretic: Combining lisinopril or enalapril with spironolactone, eplerenone, or amiloride raises serum potassium through reduced aldosterone effect and impaired renal potassium excretion. Monitor potassium and creatinine closely, especially in CKD, diabetes, or older adults.
+
+4. SSRIs plus NSAIDs: SSRIs impair platelet serotonin uptake, while NSAIDs injure gastric mucosa and inhibit platelet function. Together they significantly increase upper GI bleeding risk. Use the lowest NSAID exposure possible, consider gastroprotection, and review bleeding history.
+
+5. Statins plus macrolides: Clarithromycin and erythromycin inhibit CYP3A4 and can raise simvastatin, lovastatin, and atorvastatin concentrations, increasing myopathy and rhabdomyolysis risk. Consider a noninteracting antibiotic or temporarily hold the statin. Monitor for muscle pain, weakness, and dark urine.
+
+6. Beta blockers plus verapamil: Both slow AV nodal conduction and depress myocardial contractility. Combined therapy can cause bradycardia, hypotension, heart block, or decompensated heart failure. Avoid in unstable patients and monitor pulse, blood pressure, and ECG when coadministration is necessary.
+
+7. Digoxin plus amiodarone: Amiodarone reduces renal and nonrenal digoxin clearance, often increasing serum digoxin concentrations. Empirically reduce digoxin dose, follow levels and renal function, and watch for nausea, confusion, visual changes, or new arrhythmias.
+
+8. Lithium plus NSAIDs: NSAIDs decrease renal perfusion and lithium clearance, which can rapidly raise lithium levels and trigger toxicity. Prefer alternative analgesics when possible. If unavoidable, check lithium level soon after starting therapy and monitor for tremor, ataxia, diarrhea, and confusion.

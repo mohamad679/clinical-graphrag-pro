@@ -1,0 +1,112 @@
+[
+  {
+    "query_type": "factual",
+    "query": "Has patient John Doe (ID: pat-100) been diagnosed with Essential Hypertension?",
+    "answer": "Retrieval-only mode: LLM answer generation is bypassed.\n\nRetrieved Grounded Evidence:\n[GRAPH1] (Document: Clinical Knowledge Graph): [STRUCTURED CLINICAL KNOWLEDGE GRAPH CONTEXT]\nPatient ID: pat-100\n\nConditions:\n- SYNTHETIC: Chronic Obstructive Pulmonar...",
+    "citations": [
+      {
+        "marker": "GRAPH1",
+        "chunk_id": "graph-patient-profile-pat-100",
+        "document_id": "graph-database",
+        "document_name": "Clinical Knowledge Graph",
+        "page_reference": null,
+        "span_start": 86,
+        "span_end": 94
+      }
+    ],
+    "retrieved_chunks": [
+      {
+        "citation_id": "GRAPH1",
+        "chunk_id": "graph-patient-profile-pat-100",
+        "document_id": "graph-database",
+        "document_name": "Clinical Knowledge Graph",
+        "chunk_index": 0,
+        "chunk_text": "[STRUCTURED CLINICAL KNOWLEDGE GRAPH CONTEXT]\nPatient ID: pat-100\n\nConditions:\n- SYNTHETIC: Chronic Obstructive Pulmonary Disease: active since 2025-12-23T00:00:00+00:00 [confidence: High]\n\nMedications:\n- SYNTHETIC: Metformin 500mg PO Twice Daily: started 2026-04-21T00:00:00+00:00 [confidence: High]\n\nObservations:\n- Oxygen Saturation: 92.2 on 2026-05-24T00:00:00+00:00 [confidence: High]\n- Systolic Blood Pressure: 128.7 on 2026-05-10T00:00:00+00:00 [confidence: High]\n- Hemoglobin A1c: 7.3 on 2026-05-09T00:00:00+00:00 [confidence: High]\n- Diastolic Blood Pressure: 75.0 on 2026-05-06T00:00:00+00:00 [confidence: High]",
+        "page_start": null,
+        "page_end": null,
+        "source_offset_start": null,
+        "source_offset_end": null,
+        "retrieval_score": 1.0,
+        "vector_score": null,
+        "bm25_score": null,
+        "reranker_score": 1.0,
+        "original_score": null,
+        "mode": "graph_context",
+        "metadata": {
+          "patient_id": "pat-100",
+          "tenant_id": "f5fdde41-368d-4ee0-828b-8dcd18b4a695"
+        },
+        "used_in_context": true
+      }
+    ],
+    "provider_name": "retrieval-only",
+    "model_name": "llama3",
+    "confidence_score": 1.0,
+    "latency_ms": 183,
+    "abstention_status": false,
+    "verification_status": "PASSED",
+    "warnings": []
+  },
+  {
+    "query_type": "abstention",
+    "query": "What is patient John Doe's orbital space telemetry reading?",
+    "answer": "I do not have enough evidence in the provided documents to answer this safely.\n\nClinical GraphRAG Pro provides decision support only. It does not replace clinician judgment, primary literature review, or institution-specific protocols.",
+    "citations": [],
+    "retrieved_chunks": [],
+    "provider_name": "retrieval-only",
+    "model_name": "llama3",
+    "confidence_score": 0.0,
+    "latency_ms": 102,
+    "abstention_status": true,
+    "verification_status": "PASSED",
+    "warnings": []
+  },
+  {
+    "query_type": "medication_temporal",
+    "query": "List the vital signs and active medications recorded for patient John Doe (ID: pat-100).",
+    "answer": "Retrieval-only mode: LLM answer generation is bypassed.\n\nRetrieved Grounded Evidence:\n[GRAPH1] (Document: Clinical Knowledge Graph): [STRUCTURED CLINICAL KNOWLEDGE GRAPH CONTEXT]\nPatient ID: pat-100\n\nConditions:\n- SYNTHETIC: Chronic Obstructive Pulmonar...",
+    "citations": [
+      {
+        "marker": "GRAPH1",
+        "chunk_id": "graph-patient-profile-pat-100",
+        "document_id": "graph-database",
+        "document_name": "Clinical Knowledge Graph",
+        "page_reference": null,
+        "span_start": 86,
+        "span_end": 94
+      }
+    ],
+    "retrieved_chunks": [
+      {
+        "citation_id": "GRAPH1",
+        "chunk_id": "graph-patient-profile-pat-100",
+        "document_id": "graph-database",
+        "document_name": "Clinical Knowledge Graph",
+        "chunk_index": 0,
+        "chunk_text": "[STRUCTURED CLINICAL KNOWLEDGE GRAPH CONTEXT]\nPatient ID: pat-100\n\nConditions:\n- SYNTHETIC: Chronic Obstructive Pulmonary Disease: active since 2025-12-23T00:00:00+00:00 [confidence: High]\n\nMedications:\n- SYNTHETIC: Metformin 500mg PO Twice Daily: started 2026-04-21T00:00:00+00:00 [confidence: High]\n\nObservations:\n- Oxygen Saturation: 92.2 on 2026-05-24T00:00:00+00:00 [confidence: High]\n- Systolic Blood Pressure: 128.7 on 2026-05-10T00:00:00+00:00 [confidence: High]\n- Hemoglobin A1c: 7.3 on 2026-05-09T00:00:00+00:00 [confidence: High]\n- Diastolic Blood Pressure: 75.0 on 2026-05-06T00:00:00+00:00 [confidence: High]",
+        "page_start": null,
+        "page_end": null,
+        "source_offset_start": null,
+        "source_offset_end": null,
+        "retrieval_score": 1.0,
+        "vector_score": null,
+        "bm25_score": null,
+        "reranker_score": 1.0,
+        "original_score": null,
+        "mode": "graph_context",
+        "metadata": {
+          "patient_id": "pat-100",
+          "tenant_id": "f5fdde41-368d-4ee0-828b-8dcd18b4a695"
+        },
+        "used_in_context": true
+      }
+    ],
+    "provider_name": "retrieval-only",
+    "model_name": "llama3",
+    "confidence_score": 1.0,
+    "latency_ms": 123,
+    "abstention_status": false,
+    "verification_status": "PASSED",
+    "warnings": []
+  }
+]

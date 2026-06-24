@@ -1,0 +1,79 @@
+classDiagram
+    direction LR
+    class Patient {
+        +String patient_id
+        +String tenant_id
+        +String name
+        +Date birth_date
+        +String gender
+    }
+    class Encounter {
+        +String encounter_id
+        +String tenant_id
+        +String patient_id
+        +Date start_date
+        +Date end_date
+        +String encounter_type
+    }
+    class Document {
+        +String document_id
+        +String tenant_id
+        +String patient_id
+        +String document_name
+        +Date created_at
+    }
+    class Chunk {
+        +String chunk_id
+        +String document_id
+        +String text
+        +Int chunk_index
+    }
+    class Condition {
+        +String condition_id
+        +String canonical_name
+        +String code
+        +String vocabulary
+        +Date start_date
+        +Date end_date
+    }
+    class Medication {
+        +String medication_id
+        +String canonical_name
+        +String code
+        +String vocabulary
+        +Date start_date
+        +Date end_date
+    }
+    class LabResult {
+        +String lab_result_id
+        +String test_name
+        +String code
+        +Float value
+        +String unit
+        +String interpretation
+        +Date occurred_at
+    }
+    class Observation {
+        +String observation_id
+        +String observation_type
+        +Float value
+        +String unit
+        +Date occurred_at
+    }
+    class Finding {
+        +String finding_id
+        +String description
+        +Date occurred_at
+    }
+
+    Patient "1" --> "*" Document : HAS_DOCUMENT
+    Document "1" --> "*" Chunk : HAS_CHUNK
+    Chunk "*" --> "*" Condition : MENTIONS_CONDITION
+    Chunk "*" --> "*" Medication : MENTIONS_MEDICATION
+    Patient "1" --> "*" LabResult : HAS_LAB_RESULT
+    Patient "1" --> "*" Finding : HAS_FINDING
+    Observation "*" --> "1" Encounter : OCCURRED_DURING
+    LabResult "*" --> "1" Encounter : OCCURRED_DURING
+    Condition "*" --> "*" Observation : EVIDENCED_BY
+    Condition "*" --> "*" LabResult : EVIDENCED_BY
+    Medication "*" --> "*" Condition : RELATED_TO

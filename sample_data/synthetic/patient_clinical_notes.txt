@@ -1,0 +1,50 @@
+=== SYNTHETIC CLINICAL ENCOUNTER NOTES - FOR DEMO ONLY ===
+
+--- Patient: John Doe (ID: pat-100) ---
+Date: 2026-05-23
+Subjective: Patient reports feeling well. Denies chest pain or shortness of breath.
+Objective: Blood pressure is stable. Current active diagnoses are recorded.
+Plan: Continue current outpatient medications as ordered. Follow up in 3 months.
+
+--- Patient: Jane Smith (ID: pat-101) ---
+Date: 2026-05-22
+Subjective: Patient reports feeling well. Denies chest pain or shortness of breath.
+Objective: Blood pressure is stable. Current active diagnoses are recorded.
+Plan: Continue current outpatient medications as ordered. Follow up in 3 months.
+
+--- Patient: Robert Johnson (ID: pat-102) ---
+Date: 2026-05-20
+Subjective: Patient reports feeling well. Denies chest pain or shortness of breath.
+Objective: Blood pressure is stable. Current active diagnoses are recorded.
+Plan: Continue current outpatient medications as ordered. Follow up in 3 months.
+
+--- Patient: Emily Davis (ID: pat-103) ---
+Date: 2026-05-21
+Subjective: Patient reports feeling well. Denies chest pain or shortness of breath.
+Objective: Blood pressure is stable. Current active diagnoses are recorded.
+Plan: Continue current outpatient medications as ordered. Follow up in 3 months.
+
+--- Patient: Michael Wilson (ID: pat-104) ---
+Date: 2026-05-19
+Subjective: Patient reports feeling well. Denies chest pain or shortness of breath.
+Objective: Blood pressure is stable. Current active diagnoses are recorded.
+Plan: Continue current outpatient medications as ordered. Follow up in 3 months.
+
+--- Patient: Sarah Martinez (ID: pat-105) ---
+Date: 2026-05-18
+Subjective: Patient reports feeling well. Denies chest pain or shortness of breath.
+Objective: Blood pressure is stable. Current active diagnoses are recorded.
+Plan: Continue current outpatient medications as ordered. Follow up in 3 months.
+
+--- Patient: William Anderson (ID: pat-106) ---
+Date: 2026-05-19
+Subjective: Patient reports feeling well. Denies chest pain or shortness of breath.
+Objective: Blood pressure is stable. Current active diagnoses are recorded.
+Plan: Continue current outpatient medications as ordered. Follow up in 3 months.
+
+--- Patient: Taylor Thomas (ID: pat-107) ---
+Date: 2026-05-25
+Subjective: Patient reports feeling well. Denies chest pain or shortness of breath.
+Objective: Blood pressure is stable. Current active diagnoses are recorded.
+Plan: Continue current outpatient medications as ordered. Follow up in 3 months.
+

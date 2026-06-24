@@ -7,9 +7,13 @@ lookups and falls back to LLM-powered reasoning for unknown entities.
 """
 
 import json
+import importlib
 import logging
+import re
+import sys
 from datetime import datetime
 
+from app.core.config import get_settings
 from app.schemas.entity_normalization import (
     NormalizedEntity,
     NormalizationResponse,
@@ -17,6 +21,67 @@ from app.schemas.entity_normalization import (
 )
 
 logger = logging.getLogger(__name__)
+SCISPACY_NLP = None
+SCISPACY_LOAD_ATTEMPTED = False
+TORCH_MODULE_SENTINEL = object()
+
+
+def _import_spacy_module():
+    """
+    Import spaCy while forcing torch to appear unavailable.
+
+    SciSpaCy's runtime path in this project only needs spaCy's text pipeline.
+    Some local macOS environments abort when thinc eagerly imports torch, so
+    we temporarily shadow torch during the spaCy import and restore sys.modules
+    immediately afterwards.
+    """
+    original_torch = sys.modules.get("torch", TORCH_MODULE_SENTINEL)
+    sys.modules["torch"] = None
+    try:
+        return importlib.import_module("spacy")
+    finally:
+        if original_torch is TORCH_MODULE_SENTINEL:
+            sys.modules.pop("torch", None)
+        else:
+            sys.modules["torch"] = original_torch
+
+
+def _load_scispacy_pipeline():
+    """Load the SciSpaCy model lazily and only when explicitly enabled."""
+    global SCISPACY_NLP, SCISPACY_LOAD_ATTEMPTED
+
+    if SCISPACY_LOAD_ATTEMPTED:
+        return SCISPACY_NLP
+
+    SCISPACY_LOAD_ATTEMPTED = True
+    settings = get_settings()
+    if not settings.enable_scispacy:
+        return None
+
+    try:
+        if importlib.util.find_spec("spacy") is None:
+            logger.warning("SciSpaCy requested but spaCy is not installed.")
+            return None
+
+        spacy = _import_spacy_module()
+        model_name = settings.scispacy_model
+
+        try:
+            SCISPACY_NLP = spacy.load(model_name)
+            return SCISPACY_NLP
+        except Exception as exc:  # pragma: no cover - depends on optional model package
+            logger.warning("SciSpaCy model '%s' unavailable: %s", model_name, exc)
+            try:
+                nlp = spacy.blank("en")
+                if "sentencizer" not in nlp.pipe_names:
+                    nlp.add_pipe("sentencizer")
+                SCISPACY_NLP = nlp
+                return SCISPACY_NLP
+            except Exception:
+                return None
+    except Exception as exc:  # pragma: no cover - depends on optional model package
+        logger.warning("SciSpaCy initialization failed; falling back to curated extraction: %s", exc)
+        return None
 
 
 # ── Curated Medical Knowledge Base ───────────────────────
@@ -776,6 +841,8 @@ class EntityNormalizationService:
         self._canonical_index: dict[str, str] = {
             label.lower(): label for label in CANONICAL_CONCEPTS
         }
+        self._nlp = None
+        self._scispacy_enabled = get_settings().enable_scispacy
 
     # ── Public API ───────────────────────────────────────
 
@@ -811,6 +878,46 @@ class EntityNormalizationService:
             total=len(results),
             timestamp=datetime.utcnow(),
         )
+
+    def normalize_with_fallback(self, text: str) -> list[NormalizedEntity]:
+        """
+        Extract entities from free text using SciSpaCy when available, then
+        normalize them with the curated override layer and local fallbacks.
+        """
+        candidate_forms = self._extract_candidate_forms(text)
+        if not candidate_forms and text.strip():
+            candidate_forms = [text.strip()]
+
+        session_cache: dict[str, NormalizedEntity] = {}
+        normalized: list[NormalizedEntity] = []
+        for candidate in candidate_forms:
+            curated = self._try_curated_lookup(candidate, session_cache)
+            if curated:
+                normalized.append(curated)
+                continue
+
+            normalized.append(
+                NormalizedEntity(
+                    surface_form=candidate,
+                    canonical_label=candidate,
+                    ontology="UMLS",
+                    concept_id="[UNGROUNDED]",
+                    semantic_type="Unknown",
+                    confidence="Low",
+                    is_ungrounded=True,
+                    closest_candidate=None,
+                )
+            )
+
+        deduped: list[NormalizedEntity] = []
+        seen = set()
+        for item in normalized:
+            key = (item.canonical_label.lower(), item.concept_id)
+            if key in seen:
+                continue
+            seen.add(key)
+            deduped.append(item)
+        return deduped
 
     # ── Curated Lookup ───────────────────────────────────
 
@@ -865,6 +972,42 @@ class EntityNormalizationService:
 
         session_cache[cache_key] = result
         return result
+
+    def _extract_candidate_forms(self, text: str) -> list[str]:
+        """
+        Extract candidate spans using SciSpaCy entities plus deterministic
+        n-gram matching against the curated synonym/canonical vocabulary.
+        """
+        candidates: list[str] = []
+        seen: set[str] = set()
+
+        if self._nlp is None and self._scispacy_enabled:
+            self._nlp = _load_scispacy_pipeline()
+
+        if self._nlp is not None:
+            try:
+                doc = self._nlp(text)
+                for ent in getattr(doc, "ents", []):
+                    candidate = ent.text.strip()
+                    key = candidate.lower()
+                    if candidate and key not in seen:
+                        candidates.append(candidate)
+                        seen.add(key)
+            except Exception as exc:
+                logger.warning("SciSpaCy extraction failed, falling back to lexical scan: %s", exc)
+
+        normalized = re.sub(r"[^a-zA-Z0-9+/\- ]+", " ", text.lower())
+        tokens = [token for token in normalized.split() if token]
+        max_ngram = min(len(tokens), 6)
+        for size in range(max_ngram, 0, -1):
+            for start in range(0, len(tokens) - size + 1):
+                phrase = " ".join(tokens[start:start + size]).strip()
+                if phrase in SYNONYM_MAP or phrase in self._canonical_index:
+                    if phrase not in seen:
+                        candidates.append(phrase)
+                        seen.add(phrase)
+
+        return candidates
 
     # ── LLM Fallback ─────────────────────────────────────
 

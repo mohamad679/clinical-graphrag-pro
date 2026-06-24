@@ -1,0 +1,20 @@
+{"query": "Which medication in the corpus is an ACE inhibitor?", "expected_keywords": ["lisinopril", "hypertension"], "expected_topic": "hypertension medications"}
+{"query": "Which medication in the indexed notes is used for type 2 diabetes?", "expected_keywords": ["metformin", "diabetes"], "expected_topic": "diabetes medications"}
+{"query": "What chronic disease is associated with numbness and tingling in the lower extremities?", "expected_keywords": ["diabetes", "neuropathy"], "expected_topic": "diabetic neuropathy"}
+{"query": "Which diagnosis was linked to over-diuresis during hospitalization?", "expected_keywords": ["acute kidney injury", "over-diuresis"], "expected_topic": "AKI from diuresis"}
+{"query": "What heart rhythm problem was documented during the hospitalization for patient 2045?", "expected_keywords": ["atrial fibrillation", "persistant"], "expected_topic": "atrial fibrillation"}
+{"query": "Which heart failure condition worsened during the same admission?", "expected_keywords": ["congestive heart failure", "exacerbation"], "expected_topic": "heart failure exacerbation"}
+{"query": "Which psychiatric condition is being followed in patient 3099?", "expected_keywords": ["depression", "depressive"], "expected_topic": "depression management"}
+{"query": "Which respiratory disease is treated with PRN albuterol in the outpatient note?", "expected_keywords": ["asthma", "albuterol"], "expected_topic": "asthma history"}
+{"query": "Which symptom brought patient 1001 to care?", "expected_keywords": ["numbness", "tingling"], "expected_topic": "neurologic complaint"}
+{"query": "Which two chronic medications are listed in the worker note?", "expected_keywords": ["lisinopril", "metformin"], "expected_topic": "home medication list"}
+{"query": "What kidney-related diagnosis appears in the discharge summary corpus?", "expected_keywords": ["acute kidney injury", "AKI"], "expected_topic": "renal diagnosis"}
+{"query": "What cardiovascular diagnosis appears alongside AKI in patient 2045?", "expected_keywords": ["congestive heart failure", "atrial fibrillation"], "expected_topic": "cardiovascular comorbidities"}
+{"query": "Which endocrine disease is described as poorly controlled in patient 1001?", "expected_keywords": ["type 2 diabetes", "diabetes"], "expected_topic": "diabetes history"}
+{"query": "What outpatient non-psychiatric chronic condition accompanies migraines in patient 3099?", "expected_keywords": ["asthma", "albuterol"], "expected_topic": "pulmonary comorbidity"}
+{"query": "Which note contains evidence of diabetic neuropathy symptoms?", "expected_keywords": ["numbness", "lower extremities"], "expected_topic": "neuropathy note retrieval"}
+{"query": "Which admission mentions over-diuresis as a cause of renal dysfunction?", "expected_keywords": ["over-diuresis", "acute kidney injury"], "expected_topic": "cause of AKI"}
+{"query": "What medication and disease pair appear together in the worker note for hypertension?", "expected_keywords": ["lisinopril", "hypertension"], "expected_topic": "hypertension treatment"}
+{"query": "What medication and disease pair appear together in the worker note for diabetes?", "expected_keywords": ["metformin", "diabetes"], "expected_topic": "diabetes treatment"}
+{"query": "Which indexed note mentions depression management follow-up?", "expected_keywords": ["depression", "management"], "expected_topic": "psychiatric follow-up"}
+{"query": "Which indexed note includes both AKI and congestive heart failure?", "expected_keywords": ["acute kidney injury", "congestive heart failure"], "expected_topic": "multimorbidity discharge summary"}

@@ -1,0 +1,40 @@
+flowchart TD
+    subgraph Input["Evaluation Inputs"]
+        A[Golden Evaluation Dataset<br/>golden_evaluation_dataset.jsonl]
+        B[Synthetic Clinical Data<br/>FHIR Bundles / Clinical Notes]
+    end
+
+    subgraph Setup["Indexing & Setup"]
+        A --> C[Load Test Cases]
+        B --> D[Ingest Documents to Indices]
+    end
+
+    subgraph Eval1["Retrieval Evaluation Harness"]
+        C --> E[Execute Queries against Retrieval Gateway]
+        D --> E
+        E --> F[Collect Retrieved Chunks & Latencies]
+        F --> G[Compute Retrieval Metrics]
+        G --> G1["Recall @ 1, 3, 5"]
+        G --> G2["Precision @ 1, 3, 5"]
+        G --> G3["MRR (Mean Reciprocal Rank)"]
+        G --> G4["nDCG @ 5"]
+        G --> G5["Latency Profile (Mean, p50, p95)"]
+        G1 & G2 & G3 & G4 & G5 --> H[Save Results: retrieval_evaluation_results.json]
+    end
+
+    subgraph Eval2["RAG Generation Evaluation Harness"]
+        C --> I[Execute Full RAG Pipeline Queries]
+        I --> J{LLM API Available?}
+        J -- Yes --> K[Generate LLM Answers & Extract Citations]
+        J -- No --> L[Fallback: Test Offline Abstention / Mocked Answers]
+        K & L --> M[Collect Generation Logs & Latencies]
+        M --> N[Compute RAG Generation Metrics]
+        N --> N1["Abstention Accuracy"]
+        N --> N2["Citation Coverage"]
+        N --> N3["Citation Accuracy"]
+        N --> N4["End-to-End Latency"]
+        N1 & N2 & N3 & N4 --> O[Save Results: rag_evaluation_results.json]
+    end
+
+    H --> P[Compile Markdown Performance Report]
+    O --> P

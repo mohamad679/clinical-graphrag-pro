@@ -1,0 +1,26 @@
+Discharge Summary
+
+Patient Name: Robert Chen
+Age/Sex: 67-year-old male
+Medical Record Number: 482761
+Admit Date: 2026-03-24
+Discharge Date: 2026-03-27
+Admitting Diagnosis: Acute non-ST elevation myocardial infarction (NSTEMI)
+
+History of Present Illness:
+Robert Chen is a 67-year-old man with hypertension, hyperlipidemia, and remote tobacco use who presented to the emergency department with 3 hours of substernal chest pressure radiating to the left arm, associated with diaphoresis and mild shortness of breath. He denied syncope, fever, or pleuritic pain. On arrival he was alert and in moderate distress from chest discomfort. Admission vital signs were temperature 36.8 C, blood pressure 168/96 mmHg, heart rate 104 bpm, respiratory rate 22/min, and oxygen saturation 96% on room air.
+
+Initial Evaluation:
+EKG on admission showed sinus tachycardia with 1 mm horizontal ST-segment depression in leads V4-V6 and T-wave inversion in leads II, III, and aVF without ST elevation. Initial laboratory evaluation was notable for troponin I 0.8 ng/mL, rising to 2.4 ng/mL at 6 hours, then decreasing to 1.9 ng/mL on hospital day 2, consistent with NSTEMI. BMP and CBC were otherwise without major acute abnormalities aside from mild stress hyperglycemia.
+
+Hospital Course:
+The patient was admitted to telemetry and treated with aspirin, ticagrelor, and therapeutic anticoagulation during the acute phase. He remained hemodynamically stable without recurrent sustained chest pain after initiation of therapy. High-intensity atorvastatin 80 mg nightly was started. Metoprolol succinate was initiated and titrated as tolerated for rate control and secondary prevention. Lisinopril was added after blood pressure remained elevated and renal function stayed stable. Transthoracic echocardiogram demonstrated mild inferior wall hypokinesis with a left ventricular ejection fraction of 48%, no significant valvular disease, and no pericardial effusion. He was evaluated by cardiology, and the overall presentation was felt to be most consistent with plaque rupture causing NSTEMI. He improved with guideline-directed medical therapy and was ambulating independently by discharge.
+
+Discharge Medications:
+Aspirin 81 mg daily, ticagrelor 90 mg twice daily, atorvastatin 80 mg nightly, lisinopril 10 mg daily, metoprolol succinate 50 mg daily, and sublingual nitroglycerin 0.4 mg as needed for chest pain.
+
+Discharge Instructions:
+Take all medications exactly as prescribed. Do not stop dual antiplatelet therapy unless directed by cardiology. Follow a low-sodium, heart-healthy diet, avoid smoking, and limit strenuous exertion until cleared. Seek urgent care for recurrent chest pain not relieved by nitroglycerin, shortness of breath, syncope, melena, or medication-related bleeding.
+
+Follow-Up Plan:
+Follow up with primary care within 1 week and cardiology within 7-10 days. Repeat BMP in 1 week after ACE inhibitor initiation. Referral placed for outpatient cardiac rehabilitation. Repeat lipid panel and blood pressure review at follow-up.

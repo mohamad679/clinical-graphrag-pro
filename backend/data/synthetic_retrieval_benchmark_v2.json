@@ -1,0 +1,4375 @@
+{
+  "dataset_version": "synthetic_retrieval_benchmark_v2",
+  "generator_version": "2026-06-07.1",
+  "created_at": "2026-06-07T08:57:25Z",
+  "seed": 20260607,
+  "clinical_validation": "not_clinically_validated",
+  "corpus": [
+    {
+      "chunk_id": "rtv2-lexical_exact-000-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-000-med",
+      "document_name": "rtv2-lexical_exact-000-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-000-med. Medication reconciliation for Mira Lane: active type 2 diabetes; continue metformin 500 mg BID. HbA1c was 8.1%.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-lexical_exact-001-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-001-med",
+      "document_name": "rtv2-lexical_exact-001-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-001-med. Medication reconciliation for Jon Reed: active atrial fibrillation; continue apixaban 5 mg BID. INR was 1.1.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-lexical_exact-002-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-002-med",
+      "document_name": "rtv2-lexical_exact-002-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-002-med. Medication reconciliation for Nia Shah: active heart failure; continue furosemide 40 mg daily. BNP was 820 pg/mL.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-lexical_exact-003-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-003-med",
+      "document_name": "rtv2-lexical_exact-003-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-003-med. Medication reconciliation for Owen Vale: active hypertension; continue lisinopril 10 mg daily. potassium was 4.2 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-lexical_exact-004-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-004-med",
+      "document_name": "rtv2-lexical_exact-004-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-004-med. Medication reconciliation for Iris Cole: active COPD; continue tiotropium 18 mcg daily. FEV1 was 58%.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-lexical_exact-005-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-005-med",
+      "document_name": "rtv2-lexical_exact-005-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-005-med. Medication reconciliation for Luis Hart: active migraine; continue topiramate 50 mg qHS. bicarbonate was 24 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-lexical_exact-006-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-006-med",
+      "document_name": "rtv2-lexical_exact-006-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-006-med. Medication reconciliation for Ari Moss: active coronary artery disease; continue atorvastatin 80 mg nightly. LDL was 142 mg/dL.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-lexical_exact-007-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-007-med",
+      "document_name": "rtv2-lexical_exact-007-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-007-med. Medication reconciliation for Eva Lin: active ulcerative colitis; continue mesalamine 2.4 g daily. CRP was 12 mg/L.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-lexical_exact-008-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-008-med",
+      "document_name": "rtv2-lexical_exact-008-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-008-med. Medication reconciliation for Mira Lane: active type 2 diabetes; continue metformin 500 mg BID. HbA1c was 8.1%.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-lexical_exact-009-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-009-med",
+      "document_name": "rtv2-lexical_exact-009-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-009-med. Medication reconciliation for Jon Reed: active atrial fibrillation; continue apixaban 5 mg BID. INR was 1.1.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-lexical_exact-010-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-010-med",
+      "document_name": "rtv2-lexical_exact-010-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-010-med. Medication reconciliation for Nia Shah: active heart failure; continue furosemide 40 mg daily. BNP was 820 pg/mL.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-lexical_exact-011-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-011-med",
+      "document_name": "rtv2-lexical_exact-011-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-011-med. Medication reconciliation for Owen Vale: active hypertension; continue lisinopril 10 mg daily. potassium was 4.2 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-lexical_exact-012-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-012-med",
+      "document_name": "rtv2-lexical_exact-012-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-012-med. Medication reconciliation for Iris Cole: active COPD; continue tiotropium 18 mcg daily. FEV1 was 58%.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-lexical_exact-013-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-013-med",
+      "document_name": "rtv2-lexical_exact-013-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-013-med. Medication reconciliation for Luis Hart: active migraine; continue topiramate 50 mg qHS. bicarbonate was 24 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-lexical_exact-014-med",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-lexical_exact-014-med",
+      "document_name": "rtv2-lexical_exact-014-med.txt",
+      "text": "Synthetic encounter rtv2-lexical_exact-014-med. Medication reconciliation for Ari Moss: active coronary artery disease; continue atorvastatin 80 mg nightly. LDL was 142 mg/dL.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "lexical_exact",
+        "source_type": "med"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-000-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-000-assessment",
+      "document_name": "rtv2-semantic_paraphrase-000-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-000-assessment. Follow-up assessment for Eva Lin: symptoms are stable and the current long-term therapy remains mesalamine at 2.4 g daily for ulcerative colitis.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-001-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-001-assessment",
+      "document_name": "rtv2-semantic_paraphrase-001-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-001-assessment. Follow-up assessment for Mira Lane: symptoms are stable and the current long-term therapy remains metformin at 500 mg BID for type 2 diabetes.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-002-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-002-assessment",
+      "document_name": "rtv2-semantic_paraphrase-002-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-002-assessment. Follow-up assessment for Jon Reed: symptoms are stable and the current long-term therapy remains apixaban at 5 mg BID for atrial fibrillation.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-003-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-003-assessment",
+      "document_name": "rtv2-semantic_paraphrase-003-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-003-assessment. Follow-up assessment for Nia Shah: symptoms are stable and the current long-term therapy remains furosemide at 40 mg daily for heart failure.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-004-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-004-assessment",
+      "document_name": "rtv2-semantic_paraphrase-004-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-004-assessment. Follow-up assessment for Owen Vale: symptoms are stable and the current long-term therapy remains lisinopril at 10 mg daily for hypertension.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-005-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-005-assessment",
+      "document_name": "rtv2-semantic_paraphrase-005-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-005-assessment. Follow-up assessment for Iris Cole: symptoms are stable and the current long-term therapy remains tiotropium at 18 mcg daily for COPD.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-006-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-006-assessment",
+      "document_name": "rtv2-semantic_paraphrase-006-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-006-assessment. Follow-up assessment for Luis Hart: symptoms are stable and the current long-term therapy remains topiramate at 50 mg qHS for migraine.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-007-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-007-assessment",
+      "document_name": "rtv2-semantic_paraphrase-007-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-007-assessment. Follow-up assessment for Ari Moss: symptoms are stable and the current long-term therapy remains atorvastatin at 80 mg nightly for coronary artery disease.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-008-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-008-assessment",
+      "document_name": "rtv2-semantic_paraphrase-008-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-008-assessment. Follow-up assessment for Eva Lin: symptoms are stable and the current long-term therapy remains mesalamine at 2.4 g daily for ulcerative colitis.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-009-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-009-assessment",
+      "document_name": "rtv2-semantic_paraphrase-009-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-009-assessment. Follow-up assessment for Mira Lane: symptoms are stable and the current long-term therapy remains metformin at 500 mg BID for type 2 diabetes.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-010-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-010-assessment",
+      "document_name": "rtv2-semantic_paraphrase-010-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-010-assessment. Follow-up assessment for Jon Reed: symptoms are stable and the current long-term therapy remains apixaban at 5 mg BID for atrial fibrillation.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-011-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-011-assessment",
+      "document_name": "rtv2-semantic_paraphrase-011-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-011-assessment. Follow-up assessment for Nia Shah: symptoms are stable and the current long-term therapy remains furosemide at 40 mg daily for heart failure.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-012-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-012-assessment",
+      "document_name": "rtv2-semantic_paraphrase-012-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-012-assessment. Follow-up assessment for Owen Vale: symptoms are stable and the current long-term therapy remains lisinopril at 10 mg daily for hypertension.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-013-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-013-assessment",
+      "document_name": "rtv2-semantic_paraphrase-013-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-013-assessment. Follow-up assessment for Iris Cole: symptoms are stable and the current long-term therapy remains tiotropium at 18 mcg daily for COPD.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-semantic_paraphrase-014-assessment",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-semantic_paraphrase-014-assessment",
+      "document_name": "rtv2-semantic_paraphrase-014-assessment.txt",
+      "text": "Synthetic encounter rtv2-semantic_paraphrase-014-assessment. Follow-up assessment for Luis Hart: symptoms are stable and the current long-term therapy remains topiramate at 50 mg qHS for migraine.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "semantic_paraphrase",
+        "source_type": "assessment"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-000-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-000-target",
+      "document_name": "rtv2-hard_negative-000-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-000-target. Ari Moss has coronary artery disease. The active plan is atorvastatin 80 mg nightly; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-000-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-000-distractor",
+      "document_name": "rtv2-hard_negative-000-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-000-distractor. Hard negative note: Owen Vale takes lisinopril 10 mg daily for hypertension, not for Ari Moss.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-001-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-001-target",
+      "document_name": "rtv2-hard_negative-001-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-001-target. Eva Lin has ulcerative colitis. The active plan is mesalamine 2.4 g daily; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-001-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-001-distractor",
+      "document_name": "rtv2-hard_negative-001-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-001-distractor. Hard negative note: Iris Cole takes tiotropium 18 mcg daily for COPD, not for Eva Lin.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-002-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-002-target",
+      "document_name": "rtv2-hard_negative-002-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-002-target. Mira Lane has type 2 diabetes. The active plan is metformin 500 mg BID; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-002-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-002-distractor",
+      "document_name": "rtv2-hard_negative-002-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-002-distractor. Hard negative note: Luis Hart takes topiramate 50 mg qHS for migraine, not for Mira Lane.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-003-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-003-target",
+      "document_name": "rtv2-hard_negative-003-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-003-target. Jon Reed has atrial fibrillation. The active plan is apixaban 5 mg BID; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-003-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-003-distractor",
+      "document_name": "rtv2-hard_negative-003-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-003-distractor. Hard negative note: Ari Moss takes atorvastatin 80 mg nightly for coronary artery disease, not for Jon Reed.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-004-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-004-target",
+      "document_name": "rtv2-hard_negative-004-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-004-target. Nia Shah has heart failure. The active plan is furosemide 40 mg daily; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-004-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-004-distractor",
+      "document_name": "rtv2-hard_negative-004-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-004-distractor. Hard negative note: Eva Lin takes mesalamine 2.4 g daily for ulcerative colitis, not for Nia Shah.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-005-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-005-target",
+      "document_name": "rtv2-hard_negative-005-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-005-target. Owen Vale has hypertension. The active plan is lisinopril 10 mg daily; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-005-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-005-distractor",
+      "document_name": "rtv2-hard_negative-005-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-005-distractor. Hard negative note: Mira Lane takes metformin 500 mg BID for type 2 diabetes, not for Owen Vale.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-006-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-006-target",
+      "document_name": "rtv2-hard_negative-006-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-006-target. Iris Cole has COPD. The active plan is tiotropium 18 mcg daily; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-006-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-006-distractor",
+      "document_name": "rtv2-hard_negative-006-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-006-distractor. Hard negative note: Jon Reed takes apixaban 5 mg BID for atrial fibrillation, not for Iris Cole.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-007-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-007-target",
+      "document_name": "rtv2-hard_negative-007-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-007-target. Luis Hart has migraine. The active plan is topiramate 50 mg qHS; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-007-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-007-distractor",
+      "document_name": "rtv2-hard_negative-007-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-007-distractor. Hard negative note: Nia Shah takes furosemide 40 mg daily for heart failure, not for Luis Hart.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-008-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-008-target",
+      "document_name": "rtv2-hard_negative-008-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-008-target. Ari Moss has coronary artery disease. The active plan is atorvastatin 80 mg nightly; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-008-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-008-distractor",
+      "document_name": "rtv2-hard_negative-008-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-008-distractor. Hard negative note: Owen Vale takes lisinopril 10 mg daily for hypertension, not for Ari Moss.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-009-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-009-target",
+      "document_name": "rtv2-hard_negative-009-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-009-target. Eva Lin has ulcerative colitis. The active plan is mesalamine 2.4 g daily; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-009-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-009-distractor",
+      "document_name": "rtv2-hard_negative-009-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-009-distractor. Hard negative note: Iris Cole takes tiotropium 18 mcg daily for COPD, not for Eva Lin.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-010-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-010-target",
+      "document_name": "rtv2-hard_negative-010-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-010-target. Mira Lane has type 2 diabetes. The active plan is metformin 500 mg BID; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-010-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-010-distractor",
+      "document_name": "rtv2-hard_negative-010-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-010-distractor. Hard negative note: Luis Hart takes topiramate 50 mg qHS for migraine, not for Mira Lane.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-011-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-011-target",
+      "document_name": "rtv2-hard_negative-011-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-011-target. Jon Reed has atrial fibrillation. The active plan is apixaban 5 mg BID; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-011-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-011-distractor",
+      "document_name": "rtv2-hard_negative-011-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-011-distractor. Hard negative note: Ari Moss takes atorvastatin 80 mg nightly for coronary artery disease, not for Jon Reed.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-012-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-012-target",
+      "document_name": "rtv2-hard_negative-012-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-012-target. Nia Shah has heart failure. The active plan is furosemide 40 mg daily; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-012-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-012-distractor",
+      "document_name": "rtv2-hard_negative-012-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-012-distractor. Hard negative note: Eva Lin takes mesalamine 2.4 g daily for ulcerative colitis, not for Nia Shah.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-013-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-013-target",
+      "document_name": "rtv2-hard_negative-013-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-013-target. Owen Vale has hypertension. The active plan is lisinopril 10 mg daily; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-013-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-013-distractor",
+      "document_name": "rtv2-hard_negative-013-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-013-distractor. Hard negative note: Mira Lane takes metformin 500 mg BID for type 2 diabetes, not for Owen Vale.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-014-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-014-target",
+      "document_name": "rtv2-hard_negative-014-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-014-target. Iris Cole has COPD. The active plan is tiotropium 18 mcg daily; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-014-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-014-distractor",
+      "document_name": "rtv2-hard_negative-014-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-014-distractor. Hard negative note: Jon Reed takes apixaban 5 mg BID for atrial fibrillation, not for Iris Cole.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-015-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-015-target",
+      "document_name": "rtv2-hard_negative-015-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-015-target. Luis Hart has migraine. The active plan is topiramate 50 mg qHS; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-015-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-015-distractor",
+      "document_name": "rtv2-hard_negative-015-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-015-distractor. Hard negative note: Nia Shah takes furosemide 40 mg daily for heart failure, not for Luis Hart.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-016-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-016-target",
+      "document_name": "rtv2-hard_negative-016-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-016-target. Ari Moss has coronary artery disease. The active plan is atorvastatin 80 mg nightly; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-016-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-016-distractor",
+      "document_name": "rtv2-hard_negative-016-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-016-distractor. Hard negative note: Owen Vale takes lisinopril 10 mg daily for hypertension, not for Ari Moss.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-017-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-017-target",
+      "document_name": "rtv2-hard_negative-017-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-017-target. Eva Lin has ulcerative colitis. The active plan is mesalamine 2.4 g daily; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-017-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-017-distractor",
+      "document_name": "rtv2-hard_negative-017-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-017-distractor. Hard negative note: Iris Cole takes tiotropium 18 mcg daily for COPD, not for Eva Lin.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-018-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-018-target",
+      "document_name": "rtv2-hard_negative-018-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-018-target. Mira Lane has type 2 diabetes. The active plan is metformin 500 mg BID; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-018-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-018-distractor",
+      "document_name": "rtv2-hard_negative-018-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-018-distractor. Hard negative note: Luis Hart takes topiramate 50 mg qHS for migraine, not for Mira Lane.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-019-target",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-019-target",
+      "document_name": "rtv2-hard_negative-019-target.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-019-target. Jon Reed has atrial fibrillation. The active plan is apixaban 5 mg BID; do not substitute the similarly documented alternate therapy.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "hard_negative",
+        "source_type": "target"
+      }
+    },
+    {
+      "chunk_id": "rtv2-hard_negative-019-distractor",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-hard_negative-019-distractor",
+      "document_name": "rtv2-hard_negative-019-distractor.txt",
+      "text": "Synthetic encounter rtv2-hard_negative-019-distractor. Hard negative note: Ari Moss takes atorvastatin 80 mg nightly for coronary artery disease, not for Jon Reed.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "hard_negative",
+        "source_type": "distractor"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-000-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-000-early",
+      "document_name": "rtv2-temporal_question-000-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-000-early. 2026-01-01: Nia Shah's BNP was 820 pg/mL.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-000-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-000-late",
+      "document_name": "rtv2-temporal_question-000-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-000-late. 2026-05-01: repeat BNP for Nia Shah was 430 pg/mL, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-001-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-001-early",
+      "document_name": "rtv2-temporal_question-001-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-001-early. 2026-01-02: Owen Vale's potassium was 4.2 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-001-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-001-late",
+      "document_name": "rtv2-temporal_question-001-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-001-late. 2026-05-02: repeat potassium for Owen Vale was 4.8 mmol/L, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-002-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-002-early",
+      "document_name": "rtv2-temporal_question-002-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-002-early. 2026-01-03: Iris Cole's FEV1 was 58%.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-002-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-002-late",
+      "document_name": "rtv2-temporal_question-002-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-002-late. 2026-05-03: repeat FEV1 for Iris Cole was 62%, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-003-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-003-early",
+      "document_name": "rtv2-temporal_question-003-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-003-early. 2026-01-04: Luis Hart's bicarbonate was 24 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-003-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-003-late",
+      "document_name": "rtv2-temporal_question-003-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-003-late. 2026-05-04: repeat bicarbonate for Luis Hart was 20 mmol/L, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-004-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-004-early",
+      "document_name": "rtv2-temporal_question-004-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-004-early. 2026-01-05: Ari Moss's LDL was 142 mg/dL.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-004-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-004-late",
+      "document_name": "rtv2-temporal_question-004-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-004-late. 2026-05-05: repeat LDL for Ari Moss was 76 mg/dL, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-005-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-005-early",
+      "document_name": "rtv2-temporal_question-005-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-005-early. 2026-01-06: Eva Lin's CRP was 12 mg/L.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-005-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-005-late",
+      "document_name": "rtv2-temporal_question-005-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-005-late. 2026-05-06: repeat CRP for Eva Lin was 34 mg/L, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-006-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-006-early",
+      "document_name": "rtv2-temporal_question-006-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-006-early. 2026-01-07: Mira Lane's HbA1c was 8.1%.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-006-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-006-late",
+      "document_name": "rtv2-temporal_question-006-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-006-late. 2026-05-07: repeat HbA1c for Mira Lane was 7.0%, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-007-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-007-early",
+      "document_name": "rtv2-temporal_question-007-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-007-early. 2026-01-08: Jon Reed's INR was 1.1.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-007-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-007-late",
+      "document_name": "rtv2-temporal_question-007-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-007-late. 2026-05-08: repeat INR for Jon Reed was 1.0, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-008-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-008-early",
+      "document_name": "rtv2-temporal_question-008-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-008-early. 2026-01-09: Nia Shah's BNP was 820 pg/mL.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-008-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-008-late",
+      "document_name": "rtv2-temporal_question-008-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-008-late. 2026-05-09: repeat BNP for Nia Shah was 430 pg/mL, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-009-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-009-early",
+      "document_name": "rtv2-temporal_question-009-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-009-early. 2026-01-10: Owen Vale's potassium was 4.2 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-009-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-009-late",
+      "document_name": "rtv2-temporal_question-009-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-009-late. 2026-05-10: repeat potassium for Owen Vale was 4.8 mmol/L, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-010-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-010-early",
+      "document_name": "rtv2-temporal_question-010-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-010-early. 2026-01-11: Iris Cole's FEV1 was 58%.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-010-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-010-late",
+      "document_name": "rtv2-temporal_question-010-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-010-late. 2026-05-11: repeat FEV1 for Iris Cole was 62%, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-011-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-011-early",
+      "document_name": "rtv2-temporal_question-011-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-011-early. 2026-01-12: Luis Hart's bicarbonate was 24 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-011-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-011-late",
+      "document_name": "rtv2-temporal_question-011-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-011-late. 2026-05-12: repeat bicarbonate for Luis Hart was 20 mmol/L, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-012-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-012-early",
+      "document_name": "rtv2-temporal_question-012-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-012-early. 2026-01-13: Ari Moss's LDL was 142 mg/dL.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-012-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-012-late",
+      "document_name": "rtv2-temporal_question-012-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-012-late. 2026-05-13: repeat LDL for Ari Moss was 76 mg/dL, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-013-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-013-early",
+      "document_name": "rtv2-temporal_question-013-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-013-early. 2026-01-14: Eva Lin's CRP was 12 mg/L.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-013-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-013-late",
+      "document_name": "rtv2-temporal_question-013-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-013-late. 2026-05-14: repeat CRP for Eva Lin was 34 mg/L, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-014-early",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-014-early",
+      "document_name": "rtv2-temporal_question-014-early.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-014-early. 2026-01-15: Mira Lane's HbA1c was 8.1%.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "temporal_question",
+        "source_type": "early"
+      }
+    },
+    {
+      "chunk_id": "rtv2-temporal_question-014-late",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-temporal_question-014-late",
+      "document_name": "rtv2-temporal_question-014-late.txt",
+      "text": "Synthetic encounter rtv2-temporal_question-014-late. 2026-05-15: repeat HbA1c for Mira Lane was 7.0%, after medication review.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "temporal_question",
+        "source_type": "late"
+      }
+    },
+    {
+      "chunk_id": "rtv2-negation-000-negated",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-negation-000-negated",
+      "document_name": "rtv2-negation-000-negated.txt",
+      "text": "Synthetic encounter rtv2-negation-000-negated. Visit note for Jon Reed: atrial fibrillation is listed, but the patient is not taking apixaban; 5 mg BID was discontinued.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "negation",
+        "source_type": "negated"
+      }
+    },
+    {
+      "chunk_id": "rtv2-negation-001-negated",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-negation-001-negated",
+      "document_name": "rtv2-negation-001-negated.txt",
+      "text": "Synthetic encounter rtv2-negation-001-negated. Visit note for Nia Shah: heart failure is listed, but the patient is not taking furosemide; 40 mg daily was discontinued.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "negation",
+        "source_type": "negated"
+      }
+    },
+    {
+      "chunk_id": "rtv2-negation-002-negated",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-negation-002-negated",
+      "document_name": "rtv2-negation-002-negated.txt",
+      "text": "Synthetic encounter rtv2-negation-002-negated. Visit note for Owen Vale: hypertension is listed, but the patient is not taking lisinopril; 10 mg daily was discontinued.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "negation",
+        "source_type": "negated"
+      }
+    },
+    {
+      "chunk_id": "rtv2-negation-003-negated",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-negation-003-negated",
+      "document_name": "rtv2-negation-003-negated.txt",
+      "text": "Synthetic encounter rtv2-negation-003-negated. Visit note for Iris Cole: COPD is listed, but the patient is not taking tiotropium; 18 mcg daily was discontinued.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "negation",
+        "source_type": "negated"
+      }
+    },
+    {
+      "chunk_id": "rtv2-negation-004-negated",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-negation-004-negated",
+      "document_name": "rtv2-negation-004-negated.txt",
+      "text": "Synthetic encounter rtv2-negation-004-negated. Visit note for Luis Hart: migraine is listed, but the patient is not taking topiramate; 50 mg qHS was discontinued.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "negation",
+        "source_type": "negated"
+      }
+    },
+    {
+      "chunk_id": "rtv2-negation-005-negated",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-negation-005-negated",
+      "document_name": "rtv2-negation-005-negated.txt",
+      "text": "Synthetic encounter rtv2-negation-005-negated. Visit note for Ari Moss: coronary artery disease is listed, but the patient is not taking atorvastatin; 80 mg nightly was discontinued.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "negation",
+        "source_type": "negated"
+      }
+    },
+    {
+      "chunk_id": "rtv2-negation-006-negated",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-negation-006-negated",
+      "document_name": "rtv2-negation-006-negated.txt",
+      "text": "Synthetic encounter rtv2-negation-006-negated. Visit note for Eva Lin: ulcerative colitis is listed, but the patient is not taking mesalamine; 2.4 g daily was discontinued.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "negation",
+        "source_type": "negated"
+      }
+    },
+    {
+      "chunk_id": "rtv2-negation-007-negated",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-negation-007-negated",
+      "document_name": "rtv2-negation-007-negated.txt",
+      "text": "Synthetic encounter rtv2-negation-007-negated. Visit note for Mira Lane: type 2 diabetes is listed, but the patient is not taking metformin; 500 mg BID was discontinued.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "negation",
+        "source_type": "negated"
+      }
+    },
+    {
+      "chunk_id": "rtv2-negation-008-negated",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-negation-008-negated",
+      "document_name": "rtv2-negation-008-negated.txt",
+      "text": "Synthetic encounter rtv2-negation-008-negated. Visit note for Jon Reed: atrial fibrillation is listed, but the patient is not taking apixaban; 5 mg BID was discontinued.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "negation",
+        "source_type": "negated"
+      }
+    },
+    {
+      "chunk_id": "rtv2-negation-009-negated",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-negation-009-negated",
+      "document_name": "rtv2-negation-009-negated.txt",
+      "text": "Synthetic encounter rtv2-negation-009-negated. Visit note for Nia Shah: heart failure is listed, but the patient is not taking furosemide; 40 mg daily was discontinued.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "negation",
+        "source_type": "negated"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-000-allergy",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-000-allergy",
+      "document_name": "rtv2-contradiction-000-allergy.txt",
+      "text": "Synthetic encounter rtv2-contradiction-000-allergy. Intake note for Owen Vale: allergy list says lisinopril caused hives.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "contradiction",
+        "source_type": "allergy"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-000-reconcile",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-000-reconcile",
+      "document_name": "rtv2-contradiction-000-reconcile.txt",
+      "text": "Synthetic encounter rtv2-contradiction-000-reconcile. Discharge note for Owen Vale: medication reconciliation lists lisinopril 10 mg daily as active with no allergy warning.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "contradiction",
+        "source_type": "reconcile"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-001-allergy",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-001-allergy",
+      "document_name": "rtv2-contradiction-001-allergy.txt",
+      "text": "Synthetic encounter rtv2-contradiction-001-allergy. Intake note for Iris Cole: allergy list says tiotropium caused hives.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "contradiction",
+        "source_type": "allergy"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-001-reconcile",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-001-reconcile",
+      "document_name": "rtv2-contradiction-001-reconcile.txt",
+      "text": "Synthetic encounter rtv2-contradiction-001-reconcile. Discharge note for Iris Cole: medication reconciliation lists tiotropium 18 mcg daily as active with no allergy warning.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "contradiction",
+        "source_type": "reconcile"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-002-allergy",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-002-allergy",
+      "document_name": "rtv2-contradiction-002-allergy.txt",
+      "text": "Synthetic encounter rtv2-contradiction-002-allergy. Intake note for Luis Hart: allergy list says topiramate caused hives.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "contradiction",
+        "source_type": "allergy"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-002-reconcile",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-002-reconcile",
+      "document_name": "rtv2-contradiction-002-reconcile.txt",
+      "text": "Synthetic encounter rtv2-contradiction-002-reconcile. Discharge note for Luis Hart: medication reconciliation lists topiramate 50 mg qHS as active with no allergy warning.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "contradiction",
+        "source_type": "reconcile"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-003-allergy",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-003-allergy",
+      "document_name": "rtv2-contradiction-003-allergy.txt",
+      "text": "Synthetic encounter rtv2-contradiction-003-allergy. Intake note for Ari Moss: allergy list says atorvastatin caused hives.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "contradiction",
+        "source_type": "allergy"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-003-reconcile",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-003-reconcile",
+      "document_name": "rtv2-contradiction-003-reconcile.txt",
+      "text": "Synthetic encounter rtv2-contradiction-003-reconcile. Discharge note for Ari Moss: medication reconciliation lists atorvastatin 80 mg nightly as active with no allergy warning.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "contradiction",
+        "source_type": "reconcile"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-004-allergy",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-004-allergy",
+      "document_name": "rtv2-contradiction-004-allergy.txt",
+      "text": "Synthetic encounter rtv2-contradiction-004-allergy. Intake note for Eva Lin: allergy list says mesalamine caused hives.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "contradiction",
+        "source_type": "allergy"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-004-reconcile",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-004-reconcile",
+      "document_name": "rtv2-contradiction-004-reconcile.txt",
+      "text": "Synthetic encounter rtv2-contradiction-004-reconcile. Discharge note for Eva Lin: medication reconciliation lists mesalamine 2.4 g daily as active with no allergy warning.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "contradiction",
+        "source_type": "reconcile"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-005-allergy",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-005-allergy",
+      "document_name": "rtv2-contradiction-005-allergy.txt",
+      "text": "Synthetic encounter rtv2-contradiction-005-allergy. Intake note for Mira Lane: allergy list says metformin caused hives.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "contradiction",
+        "source_type": "allergy"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-005-reconcile",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-005-reconcile",
+      "document_name": "rtv2-contradiction-005-reconcile.txt",
+      "text": "Synthetic encounter rtv2-contradiction-005-reconcile. Discharge note for Mira Lane: medication reconciliation lists metformin 500 mg BID as active with no allergy warning.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "contradiction",
+        "source_type": "reconcile"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-006-allergy",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-006-allergy",
+      "document_name": "rtv2-contradiction-006-allergy.txt",
+      "text": "Synthetic encounter rtv2-contradiction-006-allergy. Intake note for Jon Reed: allergy list says apixaban caused hives.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "contradiction",
+        "source_type": "allergy"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-006-reconcile",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-006-reconcile",
+      "document_name": "rtv2-contradiction-006-reconcile.txt",
+      "text": "Synthetic encounter rtv2-contradiction-006-reconcile. Discharge note for Jon Reed: medication reconciliation lists apixaban 5 mg BID as active with no allergy warning.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "contradiction",
+        "source_type": "reconcile"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-007-allergy",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-007-allergy",
+      "document_name": "rtv2-contradiction-007-allergy.txt",
+      "text": "Synthetic encounter rtv2-contradiction-007-allergy. Intake note for Nia Shah: allergy list says furosemide caused hives.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "contradiction",
+        "source_type": "allergy"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-007-reconcile",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-007-reconcile",
+      "document_name": "rtv2-contradiction-007-reconcile.txt",
+      "text": "Synthetic encounter rtv2-contradiction-007-reconcile. Discharge note for Nia Shah: medication reconciliation lists furosemide 40 mg daily as active with no allergy warning.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "contradiction",
+        "source_type": "reconcile"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-008-allergy",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-008-allergy",
+      "document_name": "rtv2-contradiction-008-allergy.txt",
+      "text": "Synthetic encounter rtv2-contradiction-008-allergy. Intake note for Owen Vale: allergy list says lisinopril caused hives.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "contradiction",
+        "source_type": "allergy"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-008-reconcile",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-008-reconcile",
+      "document_name": "rtv2-contradiction-008-reconcile.txt",
+      "text": "Synthetic encounter rtv2-contradiction-008-reconcile. Discharge note for Owen Vale: medication reconciliation lists lisinopril 10 mg daily as active with no allergy warning.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "contradiction",
+        "source_type": "reconcile"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-009-allergy",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-009-allergy",
+      "document_name": "rtv2-contradiction-009-allergy.txt",
+      "text": "Synthetic encounter rtv2-contradiction-009-allergy. Intake note for Iris Cole: allergy list says tiotropium caused hives.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "contradiction",
+        "source_type": "allergy"
+      }
+    },
+    {
+      "chunk_id": "rtv2-contradiction-009-reconcile",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-contradiction-009-reconcile",
+      "document_name": "rtv2-contradiction-009-reconcile.txt",
+      "text": "Synthetic encounter rtv2-contradiction-009-reconcile. Discharge note for Iris Cole: medication reconciliation lists tiotropium 18 mcg daily as active with no allergy warning.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "contradiction",
+        "source_type": "reconcile"
+      }
+    },
+    {
+      "chunk_id": "rtv2-medication_dosage_unit-000-dose",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-medication_dosage_unit-000-dose",
+      "document_name": "rtv2-medication_dosage_unit-000-dose.txt",
+      "text": "Synthetic encounter rtv2-medication_dosage_unit-000-dose. Dosing note for Luis Hart: topiramate remains 50 mg qHS; monitoring includes bicarbonate 20 mmol/L and Na+ 136 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "medication_dosage_unit",
+        "source_type": "dose"
+      }
+    },
+    {
+      "chunk_id": "rtv2-medication_dosage_unit-001-dose",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-medication_dosage_unit-001-dose",
+      "document_name": "rtv2-medication_dosage_unit-001-dose.txt",
+      "text": "Synthetic encounter rtv2-medication_dosage_unit-001-dose. Dosing note for Ari Moss: atorvastatin remains 80 mg nightly; monitoring includes LDL 76 mg/dL and Na+ 136 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "medication_dosage_unit",
+        "source_type": "dose"
+      }
+    },
+    {
+      "chunk_id": "rtv2-medication_dosage_unit-002-dose",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-medication_dosage_unit-002-dose",
+      "document_name": "rtv2-medication_dosage_unit-002-dose.txt",
+      "text": "Synthetic encounter rtv2-medication_dosage_unit-002-dose. Dosing note for Eva Lin: mesalamine remains 2.4 g daily; monitoring includes CRP 34 mg/L and Na+ 136 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "medication_dosage_unit",
+        "source_type": "dose"
+      }
+    },
+    {
+      "chunk_id": "rtv2-medication_dosage_unit-003-dose",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-medication_dosage_unit-003-dose",
+      "document_name": "rtv2-medication_dosage_unit-003-dose.txt",
+      "text": "Synthetic encounter rtv2-medication_dosage_unit-003-dose. Dosing note for Mira Lane: metformin remains 500 mg BID; monitoring includes HbA1c 7.0% and Na+ 136 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "medication_dosage_unit",
+        "source_type": "dose"
+      }
+    },
+    {
+      "chunk_id": "rtv2-medication_dosage_unit-004-dose",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-medication_dosage_unit-004-dose",
+      "document_name": "rtv2-medication_dosage_unit-004-dose.txt",
+      "text": "Synthetic encounter rtv2-medication_dosage_unit-004-dose. Dosing note for Jon Reed: apixaban remains 5 mg BID; monitoring includes INR 1.0 and Na+ 136 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "medication_dosage_unit",
+        "source_type": "dose"
+      }
+    },
+    {
+      "chunk_id": "rtv2-medication_dosage_unit-005-dose",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-medication_dosage_unit-005-dose",
+      "document_name": "rtv2-medication_dosage_unit-005-dose.txt",
+      "text": "Synthetic encounter rtv2-medication_dosage_unit-005-dose. Dosing note for Nia Shah: furosemide remains 40 mg daily; monitoring includes BNP 430 pg/mL and Na+ 136 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "medication_dosage_unit",
+        "source_type": "dose"
+      }
+    },
+    {
+      "chunk_id": "rtv2-medication_dosage_unit-006-dose",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-medication_dosage_unit-006-dose",
+      "document_name": "rtv2-medication_dosage_unit-006-dose.txt",
+      "text": "Synthetic encounter rtv2-medication_dosage_unit-006-dose. Dosing note for Owen Vale: lisinopril remains 10 mg daily; monitoring includes potassium 4.8 mmol/L and Na+ 136 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "medication_dosage_unit",
+        "source_type": "dose"
+      }
+    },
+    {
+      "chunk_id": "rtv2-medication_dosage_unit-007-dose",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-medication_dosage_unit-007-dose",
+      "document_name": "rtv2-medication_dosage_unit-007-dose.txt",
+      "text": "Synthetic encounter rtv2-medication_dosage_unit-007-dose. Dosing note for Iris Cole: tiotropium remains 18 mcg daily; monitoring includes FEV1 62% and Na+ 136 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "medication_dosage_unit",
+        "source_type": "dose"
+      }
+    },
+    {
+      "chunk_id": "rtv2-medication_dosage_unit-008-dose",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-medication_dosage_unit-008-dose",
+      "document_name": "rtv2-medication_dosage_unit-008-dose.txt",
+      "text": "Synthetic encounter rtv2-medication_dosage_unit-008-dose. Dosing note for Luis Hart: topiramate remains 50 mg qHS; monitoring includes bicarbonate 20 mmol/L and Na+ 136 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "medication_dosage_unit",
+        "source_type": "dose"
+      }
+    },
+    {
+      "chunk_id": "rtv2-medication_dosage_unit-009-dose",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-medication_dosage_unit-009-dose",
+      "document_name": "rtv2-medication_dosage_unit-009-dose.txt",
+      "text": "Synthetic encounter rtv2-medication_dosage_unit-009-dose. Dosing note for Ari Moss: atorvastatin remains 80 mg nightly; monitoring includes LDL 76 mg/dL and Na+ 136 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "medication_dosage_unit",
+        "source_type": "dose"
+      }
+    },
+    {
+      "chunk_id": "rtv2-graph_dependent-000-graph_fact",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-graph_dependent-000-graph_fact",
+      "document_name": "rtv2-graph_dependent-000-graph_fact.txt",
+      "text": "Synthetic encounter rtv2-graph_dependent-000-graph_fact. Graph fact: Eva Lin HAS_CONDITION ulcerative colitis; ulcerative colitis TREATED_BY mesalamine 2.4 g daily; latest CRP equals 34 mg/L.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "graph_dependent",
+        "source_type": "graph_fact"
+      }
+    },
+    {
+      "chunk_id": "rtv2-graph_dependent-001-graph_fact",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-graph_dependent-001-graph_fact",
+      "document_name": "rtv2-graph_dependent-001-graph_fact.txt",
+      "text": "Synthetic encounter rtv2-graph_dependent-001-graph_fact. Graph fact: Mira Lane HAS_CONDITION type 2 diabetes; type 2 diabetes TREATED_BY metformin 500 mg BID; latest HbA1c equals 7.0%.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "graph_dependent",
+        "source_type": "graph_fact"
+      }
+    },
+    {
+      "chunk_id": "rtv2-graph_dependent-002-graph_fact",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-graph_dependent-002-graph_fact",
+      "document_name": "rtv2-graph_dependent-002-graph_fact.txt",
+      "text": "Synthetic encounter rtv2-graph_dependent-002-graph_fact. Graph fact: Jon Reed HAS_CONDITION atrial fibrillation; atrial fibrillation TREATED_BY apixaban 5 mg BID; latest INR equals 1.0.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "graph_dependent",
+        "source_type": "graph_fact"
+      }
+    },
+    {
+      "chunk_id": "rtv2-graph_dependent-003-graph_fact",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-graph_dependent-003-graph_fact",
+      "document_name": "rtv2-graph_dependent-003-graph_fact.txt",
+      "text": "Synthetic encounter rtv2-graph_dependent-003-graph_fact. Graph fact: Nia Shah HAS_CONDITION heart failure; heart failure TREATED_BY furosemide 40 mg daily; latest BNP equals 430 pg/mL.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "graph_dependent",
+        "source_type": "graph_fact"
+      }
+    },
+    {
+      "chunk_id": "rtv2-graph_dependent-004-graph_fact",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-graph_dependent-004-graph_fact",
+      "document_name": "rtv2-graph_dependent-004-graph_fact.txt",
+      "text": "Synthetic encounter rtv2-graph_dependent-004-graph_fact. Graph fact: Owen Vale HAS_CONDITION hypertension; hypertension TREATED_BY lisinopril 10 mg daily; latest potassium equals 4.8 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "graph_dependent",
+        "source_type": "graph_fact"
+      }
+    },
+    {
+      "chunk_id": "rtv2-graph_dependent-005-graph_fact",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-graph_dependent-005-graph_fact",
+      "document_name": "rtv2-graph_dependent-005-graph_fact.txt",
+      "text": "Synthetic encounter rtv2-graph_dependent-005-graph_fact. Graph fact: Iris Cole HAS_CONDITION COPD; COPD TREATED_BY tiotropium 18 mcg daily; latest FEV1 equals 62%.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "graph_dependent",
+        "source_type": "graph_fact"
+      }
+    },
+    {
+      "chunk_id": "rtv2-graph_dependent-006-graph_fact",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-graph_dependent-006-graph_fact",
+      "document_name": "rtv2-graph_dependent-006-graph_fact.txt",
+      "text": "Synthetic encounter rtv2-graph_dependent-006-graph_fact. Graph fact: Luis Hart HAS_CONDITION migraine; migraine TREATED_BY topiramate 50 mg qHS; latest bicarbonate equals 20 mmol/L.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "graph_dependent",
+        "source_type": "graph_fact"
+      }
+    },
+    {
+      "chunk_id": "rtv2-graph_dependent-007-graph_fact",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-graph_dependent-007-graph_fact",
+      "document_name": "rtv2-graph_dependent-007-graph_fact.txt",
+      "text": "Synthetic encounter rtv2-graph_dependent-007-graph_fact. Graph fact: Ari Moss HAS_CONDITION coronary artery disease; coronary artery disease TREATED_BY atorvastatin 80 mg nightly; latest LDL equals 76 mg/dL.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "graph_dependent",
+        "source_type": "graph_fact"
+      }
+    },
+    {
+      "chunk_id": "rtv2-graph_dependent-008-graph_fact",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-graph_dependent-008-graph_fact",
+      "document_name": "rtv2-graph_dependent-008-graph_fact.txt",
+      "text": "Synthetic encounter rtv2-graph_dependent-008-graph_fact. Graph fact: Eva Lin HAS_CONDITION ulcerative colitis; ulcerative colitis TREATED_BY mesalamine 2.4 g daily; latest CRP equals 34 mg/L.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "graph_dependent",
+        "source_type": "graph_fact"
+      }
+    },
+    {
+      "chunk_id": "rtv2-graph_dependent-009-graph_fact",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-graph_dependent-009-graph_fact",
+      "document_name": "rtv2-graph_dependent-009-graph_fact.txt",
+      "text": "Synthetic encounter rtv2-graph_dependent-009-graph_fact. Graph fact: Mira Lane HAS_CONDITION type 2 diabetes; type 2 diabetes TREATED_BY metformin 500 mg BID; latest HbA1c equals 7.0%.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "graph_dependent",
+        "source_type": "graph_fact"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-000-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-000-scope",
+      "document_name": "rtv2-abstention-000-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-000-scope. Scoped note for Jon Reed: atrial fibrillation and apixaban 5 mg BID are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-001-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-001-scope",
+      "document_name": "rtv2-abstention-001-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-001-scope. Scoped note for Nia Shah: heart failure and furosemide 40 mg daily are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-002-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-002-scope",
+      "document_name": "rtv2-abstention-002-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-002-scope. Scoped note for Owen Vale: hypertension and lisinopril 10 mg daily are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-003-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-003-scope",
+      "document_name": "rtv2-abstention-003-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-003-scope. Scoped note for Iris Cole: COPD and tiotropium 18 mcg daily are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-004-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-004-scope",
+      "document_name": "rtv2-abstention-004-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-004-scope. Scoped note for Luis Hart: migraine and topiramate 50 mg qHS are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-005-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-005-scope",
+      "document_name": "rtv2-abstention-005-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-005-scope. Scoped note for Ari Moss: coronary artery disease and atorvastatin 80 mg nightly are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-006-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-006-scope",
+      "document_name": "rtv2-abstention-006-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-006-scope. Scoped note for Eva Lin: ulcerative colitis and mesalamine 2.4 g daily are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-007-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-007-scope",
+      "document_name": "rtv2-abstention-007-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-007-scope. Scoped note for Mira Lane: type 2 diabetes and metformin 500 mg BID are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-008-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-008-scope",
+      "document_name": "rtv2-abstention-008-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-008-scope. Scoped note for Jon Reed: atrial fibrillation and apixaban 5 mg BID are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-009-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-009-scope",
+      "document_name": "rtv2-abstention-009-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-009-scope. Scoped note for Nia Shah: heart failure and furosemide 40 mg daily are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b01",
+        "user_id": "user-beta",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-010-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-010-scope",
+      "document_name": "rtv2-abstention-010-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-010-scope. Scoped note for Owen Vale: hypertension and lisinopril 10 mg daily are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-beta",
+        "patient_id": "pat-b02",
+        "user_id": "user-beta",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-011-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-011-scope",
+      "document_name": "rtv2-abstention-011-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-011-scope. Scoped note for Iris Cole: COPD and tiotropium 18 mcg daily are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g01",
+        "user_id": "user-gamma",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-012-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-012-scope",
+      "document_name": "rtv2-abstention-012-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-012-scope. Scoped note for Luis Hart: migraine and topiramate 50 mg qHS are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-gamma",
+        "patient_id": "pat-g02",
+        "user_id": "user-gamma",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-013-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-013-scope",
+      "document_name": "rtv2-abstention-013-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-013-scope. Scoped note for Ari Moss: coronary artery disease and atorvastatin 80 mg nightly are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d01",
+        "user_id": "user-delta",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-abstention-014-scope",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-abstention-014-scope",
+      "document_name": "rtv2-abstention-014-scope.txt",
+      "text": "Synthetic encounter rtv2-abstention-014-scope. Scoped note for Eva Lin: ulcerative colitis and mesalamine 2.4 g daily are documented. No pathology staging is present.",
+      "metadata": {
+        "tenant_id": "tenant-delta",
+        "patient_id": "pat-d02",
+        "user_id": "user-delta",
+        "category": "abstention",
+        "source_type": "scope"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-000-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-000-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-000-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-000-authorized. Authorized tenant note: Mira Lane receives metformin 500 mg BID for type 2 diabetes.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-000-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-000-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-000-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-000-blocked. Other tenant note with same patient id: Mira Lane receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a01",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-001-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-001-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-001-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-001-authorized. Authorized tenant note: Jon Reed receives apixaban 5 mg BID for atrial fibrillation.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-001-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-001-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-001-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-001-blocked. Other tenant note with same patient id: Jon Reed receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a02",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-002-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-002-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-002-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-002-authorized. Authorized tenant note: Mira Lane receives metformin 500 mg BID for type 2 diabetes.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-002-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-002-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-002-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-002-blocked. Other tenant note with same patient id: Mira Lane receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a01",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-003-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-003-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-003-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-003-authorized. Authorized tenant note: Jon Reed receives apixaban 5 mg BID for atrial fibrillation.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-003-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-003-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-003-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-003-blocked. Other tenant note with same patient id: Jon Reed receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a02",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-004-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-004-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-004-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-004-authorized. Authorized tenant note: Mira Lane receives metformin 500 mg BID for type 2 diabetes.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-004-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-004-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-004-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-004-blocked. Other tenant note with same patient id: Mira Lane receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a01",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-005-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-005-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-005-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-005-authorized. Authorized tenant note: Jon Reed receives apixaban 5 mg BID for atrial fibrillation.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-005-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-005-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-005-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-005-blocked. Other tenant note with same patient id: Jon Reed receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a02",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-006-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-006-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-006-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-006-authorized. Authorized tenant note: Mira Lane receives metformin 500 mg BID for type 2 diabetes.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-006-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-006-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-006-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-006-blocked. Other tenant note with same patient id: Mira Lane receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a01",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-007-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-007-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-007-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-007-authorized. Authorized tenant note: Jon Reed receives apixaban 5 mg BID for atrial fibrillation.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-007-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-007-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-007-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-007-blocked. Other tenant note with same patient id: Jon Reed receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a02",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-008-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-008-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-008-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-008-authorized. Authorized tenant note: Mira Lane receives metformin 500 mg BID for type 2 diabetes.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-008-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-008-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-008-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-008-blocked. Other tenant note with same patient id: Mira Lane receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a01",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-009-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-009-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-009-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-009-authorized. Authorized tenant note: Jon Reed receives apixaban 5 mg BID for atrial fibrillation.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-009-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-009-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-009-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-009-blocked. Other tenant note with same patient id: Jon Reed receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a02",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-010-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-010-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-010-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-010-authorized. Authorized tenant note: Mira Lane receives metformin 500 mg BID for type 2 diabetes.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-010-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-010-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-010-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-010-blocked. Other tenant note with same patient id: Mira Lane receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a01",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-011-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-011-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-011-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-011-authorized. Authorized tenant note: Jon Reed receives apixaban 5 mg BID for atrial fibrillation.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-011-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-011-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-011-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-011-blocked. Other tenant note with same patient id: Jon Reed receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a02",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-012-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-012-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-012-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-012-authorized. Authorized tenant note: Mira Lane receives metformin 500 mg BID for type 2 diabetes.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-012-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-012-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-012-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-012-blocked. Other tenant note with same patient id: Mira Lane receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a01",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-013-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-013-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-013-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-013-authorized. Authorized tenant note: Jon Reed receives apixaban 5 mg BID for atrial fibrillation.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a02",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-013-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-013-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-013-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-013-blocked. Other tenant note with same patient id: Jon Reed receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a02",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-014-authorized",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-014-authorized",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-014-authorized.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-014-authorized. Authorized tenant note: Mira Lane receives metformin 500 mg BID for type 2 diabetes.",
+      "metadata": {
+        "tenant_id": "tenant-alpha",
+        "patient_id": "pat-a01",
+        "user_id": "user-alpha",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "authorized"
+      }
+    },
+    {
+      "chunk_id": "rtv2-cross_tenant_leakage_attempt-014-blocked",
+      "chunk_index": 0,
+      "document_id": "doc-rtv2-cross_tenant_leakage_attempt-014-blocked",
+      "document_name": "rtv2-cross_tenant_leakage_attempt-014-blocked.txt",
+      "text": "Synthetic encounter rtv2-cross_tenant_leakage_attempt-014-blocked. Other tenant note with same patient id: Mira Lane receives warfarin 3 mg daily. This chunk must not leak.",
+      "metadata": {
+        "tenant_id": "tenant-omega",
+        "patient_id": "pat-a01",
+        "user_id": "user-omega",
+        "category": "cross_tenant_leakage_attempt",
+        "source_type": "blocked"
+      }
+    }
+  ],
+  "queries": [
+    {
+      "query_id": "q-contradiction-004",
+      "category": "contradiction",
+      "query_text": "Can the record confidently say mesalamine is safe?",
+      "expected_evidence_ids": [
+        "rtv2-contradiction-004-allergy",
+        "rtv2-contradiction-004-reconcile"
+      ],
+      "abstention_expected": true,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-010",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-010-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-hard_negative-013",
+      "category": "hard_negative",
+      "query_text": "For Owen Vale, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-013-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-hard_negative-012",
+      "category": "hard_negative",
+      "query_text": "For Nia Shah, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-012-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-lexical_exact-004",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for COPD?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-004-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-hard_negative-017",
+      "category": "hard_negative",
+      "query_text": "For Eva Lin, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-017-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-temporal_question-013",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later CRP values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-013-early",
+        "rtv2-temporal_question-013-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-004",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-004-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-011",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-011-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-temporal_question-007",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later INR values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-007-early",
+        "rtv2-temporal_question-007-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-lexical_exact-011",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for hypertension?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-011-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-000",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-000-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-abstention-011",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-007",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-007-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-abstention-012",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-lexical_exact-001",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for atrial fibrillation?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-001-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-negation-001",
+      "category": "negation",
+      "query_text": "Is furosemide currently being taken for this patient?",
+      "expected_evidence_ids": [
+        "rtv2-negation-001-negated"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-graph_dependent-003",
+      "category": "graph_dependent",
+      "query_text": "Using the condition-to-treatment relation, which therapy is linked to the condition node?",
+      "expected_evidence_ids": [
+        "rtv2-graph_dependent-003-graph_fact"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-000",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-000-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-hard_negative-001",
+      "category": "hard_negative",
+      "query_text": "For Eva Lin, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-001-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-contradiction-003",
+      "category": "contradiction",
+      "query_text": "Can the record confidently say atorvastatin is safe?",
+      "expected_evidence_ids": [
+        "rtv2-contradiction-003-allergy",
+        "rtv2-contradiction-003-reconcile"
+      ],
+      "abstention_expected": true,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-hard_negative-003",
+      "category": "hard_negative",
+      "query_text": "For Jon Reed, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-003-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-abstention-001",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-hard_negative-004",
+      "category": "hard_negative",
+      "query_text": "For Nia Shah, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-004-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-temporal_question-005",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later CRP values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-005-early",
+        "rtv2-temporal_question-005-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-temporal_question-012",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later LDL values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-012-early",
+        "rtv2-temporal_question-012-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-negation-003",
+      "category": "negation",
+      "query_text": "Is tiotropium currently being taken for this patient?",
+      "expected_evidence_ids": [
+        "rtv2-negation-003-negated"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-hard_negative-010",
+      "category": "hard_negative",
+      "query_text": "For Mira Lane, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-010-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-lexical_exact-000",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for type 2 diabetes?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-000-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-007",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-007-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-012",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-012-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-negation-002",
+      "category": "negation",
+      "query_text": "Is lisinopril currently being taken for this patient?",
+      "expected_evidence_ids": [
+        "rtv2-negation-002-negated"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-006",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-006-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-lexical_exact-009",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for atrial fibrillation?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-009-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-graph_dependent-002",
+      "category": "graph_dependent",
+      "query_text": "Using the condition-to-treatment relation, which therapy is linked to the condition node?",
+      "expected_evidence_ids": [
+        "rtv2-graph_dependent-002-graph_fact"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-negation-006",
+      "category": "negation",
+      "query_text": "Is mesalamine currently being taken for this patient?",
+      "expected_evidence_ids": [
+        "rtv2-negation-006-negated"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-contradiction-000",
+      "category": "contradiction",
+      "query_text": "Can the record confidently say lisinopril is safe?",
+      "expected_evidence_ids": [
+        "rtv2-contradiction-000-allergy",
+        "rtv2-contradiction-000-reconcile"
+      ],
+      "abstention_expected": true,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-negation-005",
+      "category": "negation",
+      "query_text": "Is atorvastatin currently being taken for this patient?",
+      "expected_evidence_ids": [
+        "rtv2-negation-005-negated"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-lexical_exact-010",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for heart failure?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-010-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-002",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-002-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-graph_dependent-005",
+      "category": "graph_dependent",
+      "query_text": "Using the condition-to-treatment relation, which therapy is linked to the condition node?",
+      "expected_evidence_ids": [
+        "rtv2-graph_dependent-005-graph_fact"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-temporal_question-011",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later bicarbonate values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-011-early",
+        "rtv2-temporal_question-011-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-009",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-009-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-medication_dosage_unit-008",
+      "category": "medication_dosage_unit",
+      "query_text": "What dose and monitoring unit are documented for topiramate?",
+      "expected_evidence_ids": [
+        "rtv2-medication_dosage_unit-008-dose"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-hard_negative-006",
+      "category": "hard_negative",
+      "query_text": "For Iris Cole, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-006-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-abstention-005",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-temporal_question-006",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later HbA1c values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-006-early",
+        "rtv2-temporal_question-006-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-013",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-013-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-006",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-006-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-temporal_question-003",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later bicarbonate values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-003-early",
+        "rtv2-temporal_question-003-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-medication_dosage_unit-004",
+      "category": "medication_dosage_unit",
+      "query_text": "What dose and monitoring unit are documented for apixaban?",
+      "expected_evidence_ids": [
+        "rtv2-medication_dosage_unit-004-dose"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-graph_dependent-009",
+      "category": "graph_dependent",
+      "query_text": "Using the condition-to-treatment relation, which therapy is linked to the condition node?",
+      "expected_evidence_ids": [
+        "rtv2-graph_dependent-009-graph_fact"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-temporal_question-000",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later BNP values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-000-early",
+        "rtv2-temporal_question-000-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-013",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-013-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-negation-000",
+      "category": "negation",
+      "query_text": "Is apixaban currently being taken for this patient?",
+      "expected_evidence_ids": [
+        "rtv2-negation-000-negated"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-lexical_exact-007",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for ulcerative colitis?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-007-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-temporal_question-001",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later potassium values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-001-early",
+        "rtv2-temporal_question-001-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-medication_dosage_unit-001",
+      "category": "medication_dosage_unit",
+      "query_text": "What dose and monitoring unit are documented for atorvastatin?",
+      "expected_evidence_ids": [
+        "rtv2-medication_dosage_unit-001-dose"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-medication_dosage_unit-005",
+      "category": "medication_dosage_unit",
+      "query_text": "What dose and monitoring unit are documented for furosemide?",
+      "expected_evidence_ids": [
+        "rtv2-medication_dosage_unit-005-dose"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-012",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-012-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-001",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-001-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-005",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-005-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-medication_dosage_unit-009",
+      "category": "medication_dosage_unit",
+      "query_text": "What dose and monitoring unit are documented for atorvastatin?",
+      "expected_evidence_ids": [
+        "rtv2-medication_dosage_unit-009-dose"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-medication_dosage_unit-000",
+      "category": "medication_dosage_unit",
+      "query_text": "What dose and monitoring unit are documented for topiramate?",
+      "expected_evidence_ids": [
+        "rtv2-medication_dosage_unit-000-dose"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-negation-007",
+      "category": "negation",
+      "query_text": "Is metformin currently being taken for this patient?",
+      "expected_evidence_ids": [
+        "rtv2-negation-007-negated"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-temporal_question-014",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later HbA1c values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-014-early",
+        "rtv2-temporal_question-014-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-hard_negative-014",
+      "category": "hard_negative",
+      "query_text": "For Iris Cole, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-014-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-contradiction-006",
+      "category": "contradiction",
+      "query_text": "Can the record confidently say apixaban is safe?",
+      "expected_evidence_ids": [
+        "rtv2-contradiction-006-allergy",
+        "rtv2-contradiction-006-reconcile"
+      ],
+      "abstention_expected": true,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-004",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-004-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-014",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-014-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-contradiction-001",
+      "category": "contradiction",
+      "query_text": "Can the record confidently say tiotropium is safe?",
+      "expected_evidence_ids": [
+        "rtv2-contradiction-001-allergy",
+        "rtv2-contradiction-001-reconcile"
+      ],
+      "abstention_expected": true,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-temporal_question-002",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later FEV1 values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-002-early",
+        "rtv2-temporal_question-002-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-abstention-004",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-003",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-003-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-hard_negative-011",
+      "category": "hard_negative",
+      "query_text": "For Jon Reed, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-011-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-medication_dosage_unit-002",
+      "category": "medication_dosage_unit",
+      "query_text": "What dose and monitoring unit are documented for mesalamine?",
+      "expected_evidence_ids": [
+        "rtv2-medication_dosage_unit-002-dose"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-lexical_exact-006",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for coronary artery disease?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-006-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-hard_negative-002",
+      "category": "hard_negative",
+      "query_text": "For Mira Lane, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-002-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-003",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-003-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-hard_negative-019",
+      "category": "hard_negative",
+      "query_text": "For Jon Reed, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-019-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-lexical_exact-005",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for migraine?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-005-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-abstention-009",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-abstention-010",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-abstention-014",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-lexical_exact-003",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for hypertension?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-003-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-abstention-007",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-contradiction-007",
+      "category": "contradiction",
+      "query_text": "Can the record confidently say furosemide is safe?",
+      "expected_evidence_ids": [
+        "rtv2-contradiction-007-allergy",
+        "rtv2-contradiction-007-reconcile"
+      ],
+      "abstention_expected": true,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-contradiction-008",
+      "category": "contradiction",
+      "query_text": "Can the record confidently say lisinopril is safe?",
+      "expected_evidence_ids": [
+        "rtv2-contradiction-008-allergy",
+        "rtv2-contradiction-008-reconcile"
+      ],
+      "abstention_expected": true,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-hard_negative-018",
+      "category": "hard_negative",
+      "query_text": "For Mira Lane, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-018-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-001",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-001-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-medication_dosage_unit-007",
+      "category": "medication_dosage_unit",
+      "query_text": "What dose and monitoring unit are documented for tiotropium?",
+      "expected_evidence_ids": [
+        "rtv2-medication_dosage_unit-007-dose"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-014",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-014-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-hard_negative-008",
+      "category": "hard_negative",
+      "query_text": "For Ari Moss, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-008-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-005",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-005-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-graph_dependent-000",
+      "category": "graph_dependent",
+      "query_text": "Using the condition-to-treatment relation, which therapy is linked to the condition node?",
+      "expected_evidence_ids": [
+        "rtv2-graph_dependent-000-graph_fact"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-graph_dependent-006",
+      "category": "graph_dependent",
+      "query_text": "Using the condition-to-treatment relation, which therapy is linked to the condition node?",
+      "expected_evidence_ids": [
+        "rtv2-graph_dependent-006-graph_fact"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-lexical_exact-013",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for migraine?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-013-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-hard_negative-000",
+      "category": "hard_negative",
+      "query_text": "For Ari Moss, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-000-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-hard_negative-016",
+      "category": "hard_negative",
+      "query_text": "For Ari Moss, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-016-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-011",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-011-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-lexical_exact-002",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for heart failure?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-002-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-negation-009",
+      "category": "negation",
+      "query_text": "Is furosemide currently being taken for this patient?",
+      "expected_evidence_ids": [
+        "rtv2-negation-009-negated"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-009",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-009-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-medication_dosage_unit-003",
+      "category": "medication_dosage_unit",
+      "query_text": "What dose and monitoring unit are documented for metformin?",
+      "expected_evidence_ids": [
+        "rtv2-medication_dosage_unit-003-dose"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-abstention-000",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-negation-008",
+      "category": "negation",
+      "query_text": "Is apixaban currently being taken for this patient?",
+      "expected_evidence_ids": [
+        "rtv2-negation-008-negated"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-abstention-003",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-contradiction-009",
+      "category": "contradiction",
+      "query_text": "Can the record confidently say tiotropium is safe?",
+      "expected_evidence_ids": [
+        "rtv2-contradiction-009-allergy",
+        "rtv2-contradiction-009-reconcile"
+      ],
+      "abstention_expected": true,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-lexical_exact-014",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for coronary artery disease?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-014-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-graph_dependent-008",
+      "category": "graph_dependent",
+      "query_text": "Using the condition-to-treatment relation, which therapy is linked to the condition node?",
+      "expected_evidence_ids": [
+        "rtv2-graph_dependent-008-graph_fact"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-graph_dependent-004",
+      "category": "graph_dependent",
+      "query_text": "Using the condition-to-treatment relation, which therapy is linked to the condition node?",
+      "expected_evidence_ids": [
+        "rtv2-graph_dependent-004-graph_fact"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-lexical_exact-012",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for COPD?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-012-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-negation-004",
+      "category": "negation",
+      "query_text": "Is topiramate currently being taken for this patient?",
+      "expected_evidence_ids": [
+        "rtv2-negation-004-negated"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-008",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-008-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-contradiction-005",
+      "category": "contradiction",
+      "query_text": "Can the record confidently say metformin is safe?",
+      "expected_evidence_ids": [
+        "rtv2-contradiction-005-allergy",
+        "rtv2-contradiction-005-reconcile"
+      ],
+      "abstention_expected": true,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-cross_tenant_leakage_attempt-010",
+      "category": "cross_tenant_leakage_attempt",
+      "query_text": "For this scoped patient, which medication is authorized?",
+      "expected_evidence_ids": [
+        "rtv2-cross_tenant_leakage_attempt-010-authorized"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-abstention-008",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-temporal_question-008",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later BNP values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-008-early",
+        "rtv2-temporal_question-008-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b01",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-hard_negative-005",
+      "category": "hard_negative",
+      "query_text": "For Owen Vale, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-005-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-abstention-013",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-temporal_question-004",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later LDL values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-004-early",
+        "rtv2-temporal_question-004-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-abstention-006",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-contradiction-002",
+      "category": "contradiction",
+      "query_text": "Can the record confidently say topiramate is safe?",
+      "expected_evidence_ids": [
+        "rtv2-contradiction-002-allergy",
+        "rtv2-contradiction-002-reconcile"
+      ],
+      "abstention_expected": true,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-008",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-008-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-semantic_paraphrase-002",
+      "category": "semantic_paraphrase",
+      "query_text": "What ongoing treatment should stay unchanged for the chronic diagnosis?",
+      "expected_evidence_ids": [
+        "rtv2-semantic_paraphrase-002-assessment"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a02",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-medication_dosage_unit-006",
+      "category": "medication_dosage_unit",
+      "query_text": "What dose and monitoring unit are documented for lisinopril?",
+      "expected_evidence_ids": [
+        "rtv2-medication_dosage_unit-006-dose"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-hard_negative-007",
+      "category": "hard_negative",
+      "query_text": "For Luis Hart, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-007-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-graph_dependent-007",
+      "category": "graph_dependent",
+      "query_text": "Using the condition-to-treatment relation, which therapy is linked to the condition node?",
+      "expected_evidence_ids": [
+        "rtv2-graph_dependent-007-graph_fact"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d01",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-abstention-002",
+      "category": "abstention",
+      "query_text": "What was the final tumor pathology stage?",
+      "expected_evidence_ids": [],
+      "abstention_expected": true,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-lexical_exact-008",
+      "category": "lexical_exact",
+      "query_text": "Which exact medication dose is continued for type 2 diabetes?",
+      "expected_evidence_ids": [
+        "rtv2-lexical_exact-008-med"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    },
+    {
+      "query_id": "q-temporal_question-010",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later FEV1 values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-010-early",
+        "rtv2-temporal_question-010-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g01",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-temporal_question-009",
+      "category": "temporal_question",
+      "query_text": "What were the earlier and later potassium values in date order?",
+      "expected_evidence_ids": [
+        "rtv2-temporal_question-009-early",
+        "rtv2-temporal_question-009-late"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-beta",
+      "patient_id": "pat-b02",
+      "user_id": "user-beta"
+    },
+    {
+      "query_id": "q-hard_negative-015",
+      "category": "hard_negative",
+      "query_text": "For Luis Hart, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-015-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-gamma",
+      "patient_id": "pat-g02",
+      "user_id": "user-gamma"
+    },
+    {
+      "query_id": "q-hard_negative-009",
+      "category": "hard_negative",
+      "query_text": "For Eva Lin, what therapy is active, avoiding the similarly worded alternate patient note?",
+      "expected_evidence_ids": [
+        "rtv2-hard_negative-009-target"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-delta",
+      "patient_id": "pat-d02",
+      "user_id": "user-delta"
+    },
+    {
+      "query_id": "q-graph_dependent-001",
+      "category": "graph_dependent",
+      "query_text": "Using the condition-to-treatment relation, which therapy is linked to the condition node?",
+      "expected_evidence_ids": [
+        "rtv2-graph_dependent-001-graph_fact"
+      ],
+      "abstention_expected": false,
+      "tenant_id": "tenant-alpha",
+      "patient_id": "pat-a01",
+      "user_id": "user-alpha"
+    }
+  ],
+  "summary": {
+    "query_count": 135,
+    "corpus_chunk_count": 195,
+    "category_counts": {
+      "contradiction": 10,
+      "semantic_paraphrase": 15,
+      "hard_negative": 20,
+      "lexical_exact": 15,
+      "temporal_question": 15,
+      "cross_tenant_leakage_attempt": 15,
+      "abstention": 15,
+      "negation": 10,
+      "graph_dependent": 10,
+      "medication_dosage_unit": 10
+    },
+    "duplicate_chunk_count": 0,
+    "duplicate_ratio": 0.0,
+    "seed": 20260607
+  }
+}

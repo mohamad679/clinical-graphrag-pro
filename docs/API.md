@@ -1,7 +1,8 @@
 # API Reference
 
-> Base URL: `http://localhost:8000/api`
-> Interactive docs: `http://localhost:8000/docs`
+> Base URL (direct backend): `http://localhost:8000/api`
+> Base URL (via reverse proxy): `http://localhost/api`
+> Interactive docs: `http://localhost/docs`
 
 ---
 
@@ -13,8 +14,8 @@ Authenticate and receive a JWT token.
 **Request:**
 ```json
 {
-  "email": "admin@clinicalgraph.ai",
-  "password": "admin123"
+  "email": "your-admin@example.com",
+  "password": "your-admin-password"
 }
 ```
 
@@ -23,9 +24,9 @@ Authenticate and receive a JWT token.
 {
   "token": "eyJhbGciOi...",
   "user": {
-    "id": "demo-admin-001",
-    "email": "admin@clinicalgraph.ai",
-    "name": "Dr. Admin",
+    "id": "bootstrap-admin-001",
+    "email": "your-admin@example.com",
+    "name": "Administrator",
     "role": "admin"
   }
 }
@@ -56,14 +57,52 @@ Synchronous RAG chat. Retrieves context, generates answer, returns sources.
 {
   "answer": "Treatment options for type 2 diabetes include...",
   "sources": [
-    {"document_name": "guidelines.pdf", "chunk_text": "...", "score": 0.92}
+    {"document_name": "guidelines.pdf", "chunk_id": "chunk-123", "relevance_score": 0.92}
   ],
-  "session_id": "abc-123"
+  "session_id": "abc-123",
+  "trace": {
+    "trace_level": "public",
+    "heuristic_evidence_support_score": 0.76,
+    "score_semantics": "heuristic evidence-support score, not calibrated clinical confidence",
+    "retrieved_chunk_count": 5,
+    "citation_count": 2,
+    "latency_ms": 123
+  },
+  "heuristic_evidence_support_score": 0.76,
+  "confidence_score": 0.76,
+  "confidence_score_deprecated": true,
+  "clinician_review_required": true
 }
 ```
 
-### POST `/chat/stream`
+Normal sync and SSE responses return public trace metadata only. They do not return raw prompts, full retrieved chunk text, `final_context`, or raw tool output. Admin-only `debug_redacted` trace access is available only in non-production debug mode.
+
+`heuristic_evidence_support_score` is a retrieval/grounding support indicator, not calibrated clinical confidence. The legacy `confidence_score` field is retained temporarily for compatibility and mirrors the heuristic value. All demo chat outputs require clinician review.
+
+### POST `/chat`
 Streaming chat via Server-Sent Events (SSE).
+
+### POST `/auth/ws-ticket`
+Issue a short-lived, single-use WebSocket ticket. Requires `Authorization: Bearer <access_token>`.
+
+**Request:**
+```json
+{
+  "session_id": "optional-chat-session-id"
+}
+```
+
+**Response:**
+```json
+{
+  "ticket": "one-time-random-ticket",
+  "token_type": "websocket_ticket",
+  "expires_in": 45,
+  "expires_at": "2026-06-06T12:00:45+00:00"
+}
+```
+
+Use the ticket with `GET /chat/ws/{session_id}?ticket=<ticket>`. Long-lived JWT access tokens are not accepted in WebSocket query strings.
 
 ### GET `/chat/sessions`
 List all chat sessions.
@@ -76,16 +115,17 @@ Get messages for a specific session.
 ## Documents
 
 ### POST `/documents/upload`
-Upload a clinical document (PDF, TXT, MD).
+Upload a clinical document (`.pdf`, `.txt`, `.md`, `.csv`).
 
 **Form Data:** `file` — multipart file upload
 
 **Response:**
 ```json
 {
-  "document_id": "doc-uuid",
+  "id": "doc-uuid",
   "filename": "guidelines.pdf",
-  "chunks_created": 42,
+  "status": "ready",
+  "chunk_count": 42,
   "message": "Document processed successfully"
 }
 ```
@@ -94,7 +134,7 @@ Upload a clinical document (PDF, TXT, MD).
 List all indexed documents with metadata.
 
 ### DELETE `/documents/{document_id}`
-Remove a document and its chunks from the index.
+Remove a document and invalidate retrieval entries (vector and BM25 tombstones).
 
 ---
 
@@ -103,20 +143,23 @@ Remove a document and its chunks from the index.
 ### GET `/graph/stats`
 Vector store and knowledge graph statistics.
 
-### GET `/graph/search?query=diabetes`
-Search the knowledge graph for entities and relationships.
+### GET `/graph/search?q=diabetes`
+Semantic search over indexed chunks.
 
 ---
 
 ## Medical Images
 
-### POST `/images/analyze`
-Analyze a medical image using vision AI.
+### POST `/images/upload`
+Upload a medical image.
 
-**Form Data:** `file` — image file, `analysis_type` — "general" | "xray" | "pathology" | "dermatology"
+**Form Data:** `file` — image upload
+
+### POST `/images/{image_id}/analyze`
+Run analysis on an uploaded image.
 
 ### GET `/images`
-List analyzed images.
+List uploaded images.
 
 ### GET `/images/{image_id}`
 Get analysis results for a specific image.
@@ -209,17 +252,22 @@ Get past evaluation results.
 
 ## Admin
 
+### POST `/auth/bootstrap`
+One-time first-admin bootstrap. Works only when the deployment has zero users, then returns a logged-in admin token bundle.
+
 ### GET `/admin/health`
 Detailed system health with uptime, service status, vector store stats.
 
 ### GET `/admin/metrics`
-Request metrics: total requests, error rate, P95 latency, top endpoints.
+Request metrics plus dashboard rollups for chat latency, retrieval latency, LLM/document failure rate, image analysis success rate, and worker queue depth.
 
 ### GET `/admin/sessions`
 List active user sessions.
 
 ### GET `/admin/config`
 Non-sensitive configuration display.
+
+All `/admin/*` endpoints require admin JWT.
 
 ---
 

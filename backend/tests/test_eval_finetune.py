@@ -4,9 +4,9 @@ Eval metrics, dataset CRUD, training jobs, model registry.
 """
 
 import pytest
+import os
 from app.services.evaluation import EvaluationService
 from app.services.datasets import DatasetService
-from app.services.fine_tune import FineTuneService, TrainingConfig
 from app.services.model_registry import ModelRegistry
 
 
@@ -27,6 +27,8 @@ class TestEvaluationService:
         )
         assert result.faithfulness >= 0.0
         assert result.relevance >= 0.0
+        assert result.answer_groundedness >= 0.0
+        assert result.citation_correctness >= 0.0
 
     @pytest.mark.asyncio
     async def test_evaluate_scores_in_range(self):
@@ -35,7 +37,18 @@ class TestEvaluationService:
             answer="Hypertension is high blood pressure.",
             context_chunks=[{"chunk_text": "Hypertension, also known as high blood pressure.", "document_name": "test.pdf"}],
         )
-        for attr in ["faithfulness", "relevance", "citation_accuracy", "context_precision"]:
+        for attr in [
+            "faithfulness",
+            "relevance",
+            "citation_accuracy",
+            "context_precision",
+            "answer_groundedness",
+            "citation_correctness",
+            "retrieval_precision",
+            "retrieval_recall_proxy",
+            "clinician_acceptance_rate",
+            "hallucination_rate",
+        ]:
             score = getattr(result, attr)
             assert 0.0 <= score <= 1.0, f"{attr} score out of range: {score}"
 
@@ -104,22 +117,27 @@ class TestFineTuneService:
     """Test training job lifecycle."""
 
     def setup_method(self):
+        if os.getenv("RUN_HEAVY_TESTS", "false").lower() != "true":
+            pytest.skip("Set RUN_HEAVY_TESTS=true to run fine-tune service tests.")
+        from app.services.fine_tune import FineTuneService, TrainingConfig
+
+        self.TrainingConfig = TrainingConfig
         self.ft = FineTuneService()
 
     def test_create_job(self):
-        config = TrainingConfig(dataset_id="test-ds")
+        config = self.TrainingConfig(dataset_id="test-ds")
         job = self.ft.create_job(config, adapter_name="test-adapter")
         assert job.status.value == "pending"
         assert job.adapter_name == "test-adapter"
 
     def test_list_jobs(self):
-        config = TrainingConfig(dataset_id="list-test")
+        config = self.TrainingConfig(dataset_id="list-test")
         self.ft.create_job(config, adapter_name="list-test")
         jobs = self.ft.list_jobs()
         assert len(jobs) >= 1
 
     def test_get_job(self):
-        config = TrainingConfig(dataset_id="get-test")
+        config = self.TrainingConfig(dataset_id="get-test")
         job = self.ft.create_job(config, adapter_name="get-test")
         fetched = self.ft.get_job(job.id)
         assert fetched is not None
@@ -130,7 +148,7 @@ class TestFineTuneService:
 
     @pytest.mark.asyncio
     async def test_simulated_training(self):
-        config = TrainingConfig(dataset_id="sim-test", num_epochs=1)
+        config = self.TrainingConfig(dataset_id="sim-test", num_epochs=1)
         job = self.ft.create_job(config, adapter_name="sim-adapter")
         completed = await self.ft.start_training(job.id, num_samples=10)
         assert completed.status.value == "completed"
@@ -139,7 +157,7 @@ class TestFineTuneService:
 
     def test_cancel_pending_job_returns_false(self):
         """cancel_job only cancels RUNNING jobs; pending returns False."""
-        config = TrainingConfig(dataset_id="cancel-test")
+        config = self.TrainingConfig(dataset_id="cancel-test")
         job = self.ft.create_job(config, adapter_name="cancel-adapter")
         # Can't cancel a pending job (only running ones)
         result = self.ft.cancel_job(job.id)
@@ -174,16 +192,31 @@ class TestModelRegistry:
         models = self.reg.list_models()
         assert len(models) >= 1
 
-    def test_deploy_undeploy(self):
+    def test_deploy_undeploy(self, tmp_path):
+        adapter_path = tmp_path / "adapter"
+        adapter_path.mkdir()
         model = self.reg.register(
             name="deploy-model",
             base_model="llama",
             dataset_name="ds-003",
+            adapter_path=str(adapter_path),
+            eval_scores={
+                "deployability_status": "deployable",
+                "inference_integration_verified": True,
+            },
         )
         assert self.reg.deploy(model.id) is True
         active = self.reg.get_active_model()
         assert active is not None
         assert self.reg.undeploy(model.id) is True
+
+    def test_deploy_requires_verified_adapter(self):
+        model = self.reg.register(
+            name="unsafe-deploy-model",
+            base_model="llama",
+            dataset_name="ds-003",
+        )
+        assert self.reg.deploy(model.id) is False
 
     def test_compare_models(self):
         m1 = self.reg.register(name="m1", base_model="b", dataset_name="d", training_loss=0.5)

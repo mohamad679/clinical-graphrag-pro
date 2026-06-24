@@ -4,9 +4,10 @@ Run with: pytest tests/test_entity_normalization.py -v
 """
 
 import pytest
+from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
 
-from app.main import app
+from app.api import entity_normalization
 from app.services.entity_normalization import (
     EntityNormalizationService,
     CANONICAL_CONCEPTS,
@@ -26,6 +27,8 @@ def anyio_backend():
 @pytest.fixture
 async def client():
     """Async HTTP client for testing FastAPI endpoints."""
+    app = FastAPI()
+    app.include_router(entity_normalization.router, prefix="/api")
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
         yield ac

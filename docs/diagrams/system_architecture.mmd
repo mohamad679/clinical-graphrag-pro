@@ -1,0 +1,61 @@
+flowchart TD
+    subgraph Client["Client Layer (Browser)"]
+        A["Vanilla JS Web Components<br/>(public/js/*, components/*)"]
+    end
+
+    subgraph Proxy["Proxy Layer"]
+        B[nginx reverse proxy]
+    end
+
+    subgraph Service["Application Core (FastAPI)"]
+        C["FastAPI App (app/main.py)"]
+        C1["Auth & Session API<br/>(api/auth.py)"]
+        C2["Chat Orchestrator<br/>(api/chat.py)"]
+        C3["Document Management<br/>(api/documents.py)"]
+        C4["Agent Workflows<br/>(api/agents.py)"]
+        C5["Temporal Graph API<br/>(api/graph.py)"]
+        C6["Evaluations API<br/>(api/eval.py)"]
+        C --> C1 & C2 & C3 & C4 & C5 & C6
+    end
+
+    subgraph Background["Async Worker Stack"]
+        D[Redis Broker]
+        E[Celery Worker]
+        D --> E
+        E1[Document Ingestion Pipeline]
+        E2[AI Image Vision Analysis]
+        E3[Audio Transcription]
+        E --> E1 & E2 & E3
+    end
+
+    subgraph Persistence["Storage & Database Layer"]
+        F[(PostgreSQL Database)]
+        G[(Redis Cache & Session Store)]
+        H[(FAISS Vector Store)]
+        I[(PostgreSQL FTS)]
+        J[(Neo4j Graph Database - Optional)]
+    end
+
+    subgraph Telemetry["Observability Stack"]
+        K[Prometheus /metrics]
+        L[Trace Log Engine]
+    end
+
+    A -->|HTTP / SSE / Static Files| B
+    B -->|Static Assets| A
+    B -->|Proxy /api/* to FastAPI| C
+    
+    C -->|Durable State / SQLAlchemy| F
+    C -->|Read/Write Session Cache| G
+    C -->|Dense Vector Retrieval| H
+    C -->|Sparse Keyword Search| I
+    C -->|Optional Graph Queries| J
+    
+    C3 -->|Dispatch Ingestion Jobs| D
+    E1 & E2 & E3 -->|Read/Write Assets & Chunks| F
+    E1 -->|Update Vectors| H
+    E1 -->|Update Graph Relations| J
+    
+    C -->|Export Metrics| K
+    C -->|Structured SSE Events| L
+    L -->|Real-time Visual Log Stream| A

@@ -2,6 +2,7 @@
 FROM python:3.12-slim AS builder
 
 WORKDIR /app
+ARG SCISPACY_MODEL_URL=https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_sci_sm-0.5.4.tar.gz
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -9,6 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+RUN pip install --no-cache-dir --prefix=/install "${SCISPACY_MODEL_URL}"
 
 # ── Production stage (Hugging Face Spaces) ───────────────
 FROM python:3.12-slim AS production
@@ -21,16 +23,31 @@ COPY --from=builder /install /usr/local
 # Copy application code
 COPY . .
 
-# Create necessary directories and configure permissions for HF Spaces
-# Hugging Face runs containers with a random user ID, but group root (0).
-# Thus, we need to ensure folder permissions allow writing.
-RUN mkdir -p uploads data/vector_store data/adapters \
-    && chmod -R 777 uploads data
+# Create necessary directories and configure permissions for HF Spaces.
+# Persist runtime state under /data so rebuilds don't wipe the SQLite DB,
+# JWT secret, uploads, and vector artifacts when persistent storage is enabled.
+RUN mkdir -p /data/uploads /data/vector_store /data/adapters \
+    && chmod +x /app/docker-entrypoint.sh \
+    && chmod -R 777 /data
 
-# Set Hugging Face required port
-ENV PORT=7860
+# Set Hugging Face required port and keep state on the mounted /data volume.
+ENV PORT=7860 \
+    DATABASE_URL=sqlite+aiosqlite:////data/clinical_graphrag.db \
+    JWT_SECRET_FILE=/data/jwt_secret.txt \
+    UPLOAD_DIR=/data/uploads \
+    ADAPTERS_DIR=/data/adapters \
+    VECTOR_STORE_DIR=/data/vector_store \
+    STATIC_FRONTEND_DIR=/app/frontend_public \
+    ENABLE_SCISPACY=true \
+    ENABLE_DEMO_AUTH=true \
+    IMAGE_AUTO_ANALYZE_ON_UPLOAD=false \
+    RATE_LIMIT_PER_MINUTE=600 \
+    RATE_LIMIT_REDIS_FAILURE_POLICY=fail_open \
+    RATE_LIMIT_FAIL_CLOSED_PATHS= \
+    CELERY_TASK_ALWAYS_EAGER=true \
+    CELERY_TASK_STORE_EAGER_RESULT=true
 EXPOSE 7860
 
 # We don't drop to `USER appuser` because HF spaces forces its own UID.
 # We just need to make sure the app listens on the correct port and host.
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port 7860 --workers 2"]
+CMD ["./docker-entrypoint.sh"]

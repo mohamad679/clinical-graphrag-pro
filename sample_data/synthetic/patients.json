@@ -1,0 +1,98 @@
+[
+  {
+    "resourceType": "Patient",
+    "id": "pat-100",
+    "name": [
+      {
+        "text": "SYNTHETIC: John Doe"
+      }
+    ],
+    "gender": "male",
+    "birthDate": "1956-06-13",
+    "active": true
+  },
+  {
+    "resourceType": "Patient",
+    "id": "pat-101",
+    "name": [
+      {
+        "text": "SYNTHETIC: Jane Smith"
+      }
+    ],
+    "gender": "female",
+    "birthDate": "1952-06-14",
+    "active": true
+  },
+  {
+    "resourceType": "Patient",
+    "id": "pat-102",
+    "name": [
+      {
+        "text": "SYNTHETIC: Robert Johnson"
+      }
+    ],
+    "gender": "female",
+    "birthDate": "1994-06-04",
+    "active": true
+  },
+  {
+    "resourceType": "Patient",
+    "id": "pat-103",
+    "name": [
+      {
+        "text": "SYNTHETIC: Emily Davis"
+      }
+    ],
+    "gender": "female",
+    "birthDate": "1954-06-14",
+    "active": true
+  },
+  {
+    "resourceType": "Patient",
+    "id": "pat-104",
+    "name": [
+      {
+        "text": "SYNTHETIC: Michael Wilson"
+      }
+    ],
+    "gender": "female",
+    "birthDate": "1951-06-15",
+    "active": true
+  },
+  {
+    "resourceType": "Patient",
+    "id": "pat-105",
+    "name": [
+      {
+        "text": "SYNTHETIC: Sarah Martinez"
+      }
+    ],
+    "gender": "male",
+    "birthDate": "1989-06-05",
+    "active": true
+  },
+  {
+    "resourceType": "Patient",
+    "id": "pat-106",
+    "name": [
+      {
+        "text": "SYNTHETIC: William Anderson"
+      }
+    ],
+    "gender": "male",
+    "birthDate": "1948-06-15",
+    "active": true
+  },
+  {
+    "resourceType": "Patient",
+    "id": "pat-107",
+    "name": [
+      {
+        "text": "SYNTHETIC: Taylor Thomas"
+      }
+    ],
+    "gender": "male",
+    "birthDate": "1981-06-07",
+    "active": true
+  }
+]

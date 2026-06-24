@@ -1,0 +1,17 @@
+{
+  "resourceType": "Patient",
+  "id": "pat-123",
+  "active": true,
+  "name": [
+    {
+      "use": "official",
+      "family": "Smith",
+      "given": [
+        "John",
+        "Edward"
+      ]
+    }
+  ],
+  "gender": "male",
+  "birthDate": "1980-05-15"
+}
