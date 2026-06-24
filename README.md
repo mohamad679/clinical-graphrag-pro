@@ -30,7 +30,7 @@ This project is for educational and portfolio demonstration purposes only. It is
 ![MedQA Accuracy](https://img.shields.io/badge/MedQA%20Accuracy-N%2FA-lightgrey)
 ![RAG Improvement](https://img.shields.io/badge/RAG%20Improvement-N%2FA-lightgrey)
 ![Response Latency](https://img.shields.io/badge/Response%20Latency-14.7ms%20retrieval-blue)
-![Test Coverage](https://img.shields.io/badge/Test%20Coverage-CI%20gate%20configured-orange)
+![Verification](https://img.shields.io/badge/Verification-local%20gate-orange)
 
 ## What This Is
 
@@ -200,7 +200,7 @@ make verify-final      # run full local verification gate, evaluations, and demo
 
 Current committed benchmark artifacts are in [results/BENCHMARK.md](results/BENCHMARK.md) and [results/benchmark_2026.json](results/benchmark_2026.json). The latest committed run dated `2026-04-02` completed a small retrieval benchmark and did not complete the synthetic MedQA-style generation benchmark because provider credentials were rejected.
 
-Canonical portfolio benchmark artifact: `results/portfolio_gate_retrieval_benchmark_20260607T163206Z.json` with matching Markdown report `results/portfolio_gate_retrieval_benchmark_20260607T163206Z.md`. On synthetic benchmark v2, hybrid RRF improves over dense and sparse retrieval. Optional reranking improves retrieval quality further but materially increases latency, so reranking remains disabled by default on latency-sensitive paths (`USE_RERANKING=false`). These results are synthetic regression results, not clinical validation. Older June 5 and early June 7 retrieval artifacts are retained as historical baselines. See [EVALUATION_STATUS.md](EVALUATION_STATUS.md) for the current table of evaluated modes and non-claims.
+Canonical portfolio benchmark report: `results/portfolio_gate_retrieval_benchmark_20260607T163206Z.md`. On synthetic benchmark v2, hybrid RRF improves over dense and sparse retrieval. Optional reranking improves retrieval quality further but materially increases latency, so reranking remains disabled by default on latency-sensitive paths (`USE_RERANKING=false`). These results are synthetic regression results, not clinical validation. Older June 5 and early June 7 retrieval artifacts are retained as historical baselines. See [EVALUATION_STATUS.md](EVALUATION_STATUS.md) for the current table of evaluated modes and non-claims.
 
 | Metric | Result | Evidence |
 | --- | ---: | --- |
