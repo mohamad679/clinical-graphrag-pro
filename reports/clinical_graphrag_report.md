@@ -142,7 +142,7 @@ Retrieval, agent execution, graph persistence, and streaming each have their own
 
 ### Retrieval Pipeline
 
-The retrieval path is unified under a single entrypoint: **`QueryEngine.query()`** in [query_engine.py](file:///Users/mohsenshamsijazeb/./.gemini/antigravity/scratch/clinical-graphrag-pro/backend/app/services/query_engine.py), which is called by the chat flow ([rag.py](file:///Users/mohsenshamsijazeb/./.gemini/antigravity/scratch/clinical-graphrag-pro/backend/app/services/rag.py)), agent search tools ([tool_registry.py](file:///Users/mohsenshamsijazeb/./.gemini/antigravity/scratch/clinical-graphrag-pro/backend/app/services/tool_registry.py)), and graph endpoints.
+The retrieval path is unified under a single entrypoint: **`QueryEngine.query()`** in [query_engine.py](../backend/app/services/query_engine.py), which is called by the chat flow ([rag.py](../backend/app/services/rag.py)), agent search tools ([tool_registry.py](../backend/app/services/tool_registry.py)), and graph endpoints.
 
 ```mermaid
 flowchart TD
@@ -289,7 +289,7 @@ To ensure reliability and clinical alignment, the system includes:
 
 ### Agent System
 
-The agent path is implemented as a LangGraph state machine in [agent.py](file:///Users/mohsenshamsijazeb/./.gemini/antigravity/scratch/clinical-graphrag-pro/backend/app/services/agent.py). The execution graph follows a plan -> execute -> synthesize -> verify loop and persists workflow rows, steps, and tool calls so the UI can replay what happened.
+The agent path is implemented as a LangGraph state machine in [agent.py](../backend/app/services/agent.py). The execution graph follows a plan -> execute -> synthesize -> verify loop and persists workflow rows, steps, and tool calls so the UI can replay what happened.
 
 ```mermaid
 flowchart TD
@@ -316,7 +316,7 @@ flowchart TD
     style RouteVerify fill:#e6f2ff,stroke:#0066cc,stroke-width:2px;
 ```
 
-1. **Structured Schema Validation**: All major orchestrator states and models are enforced using Pydantic schemas defined in [workflow.py](file:///Users/mohsenshamsijazeb/./.gemini/antigravity/scratch/clinical-graphrag-pro/backend/app/schemas/workflow.py). The supervisor plan is validated against `AgentPlan`, and the red-team adjudicator evaluation is parsed via `VerificationResultSchema`.
+1. **Structured Schema Validation**: All major orchestrator states and models are enforced using Pydantic schemas defined in [workflow.py](../backend/app/schemas/workflow.py). The supervisor plan is validated against `AgentPlan`, and the red-team adjudicator evaluation is parsed via `VerificationResultSchema`.
 2. **Context Scoping Gates**: All execution steps inject active `patient_id` and tenant scoping credentials (`user_id` or `tenant_id`) into the tool execution layer. Tools requiring patient or retrieval scopes (e.g. document search, graph search, image analysis) are checked programmatically in the registry before calling the handler, immediately raising a security error if scoping boundaries are breached.
 3. **Adjudicator Critic & Fail-Closed Routing**: The internal critic tool `clinical_eval` performs programmatic checks for malicious prompt overrides and insufficient context, alongside standard LLM adjudication. On failure, it returns a structured code (`PROMPT_INJECTION_DETECTED`, `INSUFFICIENT_EVIDENCE`, `MISSING_CITATIONS`, `CROSS_TENANT_EVIDENCE`, `UNSAFE_TOOL_OUTPUT`, `CROSS_PATIENT_EVIDENCE`). If a non-retryable error code is matched, the orchestrator bypasses retry loops and halts execution immediately.
 4. **Safe-buffered SSE Streaming**: During execution, the orchestrator streams structured trace events (`plan_created`, `tool_selected`, `tool_start`, `tool_complete`, `evidence_collected`, `answer_drafted`, `verification_passed`, `verification_failed`, `retry_triggered`, `abstention`, `workflow_complete`) as SSE data chunks. The system validates grounding/abstention before emitting answer chunks to the client. Provider-level streaming utilities may exist, but the chat path intentionally uses safe-buffered streaming to avoid sending unvalidated answer tokens.
@@ -376,7 +376,7 @@ flowchart TD
 
 ### Secure Multi-Tenant Caching
 
-To optimize performance without introducing risk of cross-tenant or cross-patient leakage, the cache manager in [caching.py](file:///Users/mohsenshamsijazeb/./.gemini/antigravity/scratch/clinical-graphrag-pro/backend/app/core/caching.py) enforces key namespacing:
+To optimize performance without introducing risk of cross-tenant or cross-patient leakage, the cache manager in [caching.py](../backend/app/core/caching.py) enforces key namespacing:
 - **Cache Key Design**:
   ```text
   cgrag:{namespace}:{tenant_id}:{patient_id}:{input_payload_hash}
@@ -386,7 +386,7 @@ To optimize performance without introducing risk of cross-tenant or cross-patien
 
 ### Local LLM Integration
 
-The LLM abstraction layer in [llm.py](file:///Users/mohsenshamsijazeb/./.gemini/antigravity/scratch/clinical-graphrag-pro/backend/app/services/llm.py) supports running full reasoning workloads locally. This is useful for zero-cost developer testing, offline deployment, and local data privacy:
+The LLM abstraction layer in [llm.py](../backend/app/services/llm.py) supports running full reasoning workloads locally. This is useful for zero-cost developer testing, offline deployment, and local data privacy:
 1. **Ollama**: Connects to `http://localhost:11434` running custom clinical models (e.g. `llama3`).
 2. **llama.cpp**: Connects to a GGUF server listening at `http://localhost:8080`.
 3. **Local Hugging Face (local_hf)**: Initiates a pipeline using `transformers` locally.
@@ -394,7 +394,7 @@ The LLM abstraction layer in [llm.py](file:///Users/mohsenshamsijazeb/./.gemini/
 
 ### Cost Tracking and Telemetry
 
-Prompt and response token usage are programmatically measured in [cost_estimator.py](file:///Users/mohsenshamsijazeb/./.gemini/antigravity/scratch/clinical-graphrag-pro/backend/app/services/cost_estimator.py):
+Prompt and response token usage are programmatically measured in [cost_estimator.py](../backend/app/services/cost_estimator.py):
 - Each model transaction calculates cost projections in USD based on input and output pricing thresholds.
 - Metrics are tracked in Prometheus and can be projected using the `backend/scripts/estimate_cost.py` utility modeling 100, 1k, and 10k query volumes.
 

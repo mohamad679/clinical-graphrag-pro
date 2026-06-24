@@ -73,4 +73,4 @@ To maintain strict technical credibility and compliance honesty, the following c
 
 ## 🗺️ Roadmap & Next Steps
 
-For information on the multi-horizon timeline of this project (including planned integrations, production hardening steps, and research directions), please consult the [ROADMAP.md](file:///Users/mohsenshamsijazeb/.gemini/antigravity/scratch/clinical-graphrag-pro/ROADMAP.md) file.
+For information on the multi-horizon timeline of this project (including planned integrations, production hardening steps, and research directions), please consult the [ROADMAP.md](ROADMAP.md) file.

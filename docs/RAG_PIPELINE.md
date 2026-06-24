@@ -6,7 +6,7 @@ This document details the architecture, multi-tenant isolation, and safety contr
 
 ## 1. Unified Retrieval Gateway
 
-All retrieval pathways (including chat RAG, agent tools, temporal graph search, and `/graph/search` API endpoints) are unified under a single gateway: **`QueryEngine.query`** in [query_engine.py](file:///Users/mohsenshamsijazeb/./.gemini/antigravity/scratch/clinical-graphrag-pro/backend/app/services/query_engine.py).
+All retrieval pathways (including chat RAG, agent tools, temporal graph search, and `/graph/search` API endpoints) are unified under a single gateway: **`QueryEngine.query`** in [query_engine.py](../backend/app/services/query_engine.py).
 
 This guarantees that all callers enforce the same query expansion, reciprocal rank fusion (RRF), cross-encoder reranking, and access-control validation rules.
 
@@ -30,14 +30,14 @@ The RAG pipeline operates on a strict **fail-closed security model** to prevent 
 ## 3. Adaptive Overfetching (FAISS/Qdrant)
 
 To prevent post-filtering candidate starvation in local vector stores:
-- **FAISS Backend**: In [vector_store.py](file:///Users/mohsenshamsijazeb/./.gemini/antigravity/scratch/clinical-graphrag-pro/backend/app/services/vector_store.py), when metadata filters are applied, the search dynamically sets the initial candidate retrieval parameter `initial_k = index.ntotal`. This guarantees exact post-filtering over all indexed vectors.
+- **FAISS Backend**: In [vector_store.py](../backend/app/services/vector_store.py), when metadata filters are applied, the search dynamically sets the initial candidate retrieval parameter `initial_k = index.ntotal`. This guarantees exact post-filtering over all indexed vectors.
 - **Qdrant Backend**: Employs Qdrant's native pre-filtering engine using nested match conditions to evaluate only vectors matching the isolation filters.
 
 ---
 
 ## 4. Multi-Tenant Sparse Search Isolation
 
-In [bm25_index.py](file:///Users/mohsenshamsijazeb/./.gemini/antigravity/scratch/clinical-graphrag-pro/backend/app/services/bm25_index.py), keyword search enforces access boundary checks:
+In [bm25_index.py](../backend/app/services/bm25_index.py), keyword search enforces access boundary checks:
 - **PostgreSQL Mode**: Uses generated `document_chunks.search_vector` Full-Text Search indexes coupled with JSONB metadata querying. Ranking uses `ts_rank_cd`; this database runtime path is not BM25.
   ```sql
   (DocumentChunk.user_id == val) |
