@@ -10,6 +10,13 @@ from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings
 
 INSECURE_JWT_DEFAULT = "clinical-graphrag-secret-change-in-prod"
+INSECURE_JWT_PLACEHOLDERS = {
+    INSECURE_JWT_DEFAULT,
+    "replace-with-a-secure-random-secret-at-least-32-characters",
+    "CHANGE_ME_WITH_A_REAL_SECRET",
+    "change-me",
+    "changeme",
+}
 ALLOWED_APP_ENVS = {"development", "staging", "production"}
 ALLOWED_VECTOR_BACKENDS = {"faiss", "qdrant"}
 ALLOWED_LLM_PROVIDERS = {"groq", "gemini", "ollama", "local_hf", "llama_cpp", "retrieval-only"}
@@ -58,7 +65,6 @@ class Settings(BaseSettings):
 
     # ── Redis ────────────────────────────────────────────
     redis_url: str = "redis://localhost:6379/0"
-    cache_ttl: int = 3600  # seconds
     celery_task_always_eager: bool = False
     celery_task_store_eager_result: bool = False
     background_jobs_require_broker: bool = False
@@ -324,9 +330,10 @@ class Settings(BaseSettings):
         if is_google_empty and self.gemini_api_key:
             self.google_api_key = self.gemini_api_key
 
-        if self.jwt_secret == INSECURE_JWT_DEFAULT:
+        if self.jwt_secret.strip() in INSECURE_JWT_PLACEHOLDERS:
             raise ValueError(
-                "JWT_SECRET uses the insecure default value. Set a unique secret before startup."
+                "JWT_SECRET uses an insecure placeholder value. "
+                "Generate and set a unique secret before startup."
             )
 
         if self.jwt_secret and len(self.jwt_secret) < self.secret_key_min_length:
