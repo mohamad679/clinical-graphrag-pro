@@ -100,7 +100,7 @@ services:
     profiles: ["production"]
     restart: unless-stopped
 
-  # ── Next.js Frontend ──────────────────────────────────
+  # ── Static Web Components Frontend ──────────────────────────────────
   web:
     build:
       context: ./frontend
