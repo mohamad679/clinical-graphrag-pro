@@ -35,4 +35,24 @@ jobs:
         run: make lint
 
       - name: Run tests
-        run: make test
+        id: pytest
+        continue-on-error: true
+        run: |
+          cd backend
+          set +e
+          DEBUG=false ENABLE_DEMO_AUTH=true .venv/bin/pytest -v -x --tb=short 2>&1 | tee pytest-output.log
+          status=${PIPESTATUS[0]}
+          echo "exit_code=${status}" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upload pytest log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-output
+          path: backend/pytest-output.log
+          if-no-files-found: ignore
+
+      - name: Fail if tests failed
+        if: steps.pytest.outputs.exit_code != '0'
+        run: exit 1
