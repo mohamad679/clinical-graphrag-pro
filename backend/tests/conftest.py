@@ -4,7 +4,6 @@ Shared test fixtures for Clinical GraphRAG Pro.
 
 from __future__ import annotations
 
-import asyncio
 import os
 from pathlib import Path
 
@@ -36,20 +35,11 @@ def _remove_test_database_files() -> None:
             path.unlink()
 
 
-def _run_coro_sync(coro):
-    loop = asyncio.new_event_loop()
-    try:
-        return loop.run_until_complete(coro)
-    finally:
-        loop.run_until_complete(loop.shutdown_asyncgens())
-        loop.close()
-
-
 def _reload_default_test_modules() -> None:
     pass
 
 
-def _seed_users_sync() -> None:
+async def _seed_users() -> None:
     _reload_default_test_modules()
 
     import app.models  # noqa: F401
@@ -58,59 +48,54 @@ def _seed_users_sync() -> None:
     from app.core.database import Base, async_session_factory, engine
     from app.models.user import User as DBUser
 
-    async def _reset() -> None:
-        await engine.dispose()
-        _remove_test_database_files()
+    await engine.dispose()
+    _remove_test_database_files()
 
-        async with engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
-        async with async_session_factory() as session:
-            session.add_all(
-                [
-                    DBUser(
-                        id="demo-admin-001",
-                        email="admin@clinicalgraph.ai",
-                        name="Dr. Admin",
-                        role="admin",
-                        password_hash=AuthService._hash_password("admin123"),
-                        is_active=True,
-                        is_verified=True,
-                    ),
-                    DBUser(
-                        id="demo-physician-001",
-                        email="physician@clinicalgraph.ai",
-                        name="Dr. Physician",
-                        role="physician",
-                        password_hash=AuthService._hash_password("physician123"),
-                        is_active=True,
-                        is_verified=True,
-                    ),
-                    DBUser(
-                        id="demo-nurse-001",
-                        email="nurse@clinicalgraph.ai",
-                        name="Nurse Reviewer",
-                        role="nurse",
-                        password_hash=AuthService._hash_password("nurse123"),
-                        is_active=True,
-                        is_verified=True,
-                    ),
-                    DBUser(
-                        id="demo-viewer-001",
-                        email="user@clinicalgraph.ai",
-                        name="Clinical Viewer",
-                        role="viewer",
-                        password_hash=AuthService._hash_password("user123"),
-                        is_active=True,
-                        is_verified=True,
-                    ),
-                ]
-            )
-            await session.commit()
-
-        await engine.dispose()
-
-    _run_coro_sync(_reset())
+    async with async_session_factory() as session:
+        session.add_all(
+            [
+                DBUser(
+                    id="demo-admin-001",
+                    email="admin@clinicalgraph.ai",
+                    name="Dr. Admin",
+                    role="admin",
+                    password_hash=AuthService._hash_password("admin123"),
+                    is_active=True,
+                    is_verified=True,
+                ),
+                DBUser(
+                    id="demo-physician-001",
+                    email="physician@clinicalgraph.ai",
+                    name="Dr. Physician",
+                    role="physician",
+                    password_hash=AuthService._hash_password("physician123"),
+                    is_active=True,
+                    is_verified=True,
+                ),
+                DBUser(
+                    id="demo-nurse-001",
+                    email="nurse@clinicalgraph.ai",
+                    name="Nurse Reviewer",
+                    role="nurse",
+                    password_hash=AuthService._hash_password("nurse123"),
+                    is_active=True,
+                    is_verified=True,
+                ),
+                DBUser(
+                    id="demo-viewer-001",
+                    email="user@clinicalgraph.ai",
+                    name="Clinical Viewer",
+                    role="viewer",
+                    password_hash=AuthService._hash_password("user123"),
+                    is_active=True,
+                    is_verified=True,
+                ),
+            ]
+        )
+        await session.commit()
 
 
 @pytest.fixture(autouse=True)
@@ -141,7 +126,7 @@ def mock_embedding_model():
 
 
 @pytest.fixture(autouse=True)
-def reset_test_db(request):
+async def reset_test_db(request):
     if (
         "phase1_env" in request.fixturenames
         or "phase4_db" in request.fixturenames
@@ -149,7 +134,7 @@ def reset_test_db(request):
     ):
         return
 
-    _seed_users_sync()
+    await _seed_users()
 
 
 @pytest.fixture
