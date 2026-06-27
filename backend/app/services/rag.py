@@ -163,11 +163,11 @@ class RAGService:
             )
         else:
             answer = (
+                "I do not have enough evidence in the provided documents to answer this safely.\n\n"
                 "## Not Enough Grounded Evidence\n\n"
                 "I could not find source passages that directly support this request.\n\n"
                 "**What to do next:**\n\n"
-                "- Attach the relevant document, image, or case source.\n"
-                "- Or ask a narrower question that matches an indexed source.\n\n"
+                "- sAttach the relevant document, image, or case source.\n"
                 f"{self._settings.disclaimer_text}"
             )
 
