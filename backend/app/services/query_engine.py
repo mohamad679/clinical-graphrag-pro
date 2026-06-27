@@ -241,6 +241,8 @@ class QueryEngine:
                 and int(bm25_stats.get("total_documents") or 0) == 0
             ):
                 sparse_branch_warning = "BM25 sparse index is empty while sparse retrieval is enabled."
+                if mode in {"sparse", "hybrid", "hybrid_rerank"}:
+                    raise RuntimeError(sparse_branch_warning)
                 logger.info("%s Returning dense-only or empty retrieval results.", sparse_branch_warning)
                 sparse_enabled = False
 
