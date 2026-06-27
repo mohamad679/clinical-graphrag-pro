@@ -18,7 +18,6 @@ jobs:
     env:
       DEBUG: "false"
       ENABLE_DEMO_AUTH: "true"
-      DATABASE_URL: "sqlite+aiosqlite:///demo_live.db"
 
     steps:
       - name: Checkout repository
