@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backend-ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    env:
+      DEBUG: "false"
+      ENABLE_DEMO_AUTH: "true"
+      DATABASE_URL: "sqlite+aiosqlite:///demo_live.db"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Install backend dependencies
+        run: make install
+
+      - name: Lint backend
+        run: make lint
+
+      - name: Run tests
+        run: make test
