@@ -17,7 +17,7 @@ jobs:
 
     env:
       DEBUG: "false"
-      ENABLE_DEMO_AUTH: "true"
+      ENABLE_DEMO_AUTH: "false"
 
     steps:
       - name: Checkout repository
@@ -40,7 +40,7 @@ jobs:
         run: |
           cd backend
           set +e
-          DEBUG=false ENABLE_DEMO_AUTH=true .venv/bin/pytest -v -x --tb=short 2>&1 | tee pytest-output.log
+          DEBUG=false ENABLE_DEMO_AUTH=false .venv/bin/pytest -v -x --tb=short 2>&1 | tee pytest-output.log
           status=${PIPESTATUS[0]}
           echo "exit_code=${status}" >> "$GITHUB_OUTPUT"
           exit 0
