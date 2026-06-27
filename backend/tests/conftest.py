@@ -94,7 +94,7 @@ def _seed_users_sync() -> None:
                     ),
                 ]
             )
-            await session.commit()
+            await engine.dispose()
 
     _run_coro_sync(_reset())
 
