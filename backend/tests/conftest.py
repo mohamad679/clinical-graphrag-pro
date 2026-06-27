@@ -13,6 +13,7 @@ from httpx import ASGITransport, AsyncClient
 
 TEST_DATABASE_PATH = Path(__file__).resolve().parents[1] / "test_auth_suite.db"
 TEST_DATABASE_URL = f"sqlite+aiosqlite:///{TEST_DATABASE_PATH}"
+
 DEFAULT_TEST_ENV = {
     "DATABASE_URL": TEST_DATABASE_URL,
     "ENABLE_DEMO_AUTH": "false",
@@ -25,11 +26,22 @@ for key, value in DEFAULT_TEST_ENV.items():
     os.environ.setdefault(key, value)
 
 
+def _remove_test_database_files() -> None:
+    for path in (
+        TEST_DATABASE_PATH,
+        TEST_DATABASE_PATH.with_name(TEST_DATABASE_PATH.name + "-wal"),
+        TEST_DATABASE_PATH.with_name(TEST_DATABASE_PATH.name + "-shm"),
+    ):
+        if path.exists():
+            path.unlink()
+
+
 def _run_coro_sync(coro):
     loop = asyncio.new_event_loop()
     try:
         return loop.run_until_complete(coro)
     finally:
+        loop.run_until_complete(loop.shutdown_asyncgens())
         loop.close()
 
 
@@ -39,6 +51,7 @@ def _reload_default_test_modules() -> None:
 
 def _seed_users_sync() -> None:
     _reload_default_test_modules()
+
     import app.models  # noqa: F401
     import app.models.evaluation  # noqa: F401
     from app.core.auth import AuthService
@@ -47,8 +60,7 @@ def _seed_users_sync() -> None:
 
     async def _reset() -> None:
         await engine.dispose()
-        if TEST_DATABASE_PATH.exists():
-            TEST_DATABASE_PATH.unlink()
+        _remove_test_database_files()
 
         async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
@@ -94,7 +106,9 @@ def _seed_users_sync() -> None:
                     ),
                 ]
             )
-            await engine.dispose()
+            await session.commit()
+
+        await engine.dispose()
 
     _run_coro_sync(_reset())
 
@@ -103,11 +117,15 @@ def _seed_users_sync() -> None:
 def mock_embedding_model():
     """Globally mock the embedding model to avoid loading sentence-transformers under pytest."""
     import numpy as np
-    from unittest.mock import patch, MagicMock
+    from unittest.mock import MagicMock, patch
+
     from app.core.config import get_settings
+    from app.services.vector_store import _EmbeddingChunkingMixin
 
     mock_embedder = MagicMock()
-    mock_embedder.get_sentence_embedding_dimension.side_effect = lambda: get_settings().embedding_dim
+    mock_embedder.get_sentence_embedding_dimension.side_effect = (
+        lambda: get_settings().embedding_dim
+    )
 
     def mock_encode(texts, **kwargs):
         dim = get_settings().embedding_dim
@@ -118,7 +136,6 @@ def mock_embedding_model():
 
     mock_embedder.encode.side_effect = mock_encode
 
-    from app.services.vector_store import _EmbeddingChunkingMixin
     with patch.object(_EmbeddingChunkingMixin, "_get_embedder", return_value=mock_embedder):
         yield
 
@@ -131,6 +148,7 @@ def reset_test_db(request):
         or request.path.name == "test_postgres_fts_migration.py"
     ):
         return
+
     _seed_users_sync()
 
 
@@ -143,10 +161,12 @@ def anyio_backend():
 async def client():
     """Unauthenticated async HTTP client."""
     from fastapi import FastAPI
+
     from app.api import admin
 
     app = FastAPI()
     app.include_router(admin.router, prefix="/api")
+
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
         yield ac
@@ -156,10 +176,12 @@ async def client():
 async def auth_client():
     """Authenticated async HTTP client (admin)."""
     from fastapi import FastAPI
+
     from app.api import admin
 
     app = FastAPI()
     app.include_router(admin.router, prefix="/api")
+
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
         login = await ac.post(
